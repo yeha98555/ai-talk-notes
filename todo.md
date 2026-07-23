@@ -33,11 +33,11 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## Phase 0 — 資料骨架
 
-- [ ] 建立 `channels.json`,填入目前追蹤的頻道(`id` / `name` / `handle`)
-- [ ] 建立空的 `queue.json`(`[]`)
-- [ ] 確認兩檔格式合法、被 git 追蹤(非 `.gitignore` 排除)
-- [ ] 在 `CONTRIBUTING.md` / `CONTRIBUTING.zh-TW.md` 補一段資料檔 schema 說明
-- [ ] **驗收**:兩檔存在、JSON 合法、git status 看得到
+- [x] 建立 `channels.json`,填入目前追蹤的頻道(`id` / `name` / `handle`)—— 由現有 100 支 notes 反解出 4 個實際來源頻道
+- [x] 建立空的 `queue.json`(`[]`)
+- [x] 確認兩檔格式合法、被 git 追蹤(非 `.gitignore` 排除)
+- [x] 在 `CONTRIBUTING.md` / `CONTRIBUTING.zh-TW.md` 補一段資料檔 schema 說明
+- [x] **驗收**:兩檔存在、JSON 合法、git status 看得到(額外:4 個頻道 RSS 皆回 HTTP 200)
 
 ## Phase 1 — 輪詢與挑選(最小可跑)★ 先做
 
