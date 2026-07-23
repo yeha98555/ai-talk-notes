@@ -8,12 +8,21 @@
 每個 Phase **開始前**先從 `develop` 切一條該階段的分支實作,**跑通驗收後**用
 `git merge --no-ff` 併回 `develop`(保留分支合併節點,方便回溯整個階段)。
 
+**階段內分功能、邊做邊 commit**:在該階段分支上,每完成一個可獨立交代的子功能
+(例如 `poll.mjs`、`review.mjs` 各算一個)就 commit 一次,而不是整個 Phase 攢成一
+包。每個 commit 聚焦單一功能、訊息用 Conventional Commits;最後才 `--no-ff` 併回
+`develop`。
+
 ```bash
 # 階段開始
 git switch develop && git pull
 git switch -c <該階段分支名>
 
-# 實作 + 驗收通過後
+# 階段內:每做完一個子功能就 commit(可多次)
+git add <該功能相關檔案>
+git commit -m "feat(scope): ……"      # 分功能、邊做邊 commit
+
+# 全部子功能完成 + 驗收通過後
 git switch develop
 git merge --no-ff <該階段分支名>     # 保留合併節點
 git branch -d <該階段分支名>          # 清掉已併入的分支
@@ -42,22 +51,23 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ## Phase 1 — 輪詢與挑選(最小可跑)★ 先做
 
 ### `tools/poll.mjs`
-- [ ] 讀 `channels.json`
-- [ ] 對每頻道抓 RSS(`youtube.com/feeds/videos.xml?channel_id=XXX`,免 API key)
-- [ ] 解析 videoId / title / channel / published / thumb / url
-- [ ] 與 `queue.json` 既有 videoId diff,只 append 新片為 `status: pending`
-- [ ] 支援手動執行 `node tools/poll.mjs`
+- [x] 讀 `channels.json`
+- [x] 對每頻道抓 RSS(`youtube.com/feeds/videos.xml?channel_id=XXX`,免 API key)
+- [x] 解析 videoId / title / channel / published / thumb / url
+- [x] 與 `queue.json` 既有 videoId diff,只 append 新片為 `status: pending`
+- [x] 支援手動執行 `node tools/poll.mjs`
+- [x] 額外:已在站上的影片(對到 `doc-N`)標 `published` + 回填 `docId`,不混進 pending
 
 ### `tools/review.mjs`
-- [ ] `node tools/review.mjs` 起 localhost(Node 內建 http,無依賴)
-- [ ] 列出 `pending` 影片:縮圖 + 標題 + 頻道 + 日期
-- [ ] Approve / Reject 按鈕 → 改寫 `queue.json` 的 `status`
-- [ ] 選填:備註欄寫入 `note` 欄位
+- [x] `node tools/review.mjs` 起 localhost(Node 內建 http,無依賴)
+- [x] 列出 `pending` 影片:縮圖 + 標題 + 頻道 + 日期
+- [x] Approve / Reject 按鈕 → 改寫 `queue.json` 的 `status`
+- [x] 選填:備註欄寫入 `note` 欄位
 
 ### 驗收
-- [ ] 對已知頻道跑 poll,新片正確落進 queue 且不重複
-- [ ] 瀏覽器按 Approve/Reject,`queue.json` status 正確變更
-- [ ] 重跑 poll 不重複塞已存在影片
+- [x] 對已知頻道跑 poll,新片正確落進 queue 且不重複(4 頻道各 15,共 60;重跑 0 重複)
+- [x] 瀏覽器按 Approve/Reject,`queue.json` status 正確變更(approve 寫入 note、reject 改狀態、counts 即時更新)
+- [x] 重跑 poll 不重複塞已存在影片
 
 ## Phase 2 — 自動輪詢與通知
 
