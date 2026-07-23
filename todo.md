@@ -59,15 +59,15 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [x] 額外:已在站上的影片(對到 `doc-N`)標 `published` + 回填 `docId`,不混進 pending
 
 ### `tools/review.mjs`
-- [ ] `node tools/review.mjs` 起 localhost(Node 內建 http,無依賴)
-- [ ] 列出 `pending` 影片:縮圖 + 標題 + 頻道 + 日期
-- [ ] Approve / Reject 按鈕 → 改寫 `queue.json` 的 `status`
-- [ ] 選填:備註欄寫入 `note` 欄位
+- [x] `node tools/review.mjs` 起 localhost(Node 內建 http,無依賴)
+- [x] 列出 `pending` 影片:縮圖 + 標題 + 頻道 + 日期
+- [x] Approve / Reject 按鈕 → 改寫 `queue.json` 的 `status`
+- [x] 選填:備註欄寫入 `note` 欄位
 
 ### 驗收
-- [ ] 對已知頻道跑 poll,新片正確落進 queue 且不重複
-- [ ] 瀏覽器按 Approve/Reject,`queue.json` status 正確變更
-- [ ] 重跑 poll 不重複塞已存在影片
+- [x] 對已知頻道跑 poll,新片正確落進 queue 且不重複(4 頻道各 15,共 60;重跑 0 重複)
+- [x] 瀏覽器按 Approve/Reject,`queue.json` status 正確變更(approve 寫入 note、reject 改狀態、counts 即時更新)
+- [x] 重跑 poll 不重複塞已存在影片
 
 ## Phase 2 — 自動輪詢與通知
 
