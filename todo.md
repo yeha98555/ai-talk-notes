@@ -8,12 +8,21 @@
 每個 Phase **開始前**先從 `develop` 切一條該階段的分支實作,**跑通驗收後**用
 `git merge --no-ff` 併回 `develop`(保留分支合併節點,方便回溯整個階段)。
 
+**階段內分功能、邊做邊 commit**:在該階段分支上,每完成一個可獨立交代的子功能
+(例如 `poll.mjs`、`review.mjs` 各算一個)就 commit 一次,而不是整個 Phase 攢成一
+包。每個 commit 聚焦單一功能、訊息用 Conventional Commits;最後才 `--no-ff` 併回
+`develop`。
+
 ```bash
 # 階段開始
 git switch develop && git pull
 git switch -c <該階段分支名>
 
-# 實作 + 驗收通過後
+# 階段內:每做完一個子功能就 commit(可多次)
+git add <該功能相關檔案>
+git commit -m "feat(scope): ……"      # 分功能、邊做邊 commit
+
+# 全部子功能完成 + 驗收通過後
 git switch develop
 git merge --no-ff <該階段分支名>     # 保留合併節點
 git branch -d <該階段分支名>          # 清掉已併入的分支
