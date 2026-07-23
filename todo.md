@@ -51,11 +51,12 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ## Phase 1 — 輪詢與挑選(最小可跑)★ 先做
 
 ### `tools/poll.mjs`
-- [ ] 讀 `channels.json`
-- [ ] 對每頻道抓 RSS(`youtube.com/feeds/videos.xml?channel_id=XXX`,免 API key)
-- [ ] 解析 videoId / title / channel / published / thumb / url
-- [ ] 與 `queue.json` 既有 videoId diff,只 append 新片為 `status: pending`
-- [ ] 支援手動執行 `node tools/poll.mjs`
+- [x] 讀 `channels.json`
+- [x] 對每頻道抓 RSS(`youtube.com/feeds/videos.xml?channel_id=XXX`,免 API key)
+- [x] 解析 videoId / title / channel / published / thumb / url
+- [x] 與 `queue.json` 既有 videoId diff,只 append 新片為 `status: pending`
+- [x] 支援手動執行 `node tools/poll.mjs`
+- [x] 額外:已在站上的影片(對到 `doc-N`)標 `published` + 回填 `docId`,不混進 pending
 
 ### `tools/review.mjs`
 - [ ] `node tools/review.mjs` 起 localhost(Node 內建 http,無依賴)
