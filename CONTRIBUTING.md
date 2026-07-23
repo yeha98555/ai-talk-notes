@@ -158,6 +158,54 @@ a few wiring changes:
 3. Add a `T[<locale>]` string table in `src/scripts/reading-progress.js` and
    `src/scripts/notes.js` so their injected UI is localized.
 
+## Discovery pipeline data (v2)
+
+Two git-tracked JSON files at the repo root feed the v2 "discover → track → pick →
+generate" pipeline that runs *before* the manual note authoring above (see
+[`PRD-v2.md`](PRD-v2.md)). They are the single source of truth for that pipeline;
+every stage only reads/writes these two files plus `src/`.
+
+### `channels.json` — the tracked-channel list
+
+```json
+[
+  { "id": "UCg3pI4p6OKSFrDVZcwRIx8A", "name": "AI Native Dev", "handle": "@tessl-ai" }
+]
+```
+
+- `id` — the YouTube `channel_id`, used to build the RSS feed URL
+  (`https://www.youtube.com/feeds/videos.xml?channel_id=<id>`, no API key needed).
+- `name` / `handle` — for human recognition only; not used to fetch.
+
+To find a channel's `id`, open any of its videos and read `"channelId":"UC…"` from
+the watch-page HTML, or the `externalChannelId` field.
+
+### `queue.json` — the video queue
+
+Starts as `[]`. `poll.mjs` appends newly-discovered videos as `pending`; you approve
+or reject them; `gen-note.mjs` later marks them `published`.
+
+```json
+[
+  {
+    "videoId": "tTcxVv8HHNw",
+    "title": "Learning while you sleep: Beyond memory to dreaming",
+    "channel": "AI Native Dev",
+    "published": "2026-06-20T00:00:00Z",
+    "thumb": "https://i.ytimg.com/vi/tTcxVv8HHNw/hqdefault.jpg",
+    "url": "https://youtu.be/tTcxVv8HHNw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  }
+]
+```
+
+- `status` — lifecycle: `pending` → `approved` / `rejected` → `published`.
+- `docId` — filled in once a note is generated (e.g. `doc-100`), so a video is never
+  processed twice.
+- `note` — optional free-text memo written while picking (e.g. "off-topic, maybe").
+
 ## Conventions
 
 - Regenerate (`npm run build`) and commit both `index.html` and `index.zh.html`

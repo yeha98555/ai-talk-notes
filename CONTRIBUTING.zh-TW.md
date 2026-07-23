@@ -152,6 +152,53 @@ Markdown／文字處理流程與語系無關，但全新語言仍需要一些額
 3. 在 `src/scripts/reading-progress.js` 與 `src/scripts/notes.js` 中新增
    `T[<locale>]` 字串表，讓它們所注入的 UI 也能在地化。
 
+## 探索 pipeline 資料檔（v2）
+
+repo 根目錄有兩個進 git 的 JSON 檔，供 v2「發現 → 追蹤 → 挑選 → 生成」pipeline
+使用——這段流程接在上述手動撰寫筆記之前（詳見 [`PRD-v2.md`](PRD-v2.md)）。它們
+是該 pipeline 的單一事實來源（single source of truth）；每個階段只讀寫這兩個檔
+加上 `src/`。
+
+### `channels.json` —— 追蹤頻道清單
+
+```json
+[
+  { "id": "UCg3pI4p6OKSFrDVZcwRIx8A", "name": "AI Native Dev", "handle": "@tessl-ai" }
+]
+```
+
+- `id` —— YouTube 的 `channel_id`，用來組出 RSS feed 網址
+  （`https://www.youtube.com/feeds/videos.xml?channel_id=<id>`，免 API key）。
+- `name` / `handle` —— 僅供人辨識，不用於抓取。
+
+要找頻道的 `id`：打開該頻道任一支影片，從 watch page HTML 讀取
+`"channelId":"UC…"`，或 `externalChannelId` 欄位。
+
+### `queue.json` —— 影片佇列
+
+初始為 `[]`。`poll.mjs` 會把新發現的影片以 `pending` 附加進來；你來 approve 或
+reject；之後 `gen-note.mjs` 會把它標成 `published`。
+
+```json
+[
+  {
+    "videoId": "tTcxVv8HHNw",
+    "title": "Learning while you sleep: Beyond memory to dreaming",
+    "channel": "AI Native Dev",
+    "published": "2026-06-20T00:00:00Z",
+    "thumb": "https://i.ytimg.com/vi/tTcxVv8HHNw/hqdefault.jpg",
+    "url": "https://youtu.be/tTcxVv8HHNw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  }
+]
+```
+
+- `status` —— 生命週期：`pending` → `approved` / `rejected` → `published`。
+- `docId` —— 產出筆記後回填（例如 `doc-100`），確保同一支影片不會被處理兩次。
+- `note` —— 選填，挑片時寫的備註（例如「主題偏離，再考慮」）。
+
 ## 慣例
 
 - 請重新產生（`npm run build`）並將 `index.html` 與 `index.zh.html` 連同來源
