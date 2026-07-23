@@ -72,14 +72,16 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ## Phase 2 — 自動輪詢與通知
 
 ### `.github/workflows/poll.yml`
-- [ ] cron 排程(建議每天一次)跑 `node tools/poll.mjs`
-- [ ] queue 有新增時 commit 更新後的 `queue.json`
-- [ ] 有新片 → 開/更新 Issue 列出待挑選清單
-- [ ] 無新片 → 不 commit、不製造雜訊
+- [x] cron 排程(每天 08:00 UTC)跑 `node tools/poll.mjs`;另加 `workflow_dispatch` 可手動觸發
+- [x] queue 有新增時 commit + push 更新後的 `queue.json`(`[skip ci]`)
+- [x] 有新 pending → 開/更新單一 `video-queue` Issue,列出待挑選清單(`tools/queue-report.mjs`)
+- [x] 無新片 → 不 commit、不開 Issue(`--check` 回 0 時安靜)
 
 ### 驗收
-- [ ] Action 依排程觸發並成功 commit
-- [ ] 有新片時 Issue 建立/更新;無新片時安靜
+- [x] workflow 邏輯本機實跑驗證:有變動→commit 條件成立、有新 pending→通知條件成立;無變動→兩者皆 skip
+- [x] YAML 合法(ruby/psych 解析通過)、`queue-report.mjs --check` 邊界(0 / N)正確
+- [ ] **需 push 後在 GitHub 實跑一次確認**:排程/dispatch 真的觸發、commit 成功 push、`video-queue` Issue 正確建立/更新
+  - 註:排程只在 default branch(未來的 `main`)生效;先在分支上用 workflow_dispatch 測
 
 ## Phase 3 — LLM 生成 note 草稿
 
