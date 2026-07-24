@@ -119,6 +119,10 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 **目標**：每批 queue 與其產出的 PR 在 issue 上有對照。
 
+> **已定案（2026-07-24）**：PR 粒度 = **batched**。一次 `gen-note --pr` = 一個 PR（包當下所有 approved），
+> 與 v2 一致；記錄寫「這批 `<ids>` → PR #NN」一則留言。單支例外用 `gen-note <id> --pr`。
+> 提醒：approve/reject 本身**不開 PR**（只改 develop 的 `queue.json` status，reject 永不進生成）。
+
 ### `tools/gen-note.mjs`（微調）
 - [ ] `gh pr create` 成功後，找出 open 的 `video-queue` issue
 - [ ] `gh issue comment` 寫「🧾 這批 → PR #NN：<PR 連結>；videoId / docId 清單」
