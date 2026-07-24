@@ -216,6 +216,7 @@ const main = async () => {
     console.log(`${targets.length} approved video(s)${DRY ? " [dry-run]" : ""}. Next id: doc-${nextNum}`);
 
     const addedDocs = [];
+    const processed = []; // { videoId, docId, title } — for the Phase-4 batch record
     const cats = new Set();
     for (const item of targets) {
         process.stdout.write(`\n▶ ${item.videoId}  ${item.title.slice(0, 60)}\n`);
@@ -245,6 +246,7 @@ const main = async () => {
         item.status = "published";
         console.log(`  ✓ ${docId} → category ${draft.category} (card #${idx + 1})`);
         addedDocs.push(docId);
+        processed.push({ videoId: item.videoId, docId, title: item.title });
         cats.add(draft.category);
         nextNum++;
     }
@@ -293,11 +295,31 @@ const main = async () => {
     out("git", ["add", "--", ...touched]);
     out("git", ["commit", "-m", title]);
     out("git", ["push", "-u", "origin", branch]);
+    let prUrl = "";
     try {
-        const url = out("gh", ["pr", "create", "--base", base, "--head", branch, "--title", title, "--body", body]);
-        console.log(`Review PR → ${url}`);
+        prUrl = out("gh", ["pr", "create", "--base", base, "--head", branch, "--title", title, "--body", body]);
+        console.log(`Review PR → ${prUrl}`);
     } catch {
         console.log(`Pushed ${branch}. Open the PR manually: gh pr create --base ${base} --head ${branch}`);
+    }
+    // Phase 4: record "this batch → PR" back on the open review Issue so each queue
+    // batch maps to its PR. Best-effort — a missing issue or a comment failure must
+    // never fail the run (the PR is already open).
+    if (prUrl) {
+        try {
+            const num = out("gh", ["issue", "list", "--label", "video-queue", "--state", "open", "--json", "number", "--jq", ".[0].number // empty"]);
+            if (num) {
+                const prNum = prUrl.split("/").pop();
+                const rows = processed.map((x) => `- \`${x.docId}\` · ${x.title} (${x.videoId})`).join("\n");
+                const comment = `🧾 這批 note 草稿 → PR #${prNum}：${prUrl}\n\n${rows}`;
+                run("gh", ["issue", "comment", num, "--body", comment], { stdio: ["ignore", "ignore", "inherit"] });
+                console.log(`Recorded this batch on review issue #${num}`);
+            } else {
+                console.log("No open video-queue issue found — batch not recorded (skipped).");
+            }
+        } catch (e) {
+            console.log(`Could not record batch on the review issue (skipped): ${e.message}`);
+        }
     }
 };
 
