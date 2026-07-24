@@ -111,7 +111,7 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ### `.github/workflows/queue-control.yml`（新）
 - [ ] `on: issues.edited`
-- [ ] `if:` 同時滿足（a）`video-queue` label、（b）`github.event.sender.login == '<owner>'`（預設 `yeha98555`）、（c）**body 送出 checkbox 已勾**
+- [ ] `if:` 同時滿足（a）`video-queue` label、（b）`github.event.sender.login == github.event.repository.owner.login`、（c）**body 送出 checkbox 已勾**
 - [ ] 三者缺一即 no-op（bot 重繪、非 owner、只勾未送出 → 全部安靜略過，無迴圈無雜訊）
 - [ ] 呼叫 `queue-apply.mjs` → commit/`push` develop（一批一個 commit）→ 用重繪 body 更新 issue
 - [ ] `permissions: contents: write` + `issues: write`；`concurrency` group 串行化
@@ -152,7 +152,7 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## 開放問題（PRD-v3 第 8 節，做之前確認；已給預設）
 
-- [ ] owner 判定：`sender.login == 'yeha98555'`（預設）vs `author_association == 'OWNER'`
+- [x] owner 判定：**定案 `sender.login == repository.owner.login`**（判編輯者、不寫死；`author_association` 在 issues.edited 是 issue 建立者身分，不適用）
 - [ ] reject 理由：預設沿用 triage 理由當 `note`
 - [ ] triage 是否加 `workflow_dispatch` 手動重跑：預設要
 - [ ] PR# 記錄位置：預設本機 gen-note 直接留言（vs `on: pull_request` workflow）

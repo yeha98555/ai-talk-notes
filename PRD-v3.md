@@ -147,7 +147,7 @@ approve/reject **不觸發任何套用**（只是存進 body）；只有勾「�
 
 - `tools/triage.mjs`（Phase 2 微調）：body 最底部渲染 `- [ ] 🚀 送出以上所有勾選（打勾＝套用成一個 commit；套用完自動取消）`。
 - `queue-control.yml`：`on: issues.edited`；`if:` 同時滿足（a）`video-queue` label、（b）
-  `github.event.sender.login == '<owner>'`、（c）body 的**送出 checkbox 已勾選**。三者缺一即 no-op（bot 重繪、非 owner 編輯、
+  `github.event.sender.login == github.event.repository.owner.login`、（c）body 的**送出 checkbox 已勾選**。三者缺一即 no-op（bot 重繪、非 owner 編輯、
   只勾 approve/reject 未送出——全部安靜略過，故無迴圈、無雜訊）。
 - `tools/queue-apply.mjs`：解析 body → 依 `vid` 錨點與其下 checkbox，組 id→action map
   （✅ → approved；❌ → rejected + 把該列 triage 理由寫進 `note`；皆未勾 → 維持 pending；兩者皆勾 → 跳過並標記）→
@@ -180,7 +180,8 @@ approve/reject **不觸發任何套用**（只是存進 body）；只有勾「�
 
 ## 8. 開放問題（我先給了預設，你可否決）
 
-1. **owner 判定**：用 `sender.login == 'yeha98555'` 硬判（明確）還是 `author_association == 'OWNER'`（較通用）？預設前者。
+1. **owner 判定**：✅ 定案 `github.event.sender.login == github.event.repository.owner.login`（判實際編輯者、不寫死 username）。
+   註：`author_association == 'OWNER'` 在 `issues.edited` 上拿到的是**issue 建立者（poll bot）**的身分、非編輯者，故不適用。
 2. **reject 理由來源**：預設「沿用 triage 理由當 note」。可改成「reject 一律留空 note」或「要理由就本機補」。
 3. **triage 觸發時機**：預設「併進 poll，有新 pending 才跑」。是否也要一個手動 `workflow_dispatch` 重跑 triage？預設要。
 4. **PR# 記錄實作位置**：預設由本機 `gen-note` 直接 `gh issue comment`（最少元件）。是否偏好改用 `on: pull_request` 的 workflow？預設本機。
