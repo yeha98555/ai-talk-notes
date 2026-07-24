@@ -179,7 +179,8 @@ const header = [
     "",
     `**${pending.length}** 支待挑選` + (newCount ? ` · ✨ **${newCount}** 支為本次新增` : "") + "。",
     "",
-    "在每支影片下勾選 **✅ approve** 或 **❌ reject**（只有 repo 負責人的勾選會生效；兩者留白＝維持 pending）。",
+    "先在每支影片下勾選 **✅ approve** 或 **❌ reject**（兩者留白＝維持 pending），全部勾好後" +
+        "**勾一下最底部的「🚀 送出」** —— 整批會套用成一個 commit（只有 repo 負責人的送出會生效）。",
 ];
 
 let bodyLines;
@@ -208,5 +209,17 @@ if (pending.length === 0) {
     bodyLines = [...header, "", "---", "", ...pending.map((v) => block(v, null))];
 }
 
+// Bottom submit gate. Ticking approve/reject stores state only; ticking this
+// applies the whole batch as one commit (queue-control.yml). The `<!-- submit -->`
+// anchor + this exact line are the contract queue-apply.mjs looks for.
+if (pending.length > 0) {
+    bodyLines.push(
+        "",
+        "---",
+        "<!-- submit -->",
+        "- [ ] 🚀 送出以上所有勾選（打勾＝套用成一個 commit；套用完自動取消）",
+        "",
+    );
+}
 bodyLines.push("<sub>Auto-updated by `.github/workflows/poll.yml` — 勾選由 `queue-control.yml` 套用。</sub>");
 process.stdout.write(bodyLines.join("\n") + "\n");
