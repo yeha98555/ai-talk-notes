@@ -208,9 +208,10 @@ or reject them; `gen-note.mjs` later marks them `published`.
 
 ## Conventions
 
-- Regenerate (`npm run build`) and commit both `index.html` and `index.zh.html`
-  along with your source changes — they are committed build artifacts.
-- Keep commits focused; run `node tools/i18n-check.mjs` before pushing.
+- `index.html` / `index.zh.html` are **build artifacts and are git-ignored** — do
+  **not** commit them. Vercel rebuilds them from source on deploy. Locally, run
+  `npm run build` to (re)generate them before opening a page or running the checker.
+- Keep commits focused; run `npm run build && node tools/i18n-check.mjs` before pushing.
 - `modal.js` and `nav-scrollspy.js` inject no user-facing text and should not
   need edits; `reading-progress.js` / `notes.js` keep all UI strings in a
   `T[lang]` table.

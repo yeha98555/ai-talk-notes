@@ -120,27 +120,29 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## Phase 5 — Vercel 部署與自動重新部署
 
-### 部署設定
+### 部署設定(repo 端,已完成)
 - [x] 產物策略定案:**B — build 時產出、不 commit 產物**
-- [ ] `git rm --cached index.html index.zh.html`(從版控移除既有產物)
-- [ ] 把 `index.html` / `index.zh.html` 加進 `.gitignore`
-- [ ] 建立 `vercel.json`(`buildCommand: npm run build`【B 必要】、`outputDirectory: .`、必要的 `cleanUrls`/路由)
-- [ ] Vercel 匯入 GitHub repo,Production Branch 設 `main`
-- [ ] 確認 PR 會產生 Preview Deployment
-- [ ] 用 `.vercelignore` 或 Vercel「Ignored Build Step」擋掉純資料變更觸發部署:
-      poll bot 每輪會 commit `queue.json` 到 main,不該因此重新部署(只有 `src/` 內容變動才需要 build)
+- [x] `git rm --cached index.html index.zh.html`(從版控移除既有產物,檔案留磁碟)
+- [x] 把 `index.html` / `index.zh.html` 加進 `.gitignore`(另加 `.vercel/`)
+- [x] 建立 `vercel.json`(`buildCommand: npm run build`、`outputDirectory: .`、`cleanUrls`、`trailingSlash:false`)
+
+### 需你在 Vercel 儀表板做(repo 端無法代勞)
+- [ ] Vercel 匯入 GitHub repo `yeha98555/ai-talk-notes`,Production Branch 設 `main`
+- [ ] 「Ignored Build Step」貼上:`git diff --quiet HEAD^ HEAD -- ':(exclude)queue.json' ':(exclude)channels.json'`(純資料 commit 略過重建)
+- [ ] 前置:先把 Phase 5 release 到 `main`(main 才有 `vercel.json` 且無 committed 產物),再匯入
+- [ ] 部署後把 Live URL 給我 → 我填進兩份 README 的 `<!-- LIVE_URL -->`
 
 ### 自動重新部署
 - [ ] 驗證 merge 到 main 後 Vercel 自動觸發 build + deploy(Git 整合預設行為)
 - [ ] (替代方案,通常不需要)Deploy Hook + GitHub Action 在 merge 後 `curl` 觸發
 
-### 文件收尾(最後完成)
-- [ ] 更新 `README.md`:加上 Live 站點網址 + 部署方式(Vercel)說明
-- [ ] 更新 `README.zh-TW.md`:同步中文版
-- [ ] 更新兩份 README 的「開啟方式」段落:因採策略 B,repo 內不再有現成 `index.html`,需先 `npm run build` 才能本機開啟
+### 文件收尾
+- [x] `README.md` / `README.zh-TW.md`:新增 Vercel 部署段、「開啟方式」改為先 `npm run build`
+- [x] `CONTRIBUTING.md` / `.zh-TW.md`:慣例改為「產物不 commit、由 Vercel build」
+- [ ] Live 網址:等你部署後回填(兩份 README 的 `<!-- LIVE_URL -->` 佔位)
 
-### 驗收
-- [ ] Vercel 網址可開,`index.html`(EN)與 `index.zh.html`(中文)皆正常
+### 驗收(線上,需你確認)
+- [ ] Vercel 網址可開,`/`(EN)與 `/index.zh`(中文,cleanUrls)皆正常
 - [ ] merge 一個 PR 到 main 後線上內容自動更新
 - [ ] PR 有 Preview Deployment 可預覽
 - [ ] 兩份 README 皆已反映 Live 網址與部署流程

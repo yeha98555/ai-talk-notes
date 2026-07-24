@@ -66,25 +66,37 @@ source on GitHub*」按鈕正上方；首次造訪時會依照瀏覽器語言設
 
 ## 使用方式
 
-在任何現代瀏覽器中開啟已發布的頁面：
+兩個頁面是**建置產物、已不再提交進版控**,因此請先從來源建置,再於瀏覽器開啟:
 
 ```bash
+npm run build          # 產出 index.html + index.zh.html
+
 # macOS
 open index.html
-
 # Linux
 xdg-open index.html
-
-# or serve it locally
+# 或在本機起伺服器,再造訪 http://localhost:8000
 python3 -m http.server
-# then visit http://localhost:8000
 ```
+
+隨時可用的版本是線上站點——見 [部署](#部署)。
+
+## 部署
+
+部署在 **Vercel**,採 Git 整合——每次 push/merge 到 `main` 就跑 `npm run build`
+並重新部署;Pull Request 會各自產生 Preview Deployment。
+
+- **Live:** <!-- LIVE_URL -->_(首次部署後補上 Vercel 網址)_
+- 頁面(`index.html` / `index.zh.html`)**不進版控**——由 Vercel 從來源建置
+  ([`vercel.json`](vercel.json) 設定 `buildCommand: npm run build`)。
+- 純資料 commit(poll bot 更新 `queue.json`)會透過 Vercel 的 *Ignored Build Step*
+  略過重建,只有真正的內容變更才觸發部署。
 
 ## 專案結構
 
 ```
-index.html        # generated English page, self-contained (commit it)
-index.zh.html     # generated Traditional Chinese page (commit it)
+index.html        # generated English page (build artifact — git-ignored)
+index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
 tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
