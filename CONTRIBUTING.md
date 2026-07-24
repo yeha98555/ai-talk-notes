@@ -114,7 +114,8 @@ the video comes from each card's `notes/doc-N.md`.
    READMEs (`README.md`, `README.zh-TW.md`). Find every occurrence with
    `grep -rn '<old-count>' src README.md README.zh-TW.md` (ignore `#tNN`, `doc-<id>`,
    and `NN%` matches). This total is not derived, and `i18n-check.mjs` does not verify
-   it.
+   it. The per-category counts in each README's **Categories** table are likewise
+   hand-maintained and unverified — bump the new talk's category there too.
 5. **(Optional) Key Themes** — the "Key Themes" section (`src/sections/themes.html`)
    is a *curated* set of 9 cross-cutting insights, each citing a handful of
    representative talks — not every talk appears. If the new talk supports one (or
@@ -158,12 +159,15 @@ a few wiring changes:
 3. Add a `T[<locale>]` string table in `src/scripts/reading-progress.js` and
    `src/scripts/notes.js` so their injected UI is localized.
 
-## Discovery pipeline data (v2)
+## Discovery pipeline data
 
-Two git-tracked JSON files at the repo root feed the v2 "discover → track → pick →
-generate" pipeline that runs *before* the manual note authoring above (see
-[`PRD-v2.md`](docs/PRD-v2.md)). They are the single source of truth for that pipeline;
-every stage only reads/writes these two files plus `src/`.
+Two git-tracked JSON files feed the "discover → pick → draft" pipeline that runs
+*before* the manual note authoring above — the **maintainer's** flow, not something a
+content contributor needs to touch. They are the single source of truth for that
+pipeline; every stage only reads/writes these two files plus `src/`, and they live on
+the **`develop`** branch (`main` is a pure release branch). Day-to-day steps are in
+[`OPERATIONS.md`](OPERATIONS.md); the design is in [`docs/PRD-v2.md`](docs/PRD-v2.md)
+(base pipeline) and [`docs/PRD-v3.md`](docs/PRD-v3.md) (the GitHub Issue control panel).
 
 ### `channels.json` — the tracked-channel list
 
@@ -183,7 +187,9 @@ the watch-page HTML, or the `externalChannelId` field.
 ### `queue.json` — the video queue
 
 Starts as `[]`. `poll.mjs` appends newly-discovered videos as `pending`; you approve
-or reject them; `gen-note.mjs` later marks them `published`.
+or reject them — on the review Issue's checkboxes (applied by `queue-control.yml`) or
+in the local `review.mjs` UI; `gen-note.mjs` later fills `docId` and marks them
+`published`.
 
 ```json
 [
@@ -204,7 +210,8 @@ or reject them; `gen-note.mjs` later marks them `published`.
 - `status` — lifecycle: `pending` → `approved` / `rejected` → `published`.
 - `docId` — filled in once a note is generated (e.g. `doc-100`), so a video is never
   processed twice.
-- `note` — optional free-text memo written while picking (e.g. "off-topic, maybe").
+- `note` — optional free-text memo written while picking; rejecting on the Issue
+  copies that video's triage reason here.
 
 ## Conventions
 
