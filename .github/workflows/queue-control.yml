@@ -1,0 +1,87 @@
+name: Queue control
+
+# Apply the review Issue's checkbox choices to queue.json when the repo owner ticks
+# the bottom "🚀 送出" box. Ticking approve/reject alone does nothing; only submit
+# triggers an apply, and the whole batch lands as one commit on develop.
+#
+# NOTE: `issues` events run the workflow file from the DEFAULT branch (main), so this
+# only fires once it reaches main — verify after a develop -> main release.
+
+on:
+  issues:
+    types: [edited]
+
+permissions:
+  contents: write # commit queue.json to develop
+  issues: write # re-render the Issue body + comment
+
+concurrency:
+  group: queue-control-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    # Gate: open video-queue Issue, edited by the repo owner, with submit ticked.
+    # sender = the actor who edited (bot re-renders fail this → no loop). The submit
+    # box renders as "- [x] 🚀 …" only when checked; the header's plain "🚀 送出" text
+    # is not "[x] 🚀", so it won't match.
+    if: >-
+      github.event.issue.state == 'open' &&
+      contains(github.event.issue.labels.*.name, 'video-queue') &&
+      github.event.sender.login == github.event.repository.owner.login &&
+      contains(github.event.issue.body, '[x] 🚀')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop # queue.json lives on develop
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch the Issue body
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue view ${{ github.event.issue.number }} --json body -q .body > body.md
+
+      - name: Apply checkboxes to queue.json
+        run: |
+          node tools/queue-apply.mjs --body body.md --out newbody.md 1>summary.txt 2>detail.txt || true
+          cat detail.txt
+
+      - name: Commit queue.json if changed
+        id: commit
+        run: |
+          if git diff --quiet -- queue.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add queue.json
+            git commit -m "chore(queue): apply issue approvals [skip ci]"
+            git push origin HEAD:develop
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Always re-render the Issue (this unchecks submit + drops processed rows).
+      # This edit is by the bot, so the job's owner guard skips the re-triggered run.
+      - name: Re-render the Issue body
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue edit ${{ github.event.issue.number }} --body-file newbody.md
+
+      - name: Comment the applied summary
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "🚀 已套用批核 → develop \`${{ steps.commit.outputs.sha }}\`"
+            echo ""
+            echo '```'
+            cat detail.txt
+            echo '```'
+          } > comment.md
+          gh issue comment ${{ github.event.issue.number }} --body-file comment.md
