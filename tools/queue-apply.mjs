@@ -165,7 +165,12 @@ const newBody = out.join("\n");
 
 // ---- report -------------------------------------------------------------------
 
-const list = (a) => (a.length ? a.join(", ") : "—");
+// Label a vid with its title for the human-read summary comment: "<title> (id)".
+const label = (vid) => {
+    const t = byId.get(vid)?.title;
+    return t ? `${t} (${vid})` : vid;
+};
+const list = (a) => (a.length ? a.map(label).join(", ") : "—");
 const summary =
     `approved=${done.approved.length} rejected=${done.rejected.length}` +
     `${done.ambiguous.length ? ` ambiguous=${done.ambiguous.length}` : ""}` +
