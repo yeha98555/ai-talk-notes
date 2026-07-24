@@ -155,7 +155,7 @@ Markdown／文字處理流程與語系無關，但全新語言仍需要一些額
 ## 探索 pipeline 資料檔（v2）
 
 repo 根目錄有兩個進 git 的 JSON 檔，供 v2「發現 → 追蹤 → 挑選 → 生成」pipeline
-使用——這段流程接在上述手動撰寫筆記之前（詳見 [`PRD-v2.md`](PRD-v2.md)）。它們
+使用——這段流程接在上述手動撰寫筆記之前（詳見 [`PRD-v2.md`](docs/PRD-v2.md)）。它們
 是該 pipeline 的單一事實來源（single source of truth）；每個階段只讀寫這兩個檔
 加上 `src/`。
 

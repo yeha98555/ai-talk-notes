@@ -162,7 +162,7 @@ a few wiring changes:
 
 Two git-tracked JSON files at the repo root feed the v2 "discover → track → pick →
 generate" pipeline that runs *before* the manual note authoring above (see
-[`PRD-v2.md`](PRD-v2.md)). They are the single source of truth for that pipeline;
+[`PRD-v2.md`](docs/PRD-v2.md)). They are the single source of truth for that pipeline;
 every stage only reads/writes these two files plus `src/`.
 
 ### `channels.json` — the tracked-channel list

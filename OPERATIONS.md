@@ -4,7 +4,7 @@
 
 How to run the content pipeline day to day: what happens automatically, and the
 steps where **you** are the quality gate. For the design behind it see
-[`PRD-v2.md`](PRD-v2.md) (base pipeline) and [`PRD-v3.md`](PRD-v3.md) (the GitHub
+[`PRD-v2.md`](docs/PRD-v2.md) (base pipeline) and [`PRD-v3.md`](docs/PRD-v3.md) (the GitHub
 Issue control panel); for tool internals see the [`tools/`](tools/) sources and
 [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

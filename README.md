@@ -109,7 +109,7 @@ channels.json ─poll (cron)─▶ queue.json ─review (you pick)─▶ approve
 
 Day-to-day runbook — the steps you actually perform — in
 **[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Full design
-in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
+in [`PRD-v2.md`](docs/PRD-v2.md); phase-by-phase status in [`todo.md`](docs/todo-v2.md).
 
 ## Deployment
 

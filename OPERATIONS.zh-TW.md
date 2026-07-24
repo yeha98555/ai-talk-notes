@@ -3,7 +3,7 @@
 > [English](OPERATIONS.md) · **繁體中文**
 
 日常怎麼跑內容 pipeline:哪些是自動發生的,哪些步驟需要**你**當品質關卡。背後設計
-見 [`PRD-v2.md`](PRD-v2.md)(基礎 pipeline)與 [`PRD-v3.md`](PRD-v3.md)(GitHub Issue
+見 [`PRD-v2.md`](docs/PRD-v2.md)(基礎 pipeline)與 [`PRD-v3.md`](docs/PRD-v3.md)(GitHub Issue
 控制面板);工具細節見 [`tools/`](tools/) 原始碼與 [`CONTRIBUTING.zh-TW.md`](CONTRIBUTING.zh-TW.md)。
 
 ## 資料流(一眼看懂)
