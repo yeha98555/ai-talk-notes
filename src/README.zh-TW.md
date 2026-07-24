@@ -67,6 +67,11 @@
 | `sections/cat-*.md` | 純文字 | frontmatter 的 `heading` ＋ `desc`，接著每張卡片一個 `## <卡片標題>`／`@ <講者>`／摘要區塊，順序與數量須與卡片一致。 |
 | `partials/{hero,nav,footer}.html`、`sections/{overview,themes}.html` | HTML 對照 | 結構相同的完整 HTML 複本（SVG、數據、行內引用連結無法簡化為純文字）。只翻譯可見文字；切勿更動 `id`／`class`／`href`／SVG 資料。 |
 
+`node tools/content-check.mjs`（僅供開發使用，位於 `../tools/`）會先執行——它掛在
+`prebuild` 上，因此每次 `npm run build` 都會觸發——並對不完整的來源直接 hard-fail，
+涵蓋英文樹**與**每一種語系：字面 `placeholder` 佔位、空的或被截斷成半句的 note 內文
+或卡片摘要，或某分類的 `docs:` 列出的 id 數多於實際卡片數。
+
 `node tools/i18n-check.mjs`（僅供開發使用，位於 `../tools/`）會比對兩個建置後頁
 面的 `id`／`href`／SVG／外殼結構是否一致，回報翻譯涵蓋率，並標記出未翻譯的文
 字，或因缺少 frontmatter 欄位而產生的字面 `undefined`。每次建置後都應執行它。

@@ -69,6 +69,12 @@ translations mirror it under `src/i18n/<locale>/`. For `src/i18n/zh/`:
 | `sections/cat-*.md` | Flat text | Frontmatter `heading` + `desc`, then one `## <card title>` / `@ <speaker>` / summary block per card, in the cards' order and count. |
 | `partials/{hero,nav,footer}.html`, `sections/{overview,themes}.html` | HTML mirror | Full HTML copies with the same structure (SVGs, metrics, inline citations don't reduce to plain text). Translate visible text only; never touch `id`/`class`/`href`/SVG data. |
 
+`node tools/content-check.mjs` (dev-only, in `../tools/`) runs first — it is
+wired as `prebuild`, so every `npm run build` triggers it — and hard-fails on
+incomplete source across the English tree *and* every locale: a literal
+`placeholder` stub, an empty or mid-sentence-truncated note body or card summary,
+or a category whose `docs:` lists more ids than it has cards.
+
 `node tools/i18n-check.mjs` (dev-only, in `../tools/`) compares the two built
 pages for identical `id`/`href`/SVG/shell structure, reports coverage, and flags
 untranslated text or a literal `undefined` from a missing frontmatter field. Run

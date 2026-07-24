@@ -1,9 +1,10 @@
 name: CI
 
-# Validate that the source still builds and the two pages stay structurally
-# identical. Runs on every PR (including gen-note draft PRs) and on pushes to the
-# long-lived branches. A FAIL from i18n-check.mjs (missing frontmatter field,
-# structural drift, literal "undefined") fails the job.
+# Validate that the source is complete, still builds, and the two pages stay
+# structurally identical. Runs on every PR (including gen-note draft PRs) and on
+# pushes to the long-lived branches. A FAIL from content-check.mjs (placeholder
+# stub, empty/truncated body, doc-without-card) or i18n-check.mjs (missing
+# frontmatter field, structural drift, literal "undefined") fails the job.
 
 on:
   pull_request:
@@ -26,6 +27,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: Content completeness check
+        run: node tools/content-check.mjs
 
       - name: Build both pages
         run: npm run build

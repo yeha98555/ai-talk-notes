@@ -144,7 +144,7 @@ index.html        # generated English page (build artifact — git-ignored)
 index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
-tools/            # content pipeline (poll · triage · review · gen-note · queue-apply) + i18n-check
+tools/            # content pipeline (poll · triage · review · gen-note · queue-apply) + content-check + i18n-check
 src/
   head.html       # document head (minus styles)
   styles.css      # all page styles
