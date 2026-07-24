@@ -5,7 +5,8 @@
 >
 > **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅、Phase 4 ✅ —— **PRD-v3 四階段全數完成並驗證通過**。
 > Phase 1–3 已 release 到 main（PR #6）、main 上端到端實測有效；Phase 4（gen-note 記 PR#）本機 `--dry-run --pr` 驗過。
-> **v3 收工。** 後續只剩「未來優化」（Whisper fallback／全自動生成，皆非 MVP）。
+> 另加**一鍵 release**（`release.yml`，PR #8 上 main、按鈕實測 no-op 路徑）——見下方「附加」。
+> **v3 收工。** 上線流程 = Actions →「Release (develop → main)」。後續只剩「未來優化」（Whisper fallback／全自動生成，皆非 MVP）。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -146,6 +147,23 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [x] 測試痕跡已清除（刪留言、關 PR #7 + 刪分支；develop 的 approved 未受影響）
 
 > **狀態（2026-07-24）**：✅ 全綠。純本機、無 main-gated 項。腳本改動進 develop 即生效（gen-note 本就本機跑）。
+
+## 附加 — 一鍵 release（develop → main）
+
+> 承「note PR 要不要自動併 main」的討論：**不自動併**（會把 develop 當下所有東西在失控時機推上生產，
+> 且破壞 queue.json 的 data 一致性）。改成**保留兩步（develop 累積 → 想上站再 release）+ 把 release 變一鍵**。
+
+### `.github/workflows/release.yml`（新）
+- [x] `workflow_dispatch`（input `merge`，預設 true）→ 開/沿用 `develop → main` PR → `gh pr checks --watch` 等 CI → `gh pr merge --merge`
+- [x] 無可 release 時（develop 已併入 main）優雅回報「Nothing to release」、exit 0
+- [x] `permissions: contents/pull-requests: write`；`concurrency: release`；YAML 合法
+- [x] OPERATIONS（雙語）Step 5 補上一鍵 release 說明 + 「什麼要 release / 什麼不用」（只有 workflow YAML 需上 main；工具腳本進 develop 即生效）
+
+### 驗收
+- [x] release.yml 已 release 到 main（PR #8 → main `5d19660`）→ 按鈕 registered/active
+- [x] 按鈕實測（run 30112365671）：dispatch → 正確回報「Nothing to release」（develop 已併入 main）、run success
+
+> **狀態（2026-07-24）**：✅ 完成。往後上線 = Actions →「Release (develop → main)」→ Run workflow（手機可點）。
 
 ## 橫向注意事項（每階段隨手檢查）
 
