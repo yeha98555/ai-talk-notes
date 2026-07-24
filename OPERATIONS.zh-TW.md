@@ -22,6 +22,10 @@ YouTube RSS ──① poll(cron)──▶ queue.json +「Video review queue」Is
 
 **① 與 ⑤ 全自動**,**②③④ 是你的活**——人是品質關卡。
 
+> **分支模型:** `queue.json`(與 `channels.json`)住在 **`develop`**——poll 在那裡讀
+> 寫,你也在那裡挑片/生草稿。**`main` 是純 release 分支**,只被 `develop → main` 的
+> release PR(⑤)更新,沒有東西直接寫 `main`。
+
 ## 前置(一次性)
 
 - 安裝並登入 `gh` CLI(`gh auth login`)——`gen-note --pr` 會用到。
@@ -44,8 +48,9 @@ skill 會解析 `channel_id`、驗 RSS feed、安全地改 `channels.json`(去�
 
 注意:
 
-- 頻道異動要**進到 `main`** 才會被每天 08:00 UTC 的 poll 用到——把 `channels.json` commit
-  到 `main`(skill 會提議 commit 並先問你)。
+- 頻道異動要**進到 `develop`** 才會被每天 08:00 UTC 的 poll 用到(poll 現在 checkout
+  `develop`)——把 `channels.json` commit 到 `develop`(skill 會提議 commit 並先問你);
+  之後再經 `develop → main` release PR 進到 `main`。
 - 移除頻道只停*未來*輪詢;已在 `queue.json` 的影片保留不動。
 - 手動 fallback(skill 幫你自動化的部分):改 `channels.json`——一筆是
   `{ "id": "UC…", "name": "…", "handle": "@…" }`,只有 `id` 驅動抓取——再跑
@@ -57,7 +62,7 @@ skill 會解析 `channel_id`、驗 RSS feed、安全地改 `channels.json`(去�
 
 `poll.yml` GitHub Action 每天 **08:00 UTC** 自動跑。有新片時:
 
-- 以 `status: pending` 追加進 `queue.json` 並 push 回 `main`(`[skip ci]`)
+- 以 `status: pending` 追加進 `queue.json` 並 push 回 `develop`(`[skip ci]`)
 - 開/更新單一 **「📥 Video review queue」** Issue,列出待挑清單
 
 👉 **你:** 打開那個 Issue,掃一眼待挑清單。沒新片的日子 Action 安靜、Issue 不動
@@ -68,12 +73,11 @@ skill 會解析 `channel_id`、驗 RSS feed、安全地改 `channels.json`(去�
 ### Step 2 — 挑片(手動)
 
 挑片**和**生草稿都在**同一條分支**(`develop`)做完,`queue.json` 的改動就不用跨
-`git switch` 帶來帶去。先從 `develop` 出發,把 poll bot push 到 `main` 的最新
-`queue.json` 拉進來,再開挑片 UI:
+`git switch` 帶來帶去。`queue.json` 現在就住在 `develop`——poll bot 直接 push 到這裡
+——所以 pull 一下就好,再開挑片 UI:
 
 ```bash
-git switch develop && git pull
-git checkout main -- queue.json   # 拿 poll bot push 到 main 的最新 queue
+git switch develop && git pull    # queue.json 已在手邊,不用跨分支 checkout
 node tools/review.mjs             # 開 http://localhost:4321
 ```
 

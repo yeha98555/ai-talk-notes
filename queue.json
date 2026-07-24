@@ -878,5 +878,203 @@
     "status": "published",
     "docId": "doc-131",
     "note": null
+  },
+  {
+    "videoId": "il1c1a2FufU",
+    "title": "Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T15:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/il1c1a2FufU/hqdefault.jpg",
+    "url": "https://youtu.be/il1c1a2FufU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "cO8qC6HBuBg",
+    "title": "Vending-Bench: Long-Horizon Agent Evals — Lukas Petersson, Andon Labs",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T15:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/cO8qC6HBuBg/hqdefault.jpg",
+    "url": "https://youtu.be/cO8qC6HBuBg",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "xR-BiPz45-4",
+    "title": "Why AI Agents Need a Data Harness, Not Just a Lakehouse",
+    "channel": "AI Native Dev",
+    "published": "2026-07-24T14:00:17+00:00",
+    "thumb": "https://i.ytimg.com/vi/xR-BiPz45-4/hqdefault.jpg",
+    "url": "https://youtu.be/xR-BiPz45-4",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "LuE1YptpfXs",
+    "title": "Coding Agents Are Secretly General Agents",
+    "channel": "MLOps.community",
+    "published": "2026-07-23T15:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/LuE1YptpfXs/hqdefault.jpg",
+    "url": "https://youtu.be/LuE1YptpfXs",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "31IS2mnRV6Q",
+    "title": "Sandboxing, Agent Harnesses, and Agent Teamwork",
+    "channel": "MLOps.community",
+    "published": "2026-07-20T15:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/31IS2mnRV6Q/hqdefault.jpg",
+    "url": "https://youtu.be/31IS2mnRV6Q",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "MQqV-v5HqaU",
+    "title": "Omnigent: Composition, Control, and Collaboration for AI Agents",
+    "channel": "MLOps.community",
+    "published": "2026-07-15T15:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/MQqV-v5HqaU/hqdefault.jpg",
+    "url": "https://youtu.be/MQqV-v5HqaU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "RSs0PDsULJM",
+    "title": "Logs Are All You Need: Rethinking Observability with AI Agents",
+    "channel": "MLOps.community",
+    "published": "2026-06-22T14:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/RSs0PDsULJM/hqdefault.jpg",
+    "url": "https://youtu.be/RSs0PDsULJM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "_p_xjaf7XFw",
+    "title": "Autonomous Agents at Work: From OpenClaw Hype to Enterprise Reality",
+    "channel": "MLOps.community",
+    "published": "2026-06-19T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/_p_xjaf7XFw/hqdefault.jpg",
+    "url": "https://youtu.be/_p_xjaf7XFw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "no_gxL40NC8",
+    "title": "Voice Agent Use Cases",
+    "channel": "MLOps.community",
+    "published": "2026-06-19T14:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/no_gxL40NC8/hqdefault.jpg",
+    "url": "https://youtu.be/no_gxL40NC8",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "NsLPju6TZVc",
+    "title": "Agents & the $40M Bet on Multiplayer AI",
+    "channel": "MLOps.community",
+    "published": "2026-06-15T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/NsLPju6TZVc/hqdefault.jpg",
+    "url": "https://youtu.be/NsLPju6TZVc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "jXtnhyro-QE",
+    "title": "Context Engineering for Coding Agents",
+    "channel": "MLOps.community",
+    "published": "2026-06-15T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/jXtnhyro-QE/hqdefault.jpg",
+    "url": "https://youtu.be/jXtnhyro-QE",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "3xZ78HHdqAk",
+    "title": "AI Is Fast. AI Projects Are Slow. Let's Fix That.",
+    "channel": "MLOps.community",
+    "published": "2026-06-09T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/3xZ78HHdqAk/hqdefault.jpg",
+    "url": "https://youtu.be/3xZ78HHdqAk",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "kDAlW3vRQzI",
+    "title": "Architecting Modern AI Systems: Platforms, Agents, and Integration",
+    "channel": "MLOps.community",
+    "published": "2026-05-28T05:46:11+00:00",
+    "thumb": "https://i.ytimg.com/vi/kDAlW3vRQzI/hqdefault.jpg",
+    "url": "https://youtu.be/kDAlW3vRQzI",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "hWYhSF6kYEs",
+    "title": "Architecting Modern AI Systems",
+    "channel": "MLOps.community",
+    "published": "2026-05-28T05:37:14+00:00",
+    "thumb": "https://i.ytimg.com/vi/hWYhSF6kYEs/hqdefault.jpg",
+    "url": "https://youtu.be/hWYhSF6kYEs",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "psC2-iEvXCg",
+    "title": "Whats Special About Meta's Multi-Agent Systems",
+    "channel": "MLOps.community",
+    "published": "2026-05-25T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/psC2-iEvXCg/hqdefault.jpg",
+    "url": "https://youtu.be/psC2-iEvXCg",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "dH-1INvvELo",
+    "title": "The Latency Goldilocks Zone Explained",
+    "channel": "MLOps.community",
+    "published": "2026-05-20T14:00:58+00:00",
+    "thumb": "https://i.ytimg.com/vi/dH-1INvvELo/hqdefault.jpg",
+    "url": "https://youtu.be/dH-1INvvELo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "bowPBo0SNPQ",
+    "title": "Building MCP Before MCP Existed: Inside Despegar's Sofia Agent",
+    "channel": "MLOps.community",
+    "published": "2026-05-20T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/bowPBo0SNPQ/hqdefault.jpg",
+    "url": "https://youtu.be/bowPBo0SNPQ",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "swO5svhBhQ4",
+    "title": "Building AI Agents That Survive Production",
+    "channel": "MLOps.community",
+    "published": "2026-05-14T14:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/swO5svhBhQ4/hqdefault.jpg",
+    "url": "https://youtu.be/swO5svhBhQ4",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
