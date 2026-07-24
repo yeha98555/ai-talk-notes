@@ -28,9 +28,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/9Z_FGK6lDxE/hqdefault.jpg",
     "url": "https://youtu.be/9Z_FGK6lDxE",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "HBlShxKwLCc",
@@ -39,9 +39,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/HBlShxKwLCc/hqdefault.jpg",
     "url": "https://youtu.be/HBlShxKwLCc",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "K8-vXq49Kuc",
@@ -50,9 +50,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/K8-vXq49Kuc/hqdefault.jpg",
     "url": "https://youtu.be/K8-vXq49Kuc",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "kVVqs1zqV3U",
@@ -61,9 +61,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/kVVqs1zqV3U/hqdefault.jpg",
     "url": "https://youtu.be/kVVqs1zqV3U",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "shrWlWvZfBY",
@@ -72,9 +72,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/shrWlWvZfBY/hqdefault.jpg",
     "url": "https://youtu.be/shrWlWvZfBY",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "zoxzbIOuWmk",
@@ -83,9 +83,9 @@
     "published": "2026-06-23T22:57:04+00:00",
     "thumb": "https://i.ytimg.com/vi/zoxzbIOuWmk/hqdefault.jpg",
     "url": "https://youtu.be/zoxzbIOuWmk",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "新創路演 pitch,非技術深講"
   },
   {
     "videoId": "kfn0khygHYQ",
@@ -182,8 +182,8 @@
     "published": "2026-07-23T16:30:06+00:00",
     "thumb": "https://i.ytimg.com/vi/Ib5GBkD555M/hqdefault.jpg",
     "url": "https://youtu.be/Ib5GBkD555M",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-102",
     "note": null
   },
   {
@@ -204,8 +204,8 @@
     "published": "2026-07-23T07:00:23+00:00",
     "thumb": "https://i.ytimg.com/vi/kRkcNOsRyYg/hqdefault.jpg",
     "url": "https://youtu.be/kRkcNOsRyYg",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-103",
     "note": null
   },
   {
@@ -215,8 +215,8 @@
     "published": "2026-07-23T05:00:02+00:00",
     "thumb": "https://i.ytimg.com/vi/u6jJcIFDLE4/hqdefault.jpg",
     "url": "https://youtu.be/u6jJcIFDLE4",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-104",
     "note": null
   },
   {
@@ -226,8 +226,8 @@
     "published": "2026-07-23T04:00:02+00:00",
     "thumb": "https://i.ytimg.com/vi/H7puB0RwJMM/hqdefault.jpg",
     "url": "https://youtu.be/H7puB0RwJMM",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-105",
     "note": null
   },
   {
@@ -248,8 +248,8 @@
     "published": "2026-07-23T02:00:03+00:00",
     "thumb": "https://i.ytimg.com/vi/mOf-PP4mVjA/hqdefault.jpg",
     "url": "https://youtu.be/mOf-PP4mVjA",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-106",
     "note": null
   },
   {
@@ -259,8 +259,8 @@
     "published": "2026-07-23T01:00:07+00:00",
     "thumb": "https://i.ytimg.com/vi/Sir59K8ZDPU/hqdefault.jpg",
     "url": "https://youtu.be/Sir59K8ZDPU",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-107",
     "note": null
   },
   {
@@ -270,8 +270,8 @@
     "published": "2026-07-23T00:00:04+00:00",
     "thumb": "https://i.ytimg.com/vi/u1yaOeEX4e8/hqdefault.jpg",
     "url": "https://youtu.be/u1yaOeEX4e8",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-108",
     "note": null
   },
   {
@@ -281,8 +281,8 @@
     "published": "2026-07-22T23:00:11+00:00",
     "thumb": "https://i.ytimg.com/vi/Btk8wDUVs74/hqdefault.jpg",
     "url": "https://youtu.be/Btk8wDUVs74",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-109",
     "note": null
   },
   {
@@ -292,8 +292,8 @@
     "published": "2026-07-22T21:30:31+00:00",
     "thumb": "https://i.ytimg.com/vi/jt1Pbr_n6oU/hqdefault.jpg",
     "url": "https://youtu.be/jt1Pbr_n6oU",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-110",
     "note": null
   },
   {
@@ -303,8 +303,8 @@
     "published": "2026-07-22T20:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/khVX_BUnEwU/hqdefault.jpg",
     "url": "https://youtu.be/khVX_BUnEwU",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-111",
     "note": null
   },
   {
@@ -314,8 +314,8 @@
     "published": "2026-07-22T18:30:02+00:00",
     "thumb": "https://i.ytimg.com/vi/Q0VkgCyNVUg/hqdefault.jpg",
     "url": "https://youtu.be/Q0VkgCyNVUg",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-112",
     "note": null
   },
   {
@@ -325,8 +325,8 @@
     "published": "2026-07-22T17:00:38+00:00",
     "thumb": "https://i.ytimg.com/vi/VGN22pPpb-8/hqdefault.jpg",
     "url": "https://youtu.be/VGN22pPpb-8",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-113",
     "note": null
   },
   {
@@ -336,9 +336,9 @@
     "published": "2026-07-22T13:04:13+00:00",
     "thumb": "https://i.ytimg.com/vi/ztdTed5egrM/hqdefault.jpg",
     "url": "https://youtu.be/ztdTed5egrM",
-    "status": "pending",
+    "status": "approved",
     "docId": null,
-    "note": null
+    "note": "needs-transcript"
   },
   {
     "videoId": "90k2HRT8Ito",
@@ -347,8 +347,8 @@
     "published": "2026-07-21T17:05:30+00:00",
     "thumb": "https://i.ytimg.com/vi/90k2HRT8Ito/hqdefault.jpg",
     "url": "https://youtu.be/90k2HRT8Ito",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-114",
     "note": null
   },
   {
@@ -358,8 +358,8 @@
     "published": "2026-07-21T15:08:47+00:00",
     "thumb": "https://i.ytimg.com/vi/ZWuFMVmKXrI/hqdefault.jpg",
     "url": "https://youtu.be/ZWuFMVmKXrI",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-115",
     "note": null
   },
   {
@@ -369,9 +369,9 @@
     "published": "2026-07-16T07:07:24+00:00",
     "thumb": "https://i.ytimg.com/vi/EOK_haQSMIA/hqdefault.jpg",
     "url": "https://youtu.be/EOK_haQSMIA",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "模型發布公告,非演講"
   },
   {
     "videoId": "tYU7erNVfA0",
@@ -380,9 +380,9 @@
     "published": "2026-07-10T22:14:59+00:00",
     "thumb": "https://i.ytimg.com/vi/tYU7erNVfA0/hqdefault.jpg",
     "url": "https://youtu.be/tYU7erNVfA0",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "活動得獎公布,非技術演講"
   },
   {
     "videoId": "GZT_oNQnLV4",
@@ -391,8 +391,8 @@
     "published": "2026-07-08T04:46:10+00:00",
     "thumb": "https://i.ytimg.com/vi/GZT_oNQnLV4/hqdefault.jpg",
     "url": "https://youtu.be/GZT_oNQnLV4",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-116",
     "note": null
   },
   {
@@ -446,8 +446,8 @@
     "published": "2026-06-22T19:13:46+00:00",
     "thumb": "https://i.ytimg.com/vi/rNgUoH7Wbv8/hqdefault.jpg",
     "url": "https://youtu.be/rNgUoH7Wbv8",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-117",
     "note": null
   },
   {
@@ -457,9 +457,9 @@
     "published": "2026-06-22T13:00:28+00:00",
     "thumb": "https://i.ytimg.com/vi/FLxFBU-Kodk/hqdefault.jpg",
     "url": "https://youtu.be/FLxFBU-Kodk",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "黑客松宣傳,非技術演講"
   },
   {
     "videoId": "n32qq7Kwzh0",
@@ -479,8 +479,8 @@
     "published": "2026-06-16T13:23:14+00:00",
     "thumb": "https://i.ytimg.com/vi/-s4KGeAE6iQ/hqdefault.jpg",
     "url": "https://youtu.be/-s4KGeAE6iQ",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-118",
     "note": null
   },
   {
@@ -501,9 +501,9 @@
     "published": "2026-07-23T12:00:25+00:00",
     "thumb": "https://i.ytimg.com/vi/Pb6vNbnFYHU/hqdefault.jpg",
     "url": "https://youtu.be/Pb6vNbnFYHU",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "與已收的 6c-nH6xz8lc 重複(BONUS 版)"
   },
   {
     "videoId": "6c-nH6xz8lc",
@@ -512,8 +512,8 @@
     "published": "2026-07-23T12:00:14+00:00",
     "thumb": "https://i.ytimg.com/vi/6c-nH6xz8lc/hqdefault.jpg",
     "url": "https://youtu.be/6c-nH6xz8lc",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-119",
     "note": null
   },
   {
@@ -545,8 +545,8 @@
     "published": "2026-07-22T16:00:37+00:00",
     "thumb": "https://i.ytimg.com/vi/ZOVXen0paHk/hqdefault.jpg",
     "url": "https://youtu.be/ZOVXen0paHk",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-120",
     "note": null
   },
   {
@@ -556,9 +556,9 @@
     "published": "2026-07-22T12:15:45+00:00",
     "thumb": "https://i.ytimg.com/vi/Imw9nfuiKmc/hqdefault.jpg",
     "url": "https://youtu.be/Imw9nfuiKmc",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "clinic/宣傳性質,內容薄"
   },
   {
     "videoId": "odbNXv9xXjc",
@@ -567,8 +567,8 @@
     "published": "2026-07-22T07:02:10+00:00",
     "thumb": "https://i.ytimg.com/vi/odbNXv9xXjc/hqdefault.jpg",
     "url": "https://youtu.be/odbNXv9xXjc",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-121",
     "note": null
   },
   {
@@ -589,9 +589,9 @@
     "published": "2026-07-21T12:00:29+00:00",
     "thumb": "https://i.ytimg.com/vi/zFbaipV2FHw/hqdefault.jpg",
     "url": "https://youtu.be/zFbaipV2FHw",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "與 UGS6rL1hBRw 重複(同一場,留另一支 pending)"
   },
   {
     "videoId": "HgA0spItnZI",
@@ -657,6 +657,226 @@
     "url": "https://youtu.be/m9fRiMjhf1Y",
     "status": "pending",
     "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "O-CBZ3JtRvo",
+    "title": "Training Frontier Models to Out-Think Hackers — Uri Rolls, Arithmetic & Thom Wolf, Hugging Face",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T05:19:15+00:00",
+    "thumb": "https://i.ytimg.com/vi/O-CBZ3JtRvo/hqdefault.jpg",
+    "url": "https://youtu.be/O-CBZ3JtRvo",
+    "status": "published",
+    "docId": "doc-122",
+    "note": null
+  },
+  {
+    "videoId": "GgLQ02aO-hs",
+    "title": "The Unreasonable Effectiveness of Separating the Task from the Model — Maxime Rivest & Isaac Miller",
+    "channel": "AI Engineer",
+    "published": "2026-07-23T17:45:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/GgLQ02aO-hs/hqdefault.jpg",
+    "url": "https://youtu.be/GgLQ02aO-hs",
+    "status": "published",
+    "docId": "doc-123",
+    "note": null
+  },
+  {
+    "videoId": "0i3Ihof4RG0",
+    "title": "The 'Holy Shit' Moment That Turned One Agent Into Thirty",
+    "channel": "AI Native Dev",
+    "published": "2026-07-24T12:00:37+00:00",
+    "thumb": "https://i.ytimg.com/vi/0i3Ihof4RG0/hqdefault.jpg",
+    "url": "https://youtu.be/0i3Ihof4RG0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "o-IunU6b1t8",
+    "title": "Brian Douglas - The beginners guide to training AI on your own code - AI Native DevCon June 2026",
+    "channel": "AI Native Dev",
+    "published": "2026-07-24T08:19:31+00:00",
+    "thumb": "https://i.ytimg.com/vi/o-IunU6b1t8/hqdefault.jpg",
+    "url": "https://youtu.be/o-IunU6b1t8",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "qpbSecwtMTo",
+    "title": "Take All the Data, Put It in a Knowledge Graph, Then Don't Use It Like a RAG",
+    "channel": "AI Native Dev",
+    "published": "2026-07-23T18:00:09+00:00",
+    "thumb": "https://i.ytimg.com/vi/qpbSecwtMTo/hqdefault.jpg",
+    "url": "https://youtu.be/qpbSecwtMTo",
+    "status": "published",
+    "docId": "doc-124",
+    "note": null
+  },
+  {
+    "videoId": "_OHSZTy62_w",
+    "title": "Realtime AI observability and analytics with Apache Doris - Live Demo",
+    "channel": "DataEngBytes",
+    "published": "2026-06-19T08:13:46+00:00",
+    "thumb": "https://i.ytimg.com/vi/_OHSZTy62_w/hqdefault.jpg",
+    "url": "https://youtu.be/_OHSZTy62_w",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "5GjDl5Y78bE",
+    "title": "When Every Second Counts: Real-Time Analytics for AI Systems",
+    "channel": "DataEngBytes",
+    "published": "2026-06-17T02:48:33+00:00",
+    "thumb": "https://i.ytimg.com/vi/5GjDl5Y78bE/hqdefault.jpg",
+    "url": "https://youtu.be/5GjDl5Y78bE",
+    "status": "published",
+    "docId": "doc-125",
+    "note": null
+  },
+  {
+    "videoId": "9THtkIZ6Xac",
+    "title": "Data Contracts That Actually Work",
+    "channel": "DataEngBytes",
+    "published": "2026-04-23T07:10:40+00:00",
+    "thumb": "https://i.ytimg.com/vi/9THtkIZ6Xac/hqdefault.jpg",
+    "url": "https://youtu.be/9THtkIZ6Xac",
+    "status": "published",
+    "docId": "doc-126",
+    "note": null
+  },
+  {
+    "videoId": "qB2fTjLIsMw",
+    "title": "Antony Southworth previews his talk at DataEngBytes 2026 Auckland",
+    "channel": "DataEngBytes",
+    "published": "2026-01-29T06:10:33+00:00",
+    "thumb": "https://i.ytimg.com/vi/qB2fTjLIsMw/hqdefault.jpg",
+    "url": "https://youtu.be/qB2fTjLIsMw",
+    "status": "rejected",
+    "docId": null,
+    "note": "演講預告 teaser,非正式內容"
+  },
+  {
+    "videoId": "tsNFVzIOZgw",
+    "title": "Hunting PI in the Data Haystack: A Streamlit in Snowflake Detective Story",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T08:53:24+00:00",
+    "thumb": "https://i.ytimg.com/vi/tsNFVzIOZgw/hqdefault.jpg",
+    "url": "https://youtu.be/tsNFVzIOZgw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "jZ2VErE-wIQ",
+    "title": "RAG or Fine-Tune? Customizing LLMs with LoRA",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T06:21:26+00:00",
+    "thumb": "https://i.ytimg.com/vi/jZ2VErE-wIQ/hqdefault.jpg",
+    "url": "https://youtu.be/jZ2VErE-wIQ",
+    "status": "published",
+    "docId": "doc-127",
+    "note": null
+  },
+  {
+    "videoId": "eK-VJQ932es",
+    "title": "Bringing stories to life with AI, data streaming and generative agents",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T05:15:19+00:00",
+    "thumb": "https://i.ytimg.com/vi/eK-VJQ932es/hqdefault.jpg",
+    "url": "https://youtu.be/eK-VJQ932es",
+    "status": "rejected",
+    "docId": null,
+    "note": "行銷語調,內容空泛"
+  },
+  {
+    "videoId": "TnPQ7KiMsVY",
+    "title": "Autonomy in the Agentic Era",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T04:11:52+00:00",
+    "thumb": "https://i.ytimg.com/vi/TnPQ7KiMsVY/hqdefault.jpg",
+    "url": "https://youtu.be/TnPQ7KiMsVY",
+    "status": "rejected",
+    "docId": null,
+    "note": "空泛 keynote,標題無具體技術"
+  },
+  {
+    "videoId": "qOPhghaZf-w",
+    "title": "Why We Built Our Own Feature Store (and How It Scales ML at Rokt)",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T01:32:03+00:00",
+    "thumb": "https://i.ytimg.com/vi/qOPhghaZf-w/hqdefault.jpg",
+    "url": "https://youtu.be/qOPhghaZf-w",
+    "status": "published",
+    "docId": "doc-128",
+    "note": null
+  },
+  {
+    "videoId": "ThSEoFw5uhA",
+    "title": "The future belongs to people who can just do things",
+    "channel": "DataEngBytes",
+    "published": "2025-12-27T00:39:39+00:00",
+    "thumb": "https://i.ytimg.com/vi/ThSEoFw5uhA/hqdefault.jpg",
+    "url": "https://youtu.be/ThSEoFw5uhA",
+    "status": "rejected",
+    "docId": null,
+    "note": "勵志/空泛,無工程內容"
+  },
+  {
+    "videoId": "-udYsiECe3o",
+    "title": "The Missing Layer: Why Semantics and Knowledge Graphs Are Essential for AI-Ready Data Systems",
+    "channel": "DataEngBytes",
+    "published": "2025-12-26T23:48:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/-udYsiECe3o/hqdefault.jpg",
+    "url": "https://youtu.be/-udYsiECe3o",
+    "status": "published",
+    "docId": "doc-129",
+    "note": null
+  },
+  {
+    "videoId": "XY0GtCvn4Qk",
+    "title": "Building Enterprise Recommendation Systems with Neo4j: From Data to Personalised Insights",
+    "channel": "DataEngBytes",
+    "published": "2025-12-26T23:03:10+00:00",
+    "thumb": "https://i.ytimg.com/vi/XY0GtCvn4Qk/hqdefault.jpg",
+    "url": "https://youtu.be/XY0GtCvn4Qk",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "uePtUDaNq7M",
+    "title": "Agentic Orchestration of Multi-Domain Knowledge for Predictive Analytics with MCP",
+    "channel": "DataEngBytes",
+    "published": "2025-12-26T22:53:08+00:00",
+    "thumb": "https://i.ytimg.com/vi/uePtUDaNq7M/hqdefault.jpg",
+    "url": "https://youtu.be/uePtUDaNq7M",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "OR3zdu9T_as",
+    "title": "Building Code-Editing Agents: The Emperor Has No Clothes",
+    "channel": "DataEngBytes",
+    "published": "2025-12-26T22:53:04+00:00",
+    "thumb": "https://i.ytimg.com/vi/OR3zdu9T_as/hqdefault.jpg",
+    "url": "https://youtu.be/OR3zdu9T_as",
+    "status": "published",
+    "docId": "doc-130",
+    "note": null
+  },
+  {
+    "videoId": "qiJR8IYJFkE",
+    "title": "Engineering the Future: Real-Time, Vector-Powered Analytics with ClickHouse",
+    "channel": "DataEngBytes",
+    "published": "2025-12-26T22:53:01+00:00",
+    "thumb": "https://i.ytimg.com/vi/qiJR8IYJFkE/hqdefault.jpg",
+    "url": "https://youtu.be/qiJR8IYJFkE",
+    "status": "published",
+    "docId": "doc-131",
     "note": null
   }
 ]
