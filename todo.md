@@ -106,7 +106,7 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [x] `--dry-run` 實跑一支 approved 影片:產物通過 `npm run build`(兩頁 101 talk notes)
 - [x] 通過 `node tools/i18n-check.mjs`(coverage 101/101、structural parity OK)
 - [x] 分類落進正確 cat 檔(卡片字母序就位)、`order.json` 有新 id、總數 100→101 各檔命中正確
-- [ ] **需 live key 跑一次確認草稿品質**:實際 Claude 呼叫產出的 frontmatter/段落與既有 note house style 一致(structured output 形狀已按 claude-api skill 實作,待真實回應校準)
+- [x] **live 跑確認草稿品質**(2026-07-24,`claude-sonnet-5`,doc-101 TextQL 一場):frontmatter 三欄齊全、7 段密集 prose 合 house style、忠於逐字稿、中文翻譯自然保留術語、分類 A 精準、卡片字母序就位、build + i18n-check 綠
 
 ## Phase 4 — 複審與上站流程收斂
 
