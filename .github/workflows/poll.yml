@@ -1,0 +1,69 @@
+name: Poll channels
+
+# Fetch each tracked channel's RSS and refresh queue.json. Commits new videos and
+# keeps a single "review queue" Issue up to date. Scheduled runs only fire from the
+# default branch; use "Run workflow" (workflow_dispatch) to test from any branch.
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # daily, 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit + push queue.json
+  issues: write # open / update the review Issue
+
+concurrency:
+  group: poll-channels
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Poll channel RSS feeds
+        run: node tools/poll.mjs
+
+      # Compare against the committed queue.json BEFORE committing, so the "new"
+      # markers in the Issue body are correct. Sets two outputs: whether the queue
+      # changed at all (→ commit) and how many new pending videos appeared (→ notify).
+      - name: Inspect queue and build report
+        id: q
+        run: |
+          if git diff --quiet -- queue.json; then changed=false; else changed=true; fi
+          new=$(node tools/queue-report.mjs --check)
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "new_pending=$new" >> "$GITHUB_OUTPUT"
+          echo "queue changed=$changed, new pending=$new"
+          if [ "$new" -gt 0 ]; then
+            node tools/queue-report.mjs > body.md
+          fi
+
+      - name: Commit updated queue
+        if: steps.q.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add queue.json
+          git commit -m "chore(poll): update video queue [skip ci]"
+          git push
+
+      - name: Open or update review Issue
+        if: steps.q.outputs.new_pending != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create video-queue --color 1f6feb --description "Videos pending review" --force
+          num=$(gh issue list --label video-queue --state open --json number --jq '.[0].number // empty')
+          if [ -n "$num" ]; then
+            gh issue edit "$num" --body-file body.md
+            echo "Updated issue #$num"
+          else
+            gh issue create --title "📥 Video review queue" --label video-queue --body-file body.md
+          fi
