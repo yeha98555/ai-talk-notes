@@ -1,6 +1,6 @@
 # AI Engineering Talks — Classified & Distilled
 
-> **English** · [繁體中文](README.zh-TW.md)
+> **English** · [繁體中文](README.zh-TW.md) · **[Live site ↗](https://ai-talk-notes.vercel.app)**
 
 A systematic read-through of **101 conference and YouTube talk notes** on AI
 engineering, sorted into **9 thematic categories** and distilled into short,
@@ -114,7 +114,7 @@ Full design in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](to
 Deployed on **Vercel** with Git integration — every push/merge to `main` runs
 `npm run build` and redeploys; pull requests get their own Preview Deployment.
 
-- **Live:** <!-- LIVE_URL -->_(add the Vercel URL after the first deploy)_
+- **Live:** <https://ai-talk-notes.vercel.app>
 - The pages (`index.html` / `index.zh.html`) are **not committed** — Vercel builds
   them from source ([`vercel.json`](vercel.json) sets `buildCommand: npm run build`).
 - Pure-data commits — the poll bot updating `queue.json` — skip the rebuild via

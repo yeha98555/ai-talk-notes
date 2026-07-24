@@ -126,26 +126,25 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [x] 把 `index.html` / `index.zh.html` 加進 `.gitignore`(另加 `.vercel/`)
 - [x] 建立 `vercel.json`(`buildCommand: npm run build`、`outputDirectory: .`、`cleanUrls`、`trailingSlash:false`)
 
-### 需你在 Vercel 儀表板做(repo 端無法代勞)
-- [ ] Vercel 匯入 GitHub repo `yeha98555/ai-talk-notes`,Production Branch 設 `main`
-- [ ] 「Ignored Build Step」貼上:`git diff --quiet HEAD^ HEAD -- ':(exclude)queue.json' ':(exclude)channels.json'`(純資料 commit 略過重建)
-- [ ] 前置:先把 Phase 5 release 到 `main`(main 才有 `vercel.json` 且無 committed 產物),再匯入
-- [ ] 部署後把 Live URL 給我 → 我填進兩份 README 的 `<!-- LIVE_URL -->`
+### Vercel 儀表板(已完成)
+- [x] Vercel 匯入 GitHub repo `yeha98555/ai-talk-notes`,Production Branch = `main`(Application Preset: Other、讀 `vercel.json`)
+- [x] 「Ignored Build Step」設為 Custom:`git diff --quiet HEAD^ HEAD -- ':(exclude)queue.json' ':(exclude)channels.json'`(純資料 commit 略過重建)
+- [x] 前置:Phase 5 已 release 到 `main`(main 有 `vercel.json`、無 committed 產物)再匯入
 
 ### 自動重新部署
-- [ ] 驗證 merge 到 main 後 Vercel 自動觸發 build + deploy(Git 整合預設行為)
-- [ ] (替代方案,通常不需要)Deploy Hook + GitHub Action 在 merge 後 `curl` 觸發
+- [x] merge/push 到 main → Vercel 自動 build + deploy(首次部署已證;README release 再證)
+- [ ] (替代方案,不需要)Deploy Hook + GitHub Action —— 不採用
 
-### 文件收尾
-- [x] `README.md` / `README.zh-TW.md`:新增 Vercel 部署段、「開啟方式」改為先 `npm run build`
+### 文件收尾(完成)
+- [x] `README.md` / `README.zh-TW.md`:新增 Vercel 部署段 + 內容 pipeline 段、「開啟方式」改為先 `npm run build`
 - [x] `CONTRIBUTING.md` / `.zh-TW.md`:慣例改為「產物不 commit、由 Vercel build」
-- [ ] Live 網址:等你部署後回填(兩份 README 的 `<!-- LIVE_URL -->` 佔位)
+- [x] Live 網址回填兩份 README(頂部連結 + Deployment 段):<https://ai-talk-notes.vercel.app>
 
-### 驗收(線上,需你確認)
-- [ ] Vercel 網址可開,`/`(EN)與 `/index.zh`(中文,cleanUrls)皆正常
-- [ ] merge 一個 PR 到 main 後線上內容自動更新
-- [ ] PR 有 Preview Deployment 可預覽
-- [ ] 兩份 README 皆已反映 Live 網址與部署流程
+### 驗收(線上)
+- [x] Vercel 網址可開:`/`(EN,101 talks 含 doc-101)HTTP 200、`/index.zh`(中文)200、`/index.zh.html`→308(cleanUrls)
+- [x] push 到 main 後線上內容自動更新(策略 B:Vercel 從來源乾淨 build)
+- [ ] PR Preview Deployment:待下次真實 gen-note PR 確認(Vercel 連結後為預設行為)
+- [x] 兩份 README 皆已反映 Live 網址與部署流程
 
 ## 橫向注意事項(每階段隨手檢查)
 
