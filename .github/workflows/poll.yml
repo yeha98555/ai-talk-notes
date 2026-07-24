@@ -12,6 +12,7 @@ on:
 permissions:
   contents: write # commit + push queue.json
   issues: write # open / update the review Issue
+  models: read # tools/triage.mjs calls GitHub Models (gpt-4o-mini) via GITHUB_TOKEN
 
 concurrency:
   group: poll-channels
@@ -40,6 +41,8 @@ jobs:
       # changed at all (→ commit) and how many new pending videos appeared (→ notify).
       - name: Inspect queue and build report
         id: q
+        env:
+          GITHUB_TOKEN: ${{ github.token }} # for triage.mjs → GitHub Models
         run: |
           if git diff --quiet -- queue.json; then changed=false; else changed=true; fi
           new=$(node tools/queue-report.mjs --check)
@@ -47,7 +50,10 @@ jobs:
           echo "new_pending=$new" >> "$GITHUB_OUTPUT"
           echo "queue changed=$changed, new pending=$new"
           if [ "$new" -gt 0 ]; then
-            node tools/queue-report.mjs > body.md
+            # triage.mjs renders the interactive control-panel body (tier + reason +
+            # checkboxes). It degrades to a plain list if the model call fails, so a
+            # Models outage never blocks the poll.
+            node tools/triage.mjs > body.md
           fi
 
       - name: Commit updated queue
