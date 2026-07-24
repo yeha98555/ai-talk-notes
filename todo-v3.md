@@ -3,10 +3,9 @@
 > 對應 [`PRD-v3.md`](PRD-v3.md)。把「挑片 + 生草稿觸發」流程搬上 GitHub：review issue 變控制面板。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅（程式全數完成、已併回 develop）。本機/CI 驗收通過；
-> **queue-apply 本機實測、issue #1 送出鍵已上線**。**剩：Phase 1/2/3 三者「上 main 才驗得到」的 schedule/issues 端到端**
-> ——建議做一次 `develop → main` release 一起驗掉。之後即 **Phase 4**（記錄 PR#，batched）。
-> 注意：Phase 3 的 `feat/v3-issue-control` 尚未 push 到 origin（本機 develop 領先 origin）。
+> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅、Phase 4 ✅ —— **PRD-v3 四階段全數完成並驗證通過**。
+> Phase 1–3 已 release 到 main（PR #6）、main 上端到端實測有效；Phase 4（gen-note 記 PR#）本機 `--dry-run --pr` 驗過。
+> **v3 收工。** 後續只剩「未來優化」（Whisper fallback／全自動生成，皆非 MVP）。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -63,10 +62,10 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ### 驗收
 - [x] `workflow_dispatch` 跑 poll：新 pending 落在 **develop** 的 `queue.json`，`main` 不被動到（run 30107389079：18 新片 → commit `a7f0d29` push develop、issue #1 更新；main tip `08fe9ea` 前後一致）
 - [x] 本機在 develop `git pull` 即拿到最新 queue，不需跨分支 checkout（queue 現住 develop）
-- [ ] `develop → main` release PR 合併後，`main` 的 `queue.json` 追上 —— **待 release 到 main**
-- [ ] release 到 main 後，`schedule` 觸發的 poll 也確實推 develop —— **待 release 到 main**（poll.yml 排程版仍在 main 舊版）
+- [x] `develop → main` release PR 合併後，`main` 的 `queue.json` 追上（release PR #6 merged → main `8e5c405`）
+- [x] release 到 main 後，poll（main 版）確實推 develop（dispatch run 30111043748：抓到 1 新片 → push develop `7bdbe2c`、main tip `8e5c405` 不動）
 
-> **狀態（2026-07-24）**：實作 + `workflow_dispatch` 驗收通過，已 `--no-ff` 併回 develop。剩兩項驗收綁 release 到 main，屬 Phase 收尾、非阻擋 Phase 2。
+> **狀態（2026-07-24）**：✅ 全綠。實作 + dispatch + **release 到 main 後 main 版實跑**皆通過。
 
 ## Phase 2 — CI triage 寫進 issue
 
@@ -90,9 +89,9 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [x] triage 失敗（模擬無 token）→ 純清單、仍 42 錨點 + checkbox、exit 0
 - [x] 用量落在免費 tier、無 Azure 帳單（Actions `GITHUB_TOKEN` + `models: read`，非付費呼叫）
 - [x] **Actions 實測**（throwaway probe run 30108522633）：Actions 的 `GITHUB_TOKEN` 打得到 GitHub Models、degraded 0、tier 3 組、42 錨點；probe 分支/workflow 已清除
-- [ ] （workflow 檔改動）release 到 main 後在 main 上排程實跑確認 —— **待 release 到 main**
+- [x] release 到 main 後在 main 上實跑確認（dispatch run 30111043748：poll 於 main 抓到新片 → triage 重建 issue #1 body：41 錨點、送出鍵在、✨ 新片標記在）
 
-> **狀態（2026-07-24）**：實作 + 本機/CI 驗收通過，已 `--no-ff` 併回 develop。剩「排程實跑」綁 release 到 main。
+> **狀態（2026-07-24）**：✅ 全綠。本機/CI/**main 版實跑**皆通過。
 
 ## Phase 3 — issue checkbox 批核控制面板（含底部「🚀 送出」）
 
@@ -122,12 +121,11 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ### 驗收
 - [x] 套用邏輯**本機實測**（queue-apply）：2 approve + 1 reject → queue.json 正確、reject `note` 帶 triage 理由、送出取消、已處理列移除、tier 計數 ⭐16→14/⏭️3→2
 - [x] 只勾 approve/reject、不勾送出 → queue-apply 走 `no-submit`、不改 queue.json（gate 本機驗）
-- [ ] **端到端**「勾送出 → 一個 commit + 重繪 + 留言」在 Actions 實跑 —— **待 release 到 main**（issues 事件跑 main 版）
-- [ ] 非負責人編輯（含勾送出）→ 無任何變更 —— **待 release 到 main**
-- [ ] 重繪 bot 編輯不觸發二次套用（無迴圈）—— **待 release 到 main**
+- [x] **端到端**「勾送出 → 一個 commit + 重繪 + 留言」在 Actions 實跑（run 30110925075：owner 勾 1A+1R+送出 → commit `a4199c3`、queue.json approved/rejected 且 note 帶理由、issue 重繪 40 錨點送出取消、留言 summary）
+- [x] 非負責人編輯 → 無變更（owner gate；bot 的 poll/重繪 edit 皆被擋，見下）
+- [x] 重繪 bot 編輯不觸發二次套用（無迴圈）：queue-control 全程只跑 1 次；poll 的 bot 改 issue 也沒觸發
 
-> **狀態（2026-07-24）**：程式全數完成、已 `--no-ff` 併回 develop；queue-apply 本機實測通過、issue #1 送出鍵已上線。
-> 剩下三項端到端驗收綁 `issues` 事件 = **需 release 到 main**（與 Phase 1/2 的排程驗收同一個「上 main 生效」機制，建議一起驗）。
+> **狀態（2026-07-24）**：✅ 全綠。程式 + queue-apply 本機實測 + **main 上 issues 事件端到端實跑**皆通過。
 
 ## Phase 4 — 批核後記錄 PR#
 
@@ -138,20 +136,23 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 > 提醒：approve/reject 本身**不開 PR**（只改 develop 的 `queue.json` status，reject 永不進生成）。
 
 ### `tools/gen-note.mjs`（微調）
-- [ ] `gh pr create` 成功後，找出 open 的 `video-queue` issue
-- [ ] `gh issue comment` 寫「🧾 這批 → PR #NN：<PR 連結>；videoId / docId 清單」
-- [ ] 找不到 open issue 時優雅略過（不讓記錄失敗中斷 PR 流程）
+- [x] `gh pr create` 成功後（`prUrl` 非空），找出 open 的 `video-queue` issue（`gh issue list`）
+- [x] `gh issue comment` 寫「🧾 這批 note 草稿 → PR #NN：<連結>」+ 每支 `docId · title (videoId)`
+- [x] 找不到 open issue／留言失敗 → log 後略過，不中斷 run（PR 已開）
 
 ### 驗收
-- [ ] 本機 `gen-note --pr`（可先 `--dry-run --pr`）後，review issue 出現一則含 PR# 與該批 ids 的留言
-- [ ] 留言的 ids 與該 PR 實際處理的影片一致
+- [x] 本機 `--dry-run --pr` 實測：review issue #1 出現含 PR #7 + doc-132 的留言（格式帶影片名稱）
+- [x] 留言 ids 與 PR 實際處理一致：無字幕的 `ztdTed5egrM` 被跳過、留言只列真正產出的 `doc-132`
+- [x] 測試痕跡已清除（刪留言、關 PR #7 + 刪分支；develop 的 approved 未受影響）
+
+> **狀態（2026-07-24）**：✅ 全綠。純本機、無 main-gated 項。腳本改動進 develop 即生效（gen-note 本就本機跑）。
 
 ## 橫向注意事項（每階段隨手檢查）
 
-- [ ] **poll 與控制面板同源**：兩者都只寫 `develop`，`main` 只被 release PR 更新（不可只搬一半，否則 queue 分岔）
-- [ ] **事件/排程 workflow 要上 main 才生效**：poll.yml、queue-control.yml 改動未 release 到 main 前，`schedule`/`issues` 觸發跑的是舊版
-- [ ] **checkbox 對應靠 `vid` 錨點**，不靠標題（標題會變、會撞）；套用後重繪鎖定已處理列防重複
-- [ ] **owner-only guard**：非負責人的 issue 編輯一律忽略
+- [x] **poll 與控制面板同源**：兩者都只寫 `develop`，`main` 只被 release PR 更新（實測：poll `7bdbe2c`、queue-control `a4199c3` 皆推 develop，main `8e5c405` 不動）
+- [x] **事件/排程 workflow 要上 main 才生效**：poll.yml、queue-control.yml 已 release 到 main（PR #6），`schedule`/`issues` 觸發跑 main 版
+- [x] **checkbox 對應靠 `vid` 錨點**，不靠標題；套用後重繪移除已處理列（E2E 實測）
+- [x] **owner-only guard**：非負責人（含 bot）的 issue 編輯一律忽略（實測 queue-control 只跑 1 次、無迴圈）
 - [x] **API key/token**：triage 只用 `GITHUB_TOKEN`（零額外 secret）；`ANTHROPIC_API_KEY` 只在本機 gen-note，絕不上雲/進 repo
 - [x] **字幕在 CI 抓不到**：已定案，生成留本機（依 2026-07-24 實測）
 - [ ] `actions/checkout` / `setup-node` 適時升 `@v5`（沿用 v2 的注意事項）
