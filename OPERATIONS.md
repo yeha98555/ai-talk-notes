@@ -85,6 +85,13 @@ Click **Approve / Reject** on each pending video (an optional note field is
 available). This rewrites the `status` in `queue.json` live. Close the tab when
 done.
 
+> **Pre-screen first (optional, advisory):** with a big pending list, run the
+> **`triage-queue` skill** — "triage the queue" / "幫我看 pending 哪個值得收". It ranks
+> every pending video **⭐ Strong / 🤔 Maybe / ⏭️ Skip** with a suggested category and a
+> one-line reason, flags duplicates, and hands you a copy-ready approve-list. It never
+> changes `status` — you still Approve/Reject in the UI (or ask it to apply the picks
+> and write the reject reasons into each item's `note`).
+
 > Port in use? `PORT=4322 node tools/review.mjs`.
 
 ### Step 3 — Generate note drafts + open a PR (manual)
@@ -150,5 +157,8 @@ site updates within a minute.
 
 **On a day with no new videos, only ① matters — a glance at the Issue, nothing else.**
 
+> Before picking, optionally pre-screen the queue with the **`triage-queue`** skill
+> (⭐/🤔/⏭️ ranking + suggested categories + approve-list) — advisory, speeds up Step ②.
+>
 > Occasional, not daily: add/remove a tracked channel with the **`manage-channels`**
 > skill (paste a URL) — it feeds Step ①. See *Managing subscriptions* above.

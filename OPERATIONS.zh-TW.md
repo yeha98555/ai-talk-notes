@@ -80,6 +80,12 @@ node tools/review.mjs             # 開 http://localhost:4321
 對每支 pending 影片按 **Approve / Reject**(可填備註)。這會即時改寫 `queue.json`
 的 `status`。挑完關掉分頁即可。
 
+> **先預篩(選用,advisory):** pending 一多時,先用 **`triage-queue` skill**——講
+> 「幫我看 pending 哪個值得收」/「triage the queue」。它會把每支 pending 排成
+> **⭐ Strong / 🤔 Maybe / ⏭️ Skip**,附建議分類與一句理由、標出重複片,並給你一份可直接
+> 複製的 approve 清單。它不改 `status`——你仍在 UI 按 Approve/Reject(或請它幫你套用選擇、
+> 把拒絕原因寫進各項的 `note`)。
+
 > Port 被占用?`PORT=4322 node tools/review.mjs`。
 
 ### Step 3 — 生成筆記草稿 + 開 PR(手動)
@@ -137,5 +143,8 @@ merge/push 到 **`main`** 後,**Vercel 自動 build + deploy**,線上一分鐘�
 
 **沒新片的日子只有 ① 要做——瞄一眼 Issue,其餘免動。**
 
+> 挑片前可先用 **`triage-queue`** skill 預篩(⭐/🤔/⏭️ 排名 + 建議分類 + approve 清單)
+> ——advisory,加速 Step ②。
+>
 > 偶爾、非每日:用 **`manage-channels`** skill 新增/移除追蹤頻道(貼網址即可)——它餵給
 > Step ①。詳見上面的《管理訂閱頻道》。
