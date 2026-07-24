@@ -3,7 +3,10 @@
 > 對應 [`PRD-v3.md`](PRD-v3.md)。把「挑片 + 生草稿觸發」流程搬上 GitHub：review issue 變控制面板。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅（本機/CI 驗收通過，已併回 develop 並 **push 到 `origin/develop` `a7f72cb`**；各剩「release 到 main 排程實跑」一項待收尾）。live **issue #1 已更新為 triage 控制面板預覽**（42 錨點、⭐15/🤔23/⏭️4；checkbox 目前點了無反應——套用邏輯是 Phase 3）。**下一步：Phase 3**。`main` 仍為 v3 前舊版、尚未 release。
+> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅（程式全數完成、已併回 develop）。本機/CI 驗收通過；
+> **queue-apply 本機實測、issue #1 送出鍵已上線**。**剩：Phase 1/2/3 三者「上 main 才驗得到」的 schedule/issues 端到端**
+> ——建議做一次 `develop → main` release 一起驗掉。之後即 **Phase 4**（記錄 PR#，batched）。
+> 注意：Phase 3 的 `feat/v3-issue-control` 尚未 push 到 origin（本機 develop 領先 origin）。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -100,28 +103,31 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 > 這消除「每勾一次一個 commit」的雜訊與改錯字誤觸。底部送出 checkbox 是 **body 契約的一部分**。
 
 ### `tools/triage.mjs`（Phase 2 微調 — body 契約補送出鍵）
-- [ ] body 最底部渲染 `- [ ] 🚀 送出以上所有勾選（打勾＝套用成一個 commit；套用完自動取消）`
-- [ ] 重推 live issue #1 預覽、確認送出鍵有出現
+- [x] body 最底部渲染 `<!-- submit -->` + `- [ ] 🚀 送出以上所有勾選（…）`；頂部說明改為「勾選→勾送出」
+- [x] 重推 live issue #1 預覽、GitHub 上確認送出鍵有出現（submit_box=true、42 錨點）
 
 ### `tools/queue-apply.mjs`（新）
-- [ ] 解析 issue body：依 `<!-- vid:xxx -->` 錨點與其下 checkbox 勾選狀態，組 id→action map
-- [ ] 套用：✅ 勾 → `approved`；❌ 勾 → `rejected` + 把該列 triage 理由寫進 `note`；皆未勾 → 維持 `pending`；兩者皆勾 → 跳過並標記
-- [ ] 安全規則（沿用 PRD-v2）：只動當前 `pending` 項目、不覆寫人手寫 `note`、寫完 `JSON.parse` 驗證
-- [ ] 產出重繪後的 body：**送出鍵取消勾選**、已處理列標「✔ 已 approved／❌ 已 rejected」並移除其 checkbox
+- [x] 解析 issue body：依 `<!-- vid:xxx -->` 錨點與其下 checkbox 勾選狀態，組 id→action map
+- [x] 套用：✅ → `approved`；❌ → `rejected` + 把該列 triage 理由寫進 `note`；皆未勾 → `pending`；兩者皆勾 → 跳過並標記
+- [x] 安全規則（沿用 PRD-v2）：只動當前 `pending` 項目、不覆寫人手寫 `note`、寫完 `JSON.parse` 驗證
+- [x] 產出重繪後 body：**送出鍵取消勾選**、已處理列移除、tier 計數重算；**全程無模型呼叫**（套用不依賴 Models）
 
 ### `.github/workflows/queue-control.yml`（新）
-- [ ] `on: issues.edited`
-- [ ] `if:` 同時滿足（a）`video-queue` label、（b）`github.event.sender.login == github.event.repository.owner.login`、（c）**body 送出 checkbox 已勾**
-- [ ] 三者缺一即 no-op（bot 重繪、非 owner、只勾未送出 → 全部安靜略過，無迴圈無雜訊）
-- [ ] 呼叫 `queue-apply.mjs` → commit/`push` develop（一批一個 commit）→ 用重繪 body 更新 issue
-- [ ] `permissions: contents: write` + `issues: write`；`concurrency` group 串行化
+- [x] `on: issues.edited`
+- [x] `if:` 同時滿足（a）`video-queue` label、（b）`sender.login == repository.owner.login`、（c）body 含 `[x] 🚀`（送出已勾）
+- [x] 呼叫 `queue-apply.mjs` → 有變更才 commit/`push origin HEAD:develop`（一批一個 commit）→ 重繪 body 更新 issue → 有變更才留言 summary
+- [x] `permissions: contents: write` + `issues: write`；`concurrency` group 串行化；YAML 合法
+- [x] bot 重繪的 edit sender=github-actions → 過不了 owner gate → 無迴圈（設計審過）
 
 ### 驗收
-- [ ] 只勾 approve/reject、不勾送出 → `queue.json` 無變化、無 commit
-- [ ] 勾一批 + 勾送出 → **一個 commit**：✅ 變 approved、❌ 變 rejected 且 `note` 帶理由；送出鍵自動取消、已處理列鎖定
-- [ ] 非負責人編輯（含勾送出）→ 無任何變更
-- [ ] 重繪造成的 bot 編輯不觸發二次套用（無迴圈）
-- [ ] （workflow 檔改動）release 到 main 後，`issues` 事件在 main 上實跑確認 owner-only + 送出 gate + 套用正確
+- [x] 套用邏輯**本機實測**（queue-apply）：2 approve + 1 reject → queue.json 正確、reject `note` 帶 triage 理由、送出取消、已處理列移除、tier 計數 ⭐16→14/⏭️3→2
+- [x] 只勾 approve/reject、不勾送出 → queue-apply 走 `no-submit`、不改 queue.json（gate 本機驗）
+- [ ] **端到端**「勾送出 → 一個 commit + 重繪 + 留言」在 Actions 實跑 —— **待 release 到 main**（issues 事件跑 main 版）
+- [ ] 非負責人編輯（含勾送出）→ 無任何變更 —— **待 release 到 main**
+- [ ] 重繪 bot 編輯不觸發二次套用（無迴圈）—— **待 release 到 main**
+
+> **狀態（2026-07-24）**：程式全數完成、已 `--no-ff` 併回 develop；queue-apply 本機實測通過、issue #1 送出鍵已上線。
+> 剩下三項端到端驗收綁 `issues` 事件 = **需 release 到 main**（與 Phase 1/2 的排程驗收同一個「上 main 生效」機制，建議一起驗）。
 
 ## Phase 4 — 批核後記錄 PR#
 
