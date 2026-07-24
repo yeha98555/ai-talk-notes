@@ -55,7 +55,12 @@ const catMeta = CATS.map((k) => {
 
 // ---- model triage -------------------------------------------------------------
 
-const buildMessages = () => {
+// gpt-4o-mini reliably drops items when asked to score too many at once, so we
+// score in small batches and merge. Each batch is independent: one failing batch
+// degrades only its own items (allSettled below), not the whole run.
+const BATCH = 12;
+
+const buildMessages = (batch) => {
     const catList = catMeta.map((c) => `${c.k}: ${c.heading} — ${c.desc}`).join("\n");
     const system =
         "你是一個技術內容策展助手，替一個「AI 工程演講筆記」網站預篩 YouTube 影片。" +
@@ -70,26 +75,31 @@ const buildMessages = () => {
     const user =
         `分類 A–I：\n${catList}\n\n` +
         `待判斷影片（videoId ｜ channel ｜ title）：\n` +
-        pending.map((v) => `${v.videoId} | ${v.channel} | ${v.title}`).join("\n") +
-        `\n\n輸出 JSON 物件：{"items":[{"videoId","tier","category","reason","duplicateOf"}]}，涵蓋上面每一支。`;
+        batch.map((v) => `${v.videoId} | ${v.channel} | ${v.title}`).join("\n") +
+        `\n\n輸出 JSON 物件：{"items":[{"videoId","tier","category","reason","duplicateOf"}]}。` +
+        `items 必須剛好 ${batch.length} 筆、videoId 原字照抄，上面每一支都要有、一支都不能少（重複的也各列一筆）。`;
     return [
         { role: "system", content: system },
         { role: "user", content: user },
     ];
 };
 
-// Returns Map<videoId, {tier, category, reason, duplicateOf}> or throws.
-const callModel = async () => {
-    if (!TOKEN) throw new Error("no GITHUB_TOKEN");
-    if (!pending.length) return new Map();
+const norm = (t) => {
+    const s = String(t || "").toLowerCase();
+    return s.startsWith("strong") ? "Strong" : s.startsWith("skip") ? "Skip" : "Maybe";
+};
+
+// Score one batch → Map<videoId, {tier, category, reason, duplicateOf}>. Throws on failure.
+const callBatch = async (batch) => {
     const res = await fetch(ENDPOINT, {
         method: "POST",
         headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" },
         body: JSON.stringify({
             model: MODEL,
             temperature: 0.2,
+            max_tokens: 2000,
             response_format: { type: "json_object" },
-            messages: buildMessages(),
+            messages: buildMessages(batch),
         }),
         signal: AbortSignal.timeout(60000),
     });
@@ -97,22 +107,48 @@ const callModel = async () => {
     const content = (await res.json())?.choices?.[0]?.message?.content || "";
     const items = JSON.parse(content).items;
     if (!Array.isArray(items)) throw new Error("model JSON missing items[]");
-    const norm = (t) => {
-        const s = String(t || "").toLowerCase();
-        return s.startsWith("strong") ? "Strong" : s.startsWith("skip") ? "Skip" : "Maybe";
-    };
     const map = new Map();
     for (const it of items) {
         if (!it?.videoId) continue;
-        const category = CATS.includes(it.category) ? it.category : null;
         map.set(it.videoId, {
             tier: norm(it.tier),
-            category,
+            category: CATS.includes(it.category) ? it.category : null,
             reason: String(it.reason || "").replace(/\s+/g, " ").trim(),
             duplicateOf: it.duplicateOf || null,
         });
     }
     return map;
+};
+
+// Score all pending in batches. Returns the merged Map; throws only if EVERY batch
+// fails (→ full degradation). A partial failure just leaves those items un-triaged.
+const callModel = async () => {
+    if (!TOKEN) throw new Error("no GITHUB_TOKEN");
+    if (!pending.length) return new Map();
+    const batches = [];
+    for (let i = 0; i < pending.length; i += BATCH) batches.push(pending.slice(i, i + BATCH));
+    const results = await Promise.allSettled(batches.map(callBatch));
+    const merged = new Map();
+    let ok = 0;
+    for (const r of results) {
+        if (r.status === "fulfilled") {
+            ok++;
+            for (const [k, v] of r.value) merged.set(k, v);
+        } else {
+            process.stderr.write(`triage: a batch failed (${r.reason?.message || r.reason})\n`);
+        }
+    }
+    if (!ok) throw new Error("all triage batches failed");
+    // Second pass over stragglers the model dropped — a tiny batch covers reliably.
+    const missing = pending.filter((v) => !merged.has(v.videoId));
+    if (missing.length) {
+        try {
+            for (const [k, v] of await callBatch(missing)) merged.set(k, v);
+        } catch (e) {
+            process.stderr.write(`triage: straggler pass failed (${e.message})\n`);
+        }
+    }
+    return merged;
 };
 
 // ---- render Issue body --------------------------------------------------------
