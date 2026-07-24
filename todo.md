@@ -150,3 +150,14 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] LLM 分類僅為「建議」,一律以 PR 複審為準
 - [ ] 不改動既有 `build.mjs` / `order.json` / `cat-*.md` 的格式與行為
 - [ ] `poll.yml` 的 `actions/checkout@v4` / `setup-node@v4` 依賴 Node 20(將淘汰,現被 GitHub 強制跑在 Node 24 上,功能正常);適時升到 `@v5`
+
+## 未來優化(非 MVP,想到再收)
+
+### 無字幕影片:Whisper 轉錄 fallback
+- **現況(最小策略)**:`transcript.mjs` 拿不到字幕 → gen-note 標 `needs-transcript` 跳過。多數影片有 YouTube 自動字幕(asr);真正無字幕主要是「剛上傳、asr 還沒生成」,隔天 poll 再跑通常就有,天然被處理掉。
+- **何時才值得做**:等 `needs-transcript` 真的開始累積、或要收永久無字幕的片子,再加。**現在做是對付一個幾乎不會發生的 case,先不做**。
+- **若要做(建議做法)**:gen-note 加 `--whisper` opt-in 旗標;流程 `yt-dlp 下載音訊 → ffmpeg → Whisper → 逐字稿 → 餵 Claude(同現流程)`。
+  - 首選 **Groq `whisper-large-v3` API**(快、便宜、一個 `fetch` 就好),而非重量級 local 安裝。
+  - 代價要清楚:破壞零依賴(至少要 `yt-dlp` + `ffmpeg`);API 版多一支非 Anthropic 的 key;音訊下載比抓字幕脆弱(易被節流)。
+  - 品質上 Whisper 通常優於 asr(有標點、辨識更準)。
+- **可先留接點**:在 `transcript.mjs` 放一個 `fetchTranscriptWhisper(videoId)` 骨架 + TODO(不實作、不引依賴),未來要接時有明確位置。
