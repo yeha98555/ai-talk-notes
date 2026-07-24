@@ -1,0 +1,34 @@
+name: CI
+
+# Validate that the source still builds and the two pages stay structurally
+# identical. Runs on every PR (including gen-note draft PRs) and on pushes to the
+# long-lived branches. A FAIL from i18n-check.mjs (missing frontmatter field,
+# structural drift, literal "undefined") fails the job.
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build both pages
+        run: npm run build
+
+      - name: i18n parity check
+        run: node tools/i18n-check.mjs
