@@ -7,16 +7,18 @@ description: >
   "pre-screen the queue", "score the pending videos", "which of these are worth
   keeping". Reads the pending items, judges each from its title + channel (is it a
   substantive AI-engineering talk? which of categories A–I?), and prints a ranked
-  report so the human can approve the good ones fast in tools/review.mjs. Advisory
-  only — it never changes any status.
+  report. Advisory by default; **only after the user confirms** can it apply the
+  picks to queue.json (approve Strong, reject Skip/duplicates with reasons in `note`,
+  leave Maybe pending).
 ---
 
 # Triage the pending queue
 
 Speed up **Step ② (pick)** by pre-screening the `pending` videos in `queue.json`.
 **You (Claude) are the judge here** — no API call, no transcript fetch: you read the
-list and score it yourself from the title + channel. This is *advisory*. The human
-still decides in `tools/review.mjs`; this skill **never writes `status`**.
+list and score it yourself from the title + channel. **Advisory by default:** always
+print the report first; only write to `queue.json` **after the user confirms** (Step 4).
+The human stays the gate — either in `tools/review.mjs`, or by approving the apply here.
 
 These instructions are English for precision; talk to the user in their language
 (Traditional Chinese here).
@@ -77,22 +79,42 @@ Also flag **duplicates / near-duplicate titles** across channels (same talk repo
 Group by tier (Strong → Maybe → Skip). One line each:
 `title — channel — [category] — reason`. Give per-tier counts. End with a copy-ready
 **approve-list of `videoId`s** for the Strong tier (plus any Maybe the user might want),
-so the user can act quickly in the review UI.
+so the user can act quickly. Then **offer to apply it** (Step 4).
 
-### 4. (Opt-in) annotate the queue notes
+### 4. Apply the picks (opt-in — confirm first)
 
-**Only if the user asks.** Write the hint into each pending item's `note` field so it
-shows in `tools/review.mjs` — prefix `triage: <tier> <cat> — <reason>`. Rules:
+**Always ask before writing.** Print the report, then ask whether to apply. Only on a
+clear yes, write to `queue.json` with this default policy (state it when you ask, so the
+user can override — e.g. "also reject the Maybe", "approve these extra ids too"):
 
-- Touch **only** items with `status === "pending"`; **never** change `status` or any
-  other field, and never touch non-pending items.
-- Preserve an existing non-triage `note` (don't clobber a human note).
-- Validate afterward: `node -e "JSON.parse(require('fs').readFileSync('queue.json','utf8'));console.log('OK')"`.
-- This modifies `queue.json` — mention it belongs to the pick/review flow, not a config commit.
+- **⭐ Strong → `status: "approved"`.**
+- **⏭️ Skip + duplicates → `status: "rejected"`**, and write the one-line reason into
+  that item's `note`.
+- **🤔 Maybe → leave `pending`.** Don't decide borderline cases for the user unless told to.
+
+**Safety rules for the write:**
+
+- Touch **only** items currently `status === "pending"`. Never change an item that is
+  already `approved` / `rejected` / `published`, and change no field other than the
+  intended `status` (and `note` for rejects).
+- Don't clobber a human-written `note`; only set `note` on the items you reject.
+- Do it as one script over an explicit id→action map, then validate:
+  `node -e "JSON.parse(require('fs').readFileSync('queue.json','utf8'));console.log('OK')"`.
+- Report per-action counts and any ids skipped (not found / not pending).
+
+This modifies `queue.json` — it's a **pick-flow change, not a config commit**. It stays
+uncommitted and either flows into the `gen-note --pr` PR (Step ③) or can be a checkpoint
+commit (`chore(queue): …`) if the user is stopping for now.
+
+> Lighter alternative the user may prefer: instead of setting `status`, just annotate
+> each pending item's `note` with `triage: <tier> <cat> — <reason>` so the ranking shows
+> inside `tools/review.mjs` and they click Approve/Reject themselves. Same safety rules.
 
 ## Report back
 
 - Tier counts (Strong / Maybe / Skip) and any duplicates flagged.
 - The recommended approve-list of `videoId`s.
-- A reminder: this is advisory — **decide in `tools/review.mjs` (Step ②)**; the real
-  check is the transcript (`gen-note`) and the PR review (Step ④).
+- If you applied: per-action counts (approved / rejected / left pending) and the new
+  `queue.json` status totals; that it's uncommitted and belongs to the pick flow.
+- A reminder: title-only triage is advisory — the real check is the transcript
+  (`gen-note`) and the PR review (Step ④).
