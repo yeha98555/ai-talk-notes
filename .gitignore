@@ -9,3 +9,11 @@ Thumbs.db
 # Local planning docs & agent scratch (not part of the published site)
 docs/
 .superpowers/
+
+# Secrets — never commit API keys. gen-note.mjs reads ANTHROPIC_API_KEY from the
+# environment; use `node --env-file=.env.local tools/gen-note.mjs`. The .example
+# template (placeholder only) is intentionally NOT ignored.
+.env
+.env.local
+.env.*
+!.env.example

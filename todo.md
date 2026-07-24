@@ -87,21 +87,26 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## Phase 3 — LLM 生成 note 草稿
 
+### `tools/transcript.mjs`(gen-note 前置,已獨立完成)
+- [x] 免 API key 抓 YouTube 字幕(InnerTube ANDROID → timedtext XML → 純文字)
+- [x] 無字幕優雅回 `{ text: null, reason }`,供 gen-note 標 `needs-transcript`
+
 ### `tools/gen-note.mjs`
-- [ ] 抓 transcript;抓不到 → 標 `needs-transcript`,不硬產
-- [ ] 呼叫 Claude,用既有 note(如 `doc-100.md`)當 few-shot 鎖 house style
-- [ ] doc id 依 `order.json` 現有最大值 +1 配號(同批不搶號)
-- [ ] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
-- [ ] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
-- [ ] LLM 分類 A–I → append 到 `cat-K.md` 的 `docs:` + `order.json`
-- [ ] 回填 queue 的 `docId`,status 標 `published`
-- [ ] API key 走環境變數,**絕不進 repo**
+- [x] 抓 transcript(用 `transcript.mjs`);抓不到 → 標 `needs-transcript`,不硬產
+- [x] 呼叫 Claude(`claude-opus-4-8`,`fetch` 直打 Messages API,零依賴),用 `doc-100.md` 當 few-shot 鎖 house style
+- [x] doc id 依 `order.json` 現有最大值 +1 配號(同批遞增不搶號)
+- [x] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
+- [x] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
+- [x] LLM 分類 A–I → 卡片依標題字母序插入 `cat-K.md`(`docs:` 對齊)+ zh 對照 + `order.json`
+- [x] 回填 queue 的 `docId`,status 標 `published`
+- [x] 額外:自動 bump 演講總數(精確 pattern,跳過 `doc-N`/`#tN`/`#N`/`%`)—— 定案「工具 bump + PR 複審把關」
+- [x] API key 走環境變數 `ANTHROPIC_API_KEY`,**絕不進 repo**;支援 `--dry-run` 免 key 驗機械環節
 
 ### 驗收
-- [ ] 對一支 approved 影片跑 gen-note,產物通過 `npm run build`
-- [ ] 通過 `node tools/i18n-check.mjs`
-- [ ] 草稿格式與既有 note 一致(frontmatter / 段落 / 清單)
-- [ ] 分類落進正確 cat 檔、`order.json` 有新 id
+- [x] `--dry-run` 實跑一支 approved 影片:產物通過 `npm run build`(兩頁 101 talk notes)
+- [x] 通過 `node tools/i18n-check.mjs`(coverage 101/101、structural parity OK)
+- [x] 分類落進正確 cat 檔(卡片字母序就位)、`order.json` 有新 id、總數 100→101 各檔命中正確
+- [x] **live 跑確認草稿品質**(2026-07-24,`claude-sonnet-5`,doc-101 TextQL 一場):frontmatter 三欄齊全、7 段密集 prose 合 house style、忠於逐字稿、中文翻譯自然保留術語、分類 A 精準、卡片字母序就位、build + i18n-check 綠
 
 ## Phase 4 — 複審與上站流程收斂
 
@@ -145,3 +150,14 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] LLM 分類僅為「建議」,一律以 PR 複審為準
 - [ ] 不改動既有 `build.mjs` / `order.json` / `cat-*.md` 的格式與行為
 - [ ] `poll.yml` 的 `actions/checkout@v4` / `setup-node@v4` 依賴 Node 20(將淘汰,現被 GitHub 強制跑在 Node 24 上,功能正常);適時升到 `@v5`
+
+## 未來優化(非 MVP,想到再收)
+
+### 無字幕影片:Whisper 轉錄 fallback
+- **現況(最小策略)**:`transcript.mjs` 拿不到字幕 → gen-note 標 `needs-transcript` 跳過。多數影片有 YouTube 自動字幕(asr);真正無字幕主要是「剛上傳、asr 還沒生成」,隔天 poll 再跑通常就有,天然被處理掉。
+- **何時才值得做**:等 `needs-transcript` 真的開始累積、或要收永久無字幕的片子,再加。**現在做是對付一個幾乎不會發生的 case,先不做**。
+- **若要做(建議做法)**:gen-note 加 `--whisper` opt-in 旗標;流程 `yt-dlp 下載音訊 → ffmpeg → Whisper → 逐字稿 → 餵 Claude(同現流程)`。
+  - 首選 **Groq `whisper-large-v3` API**(快、便宜、一個 `fetch` 就好),而非重量級 local 安裝。
+  - 代價要清楚:破壞零依賴(至少要 `yt-dlp` + `ffmpeg`);API 版多一支非 Anthropic 的 key;音訊下載比抓字幕脆弱(易被節流)。
+  - 品質上 Whisper 通常優於 asr(有標點、辨識更準)。
+- **可先留接點**:在 `transcript.mjs` 放一個 `fetchTranscriptWhisper(videoId)` 骨架 + TODO(不實作、不引依賴),未來要接時有明確位置。
