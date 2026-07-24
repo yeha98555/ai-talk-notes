@@ -80,55 +80,69 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ### 驗收
 - [x] workflow 邏輯本機實跑驗證:有變動→commit 條件成立、有新 pending→通知條件成立;無變動→兩者皆 skip
 - [x] YAML 合法(ruby/psych 解析通過)、`queue-report.mjs --check` 邊界(0 / N)正確
-- [ ] **需 push 後在 GitHub 實跑一次確認**:排程/dispatch 真的觸發、commit 成功 push、`video-queue` Issue 正確建立/更新
-  - 註:排程只在 default branch(未來的 `main`)生效;先在分支上用 workflow_dispatch 測
+- [x] **GitHub 實跑確認**(2026-07-24,dispatch on `main`):
+  - run #30081686673:有新片 → commit `27d8a3c chore(poll): update video queue [skip ci]` 推回 main、開 Issue #1「📥 Video review queue」(52 pending)✅
+  - run #30081780665:無新片 → `changed=false, new_pending=0`,commit 與 Issue 兩步皆 skip、不製造雜訊 ✅
+  - 前置:預設分支設為 `main`、Actions Workflow permissions 設 Read and write
 
 ## Phase 3 — LLM 生成 note 草稿
 
+### `tools/transcript.mjs`(gen-note 前置,已獨立完成)
+- [x] 免 API key 抓 YouTube 字幕(InnerTube ANDROID → timedtext XML → 純文字)
+- [x] 無字幕優雅回 `{ text: null, reason }`,供 gen-note 標 `needs-transcript`
+
 ### `tools/gen-note.mjs`
-- [ ] 抓 transcript;抓不到 → 標 `needs-transcript`,不硬產
-- [ ] 呼叫 Claude,用既有 note(如 `doc-100.md`)當 few-shot 鎖 house style
-- [ ] doc id 依 `order.json` 現有最大值 +1 配號(同批不搶號)
-- [ ] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
-- [ ] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
-- [ ] LLM 分類 A–I → append 到 `cat-K.md` 的 `docs:` + `order.json`
-- [ ] 回填 queue 的 `docId`,status 標 `published`
-- [ ] API key 走環境變數,**絕不進 repo**
+- [x] 抓 transcript(用 `transcript.mjs`);抓不到 → 標 `needs-transcript`,不硬產
+- [x] 呼叫 Claude(`claude-opus-4-8`,`fetch` 直打 Messages API,零依賴),用 `doc-100.md` 當 few-shot 鎖 house style
+- [x] doc id 依 `order.json` 現有最大值 +1 配號(同批遞增不搶號)
+- [x] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
+- [x] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
+- [x] LLM 分類 A–I → 卡片依標題字母序插入 `cat-K.md`(`docs:` 對齊)+ zh 對照 + `order.json`
+- [x] 回填 queue 的 `docId`,status 標 `published`
+- [x] 額外:自動 bump 演講總數(精確 pattern,跳過 `doc-N`/`#tN`/`#N`/`%`)—— 定案「工具 bump + PR 複審把關」
+- [x] API key 走環境變數 `ANTHROPIC_API_KEY`,**絕不進 repo**;支援 `--dry-run` 免 key 驗機械環節
 
 ### 驗收
-- [ ] 對一支 approved 影片跑 gen-note,產物通過 `npm run build`
-- [ ] 通過 `node tools/i18n-check.mjs`
-- [ ] 草稿格式與既有 note 一致(frontmatter / 段落 / 清單)
-- [ ] 分類落進正確 cat 檔、`order.json` 有新 id
+- [x] `--dry-run` 實跑一支 approved 影片:產物通過 `npm run build`(兩頁 101 talk notes)
+- [x] 通過 `node tools/i18n-check.mjs`(coverage 101/101、structural parity OK)
+- [x] 分類落進正確 cat 檔(卡片字母序就位)、`order.json` 有新 id、總數 100→101 各檔命中正確
+- [x] **live 跑確認草稿品質**(2026-07-24,`claude-sonnet-5`,doc-101 TextQL 一場):frontmatter 三欄齊全、7 段密集 prose 合 house style、忠於逐字稿、中文翻譯自然保留術語、分類 A 精準、卡片字母序就位、build + i18n-check 綠
 
 ## Phase 4 — 複審與上站流程收斂
 
-- [ ] gen-note 後自動開 PR(或產生本機分支供開 PR)
-- [ ] CI 在 PR 跑 `npm run build` + `tools/i18n-check.mjs`
-- [ ] 在 PR 上複審/修訂 note 與分類 → merge → 上站
-- [ ] **驗收**:PR diff 正確、CI 綠燈、merge 後站點正確顯示新 note
+- [x] gen-note `--pr`:產出後自動 build → 開分支 → commit → push → `gh pr create`(base = 當前分支)
+- [x] `.github/workflows/ci.yml`:PR 與 push 到 main/develop 時跑 `npm run build` + `tools/i18n-check.mjs`
+- [x] 在 PR 上複審/修訂 note 與分類 → merge → 上站(人工關卡;分類僅為建議)
+- [x] **驗收(2026-07-24 GitHub 實跑)**:`--dry-run --pr` 開出真 PR #2、ci.yml 由 pull_request 觸發 `build-check pass`(綠燈)、PR diff 含 note+zh+cat+order+count+index;merge 後上站已由 doc-101 實證(develop 的 index 正確顯示)
+- [x] 額外修 bug:bumpCount 過度比對(101→102 誤改「Evals 101」標題)→ 改錨定後續名詞
+
+> 註:live 測試的 PR/分支已關閉清除;bumpCount 修正已用 20 處總數 + `Evals 101` 反例驗證。
 
 ## Phase 5 — Vercel 部署與自動重新部署
 
-### 部署設定
+### 部署設定(repo 端,已完成)
 - [x] 產物策略定案:**B — build 時產出、不 commit 產物**
-- [ ] `git rm --cached index.html index.zh.html`(從版控移除既有產物)
-- [ ] 把 `index.html` / `index.zh.html` 加進 `.gitignore`
-- [ ] 建立 `vercel.json`(`buildCommand: npm run build`【B 必要】、`outputDirectory: .`、必要的 `cleanUrls`/路由)
-- [ ] Vercel 匯入 GitHub repo,Production Branch 設 `main`
-- [ ] 確認 PR 會產生 Preview Deployment
+- [x] `git rm --cached index.html index.zh.html`(從版控移除既有產物,檔案留磁碟)
+- [x] 把 `index.html` / `index.zh.html` 加進 `.gitignore`(另加 `.vercel/`)
+- [x] 建立 `vercel.json`(`buildCommand: npm run build`、`outputDirectory: .`、`cleanUrls`、`trailingSlash:false`)
+
+### 需你在 Vercel 儀表板做(repo 端無法代勞)
+- [ ] Vercel 匯入 GitHub repo `yeha98555/ai-talk-notes`,Production Branch 設 `main`
+- [ ] 「Ignored Build Step」貼上:`git diff --quiet HEAD^ HEAD -- ':(exclude)queue.json' ':(exclude)channels.json'`(純資料 commit 略過重建)
+- [ ] 前置:先把 Phase 5 release 到 `main`(main 才有 `vercel.json` 且無 committed 產物),再匯入
+- [ ] 部署後把 Live URL 給我 → 我填進兩份 README 的 `<!-- LIVE_URL -->`
 
 ### 自動重新部署
 - [ ] 驗證 merge 到 main 後 Vercel 自動觸發 build + deploy(Git 整合預設行為)
 - [ ] (替代方案,通常不需要)Deploy Hook + GitHub Action 在 merge 後 `curl` 觸發
 
-### 文件收尾(最後完成)
-- [ ] 更新 `README.md`:加上 Live 站點網址 + 部署方式(Vercel)說明
-- [ ] 更新 `README.zh-TW.md`:同步中文版
-- [ ] 更新兩份 README 的「開啟方式」段落:因採策略 B,repo 內不再有現成 `index.html`,需先 `npm run build` 才能本機開啟
+### 文件收尾
+- [x] `README.md` / `README.zh-TW.md`:新增 Vercel 部署段、「開啟方式」改為先 `npm run build`
+- [x] `CONTRIBUTING.md` / `.zh-TW.md`:慣例改為「產物不 commit、由 Vercel build」
+- [ ] Live 網址:等你部署後回填(兩份 README 的 `<!-- LIVE_URL -->` 佔位)
 
-### 驗收
-- [ ] Vercel 網址可開,`index.html`(EN)與 `index.zh.html`(中文)皆正常
+### 驗收(線上,需你確認)
+- [ ] Vercel 網址可開,`/`(EN)與 `/index.zh`(中文,cleanUrls)皆正常
 - [ ] merge 一個 PR 到 main 後線上內容自動更新
 - [ ] PR 有 Preview Deployment 可預覽
 - [ ] 兩份 README 皆已反映 Live 網址與部署流程
@@ -140,3 +154,15 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] doc id 不撞號
 - [ ] LLM 分類僅為「建議」,一律以 PR 複審為準
 - [ ] 不改動既有 `build.mjs` / `order.json` / `cat-*.md` 的格式與行為
+- [ ] `poll.yml` 的 `actions/checkout@v4` / `setup-node@v4` 依賴 Node 20(將淘汰,現被 GitHub 強制跑在 Node 24 上,功能正常);適時升到 `@v5`
+
+## 未來優化(非 MVP,想到再收)
+
+### 無字幕影片:Whisper 轉錄 fallback
+- **現況(最小策略)**:`transcript.mjs` 拿不到字幕 → gen-note 標 `needs-transcript` 跳過。多數影片有 YouTube 自動字幕(asr);真正無字幕主要是「剛上傳、asr 還沒生成」,隔天 poll 再跑通常就有,天然被處理掉。
+- **何時才值得做**:等 `needs-transcript` 真的開始累積、或要收永久無字幕的片子,再加。**現在做是對付一個幾乎不會發生的 case,先不做**。
+- **若要做(建議做法)**:gen-note 加 `--whisper` opt-in 旗標;流程 `yt-dlp 下載音訊 → ffmpeg → Whisper → 逐字稿 → 餵 Claude(同現流程)`。
+  - 首選 **Groq `whisper-large-v3` API**(快、便宜、一個 `fetch` 就好),而非重量級 local 安裝。
+  - 代價要清楚:破壞零依賴(至少要 `yt-dlp` + `ffmpeg`);API 版多一支非 Anthropic 的 key;音訊下載比抓字幕脆弱(易被節流)。
+  - 品質上 Whisper 通常優於 asr(有標點、辨識更準)。
+- **可先留接點**:在 `transcript.mjs` 放一個 `fetchTranscriptWhisper(videoId)` 骨架 + TODO(不實作、不引依賴),未來要接時有明確位置。

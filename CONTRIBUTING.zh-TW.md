@@ -201,9 +201,10 @@ reject；之後 `gen-note.mjs` 會把它標成 `published`。
 
 ## 慣例
 
-- 請重新產生（`npm run build`）並將 `index.html` 與 `index.zh.html` 連同來源
-  變更一併提交——它們是需要提交的建置產物。
-- 請讓每次提交聚焦於單一目的；推送前執行 `node tools/i18n-check.mjs`。
+- `index.html` / `index.zh.html` 是**建置產物、已加入 git-ignore**——請**不要**提交它們。
+  Vercel 會在部署時從來源重新建置。在本機請先執行 `npm run build`(重新)產生它們,
+  再開啟頁面或跑檢查工具。
+- 請讓每次提交聚焦於單一目的;推送前執行 `npm run build && node tools/i18n-check.mjs`。
 - `modal.js` 與 `nav-scrollspy.js` 不會注入任何面向使用者的文字，通常不需要
   修改；`reading-progress.js`／`notes.js` 則將所有 UI 字串集中放在 `T[lang]`
   表中。

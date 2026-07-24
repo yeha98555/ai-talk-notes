@@ -2,7 +2,7 @@
 
 > [English](README.md) · **繁體中文**
 
-本專案有系統地整理了 **100 篇 AI 工程領域的研討會與 YouTube 演講筆記**，依 **9
+本專案有系統地整理了 **101 篇 AI 工程領域的研討會與 YouTube 演講筆記**，依 **9
 大主題分類**歸類，並濃縮成簡短、易讀的重點摘要——另外還提煉出橫跨全部語料庫的
 **9 項跨主題洞察**。
 
@@ -20,7 +20,7 @@ source on GitHub*」按鈕正上方；首次造訪時會依照瀏覽器語言設
 
 ## 亮點
 
-- **100 場演講**濃縮為簡短的重點摘要。
+- **101 場演講**濃縮為簡短的重點摘要。
 - **9 大主題分類**（A–I），並附分類分布總覽。
 - 橫跨全部演講整理出的 **9 項跨主題洞察**。
 - **每則摘要皆附雙重佐證：**
@@ -66,25 +66,57 @@ source on GitHub*」按鈕正上方；首次造訪時會依照瀏覽器語言設
 
 ## 使用方式
 
-在任何現代瀏覽器中開啟已發布的頁面：
+兩個頁面是**建置產物、已不再提交進版控**,因此請先從來源建置,再於瀏覽器開啟:
 
 ```bash
+npm run build          # 產出 index.html + index.zh.html
+
 # macOS
 open index.html
-
 # Linux
 xdg-open index.html
-
-# or serve it locally
+# 或在本機起伺服器,再造訪 http://localhost:8000
 python3 -m http.server
-# then visit http://localhost:8000
 ```
+
+隨時可用的版本是線上站點——見 [部署](#部署)。
+
+## 內容 pipeline
+
+新演講透過一條輕量的**發現 → 挑選 → 生草稿 → 複審 → 上站** pipeline 進到站上。
+站點本身維持零後端——「資料庫」就是進 git 的 JSON 加上 GitHub Actions:
+
+```text
+channels.json ─poll(cron)─▶ queue.json ─review(你挑片)─▶ approved
+  ─gen-note --pr(字幕 → Claude 草稿 + 中文 + 分類)─▶
+  PR(CI:build + i18n-check・你複審)─merge 到 main─▶ Vercel build + 部署
+```
+
+- [`tools/poll.mjs`](tools/poll.mjs) —— 把各頻道 RSS 抓進 `queue.json`
+  (由 [`.github/workflows/poll.yml`](.github/workflows/poll.yml) 排程)
+- [`tools/review.mjs`](tools/review.mjs) —— 本機 UI,Approve / Reject 待挑選影片
+- [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` —— 字幕 → house-style 筆記 +
+  繁體中文翻譯 + 分類建議,並自動開複審 PR
+- **兩道人工關卡:** 決定收哪些影片、以及在 PR 上複審每篇生成的筆記
+
+完整設計見 [`PRD-v2.md`](PRD-v2.md);逐階段狀態見 [`todo.md`](todo.md)。
+
+## 部署
+
+部署在 **Vercel**,採 Git 整合——每次 push/merge 到 `main` 就跑 `npm run build`
+並重新部署;Pull Request 會各自產生 Preview Deployment。
+
+- **Live:** <!-- LIVE_URL -->_(首次部署後補上 Vercel 網址)_
+- 頁面(`index.html` / `index.zh.html`)**不進版控**——由 Vercel 從來源建置
+  ([`vercel.json`](vercel.json) 設定 `buildCommand: npm run build`)。
+- 純資料 commit(poll bot 更新 `queue.json`)會透過 Vercel 的 *Ignored Build Step*
+  略過重建,只有真正的內容變更才觸發部署。
 
 ## 專案結構
 
 ```
-index.html        # generated English page, self-contained (commit it)
-index.zh.html     # generated Traditional Chinese page (commit it)
+index.html        # generated English page (build artifact — git-ignored)
+index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
 tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
@@ -126,7 +158,7 @@ Node.js。執行一次即可同時產生 `index.html` 與 `index.zh.html`。
 
 ## 方法與佐證
 
-- **資料來源：** 全部 100 篇 Markdown 演講筆記，皆完整渲染並嵌入建置後的頁面中
+- **資料來源：** 全部 101 篇 Markdown 演講筆記，皆完整渲染並嵌入建置後的頁面中
   （不依賴外部 `.md` 檔案）。
 - **雙重佐證：** 每則摘要皆同時連結至完整原始筆記（可於頁面內展開）與來源
   YouTube 影片。

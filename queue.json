@@ -6,8 +6,8 @@
     "published": "2026-07-08T15:00:21+00:00",
     "thumb": "https://i.ytimg.com/vi/PwhlxJrjQgQ/hqdefault.jpg",
     "url": "https://youtu.be/PwhlxJrjQgQ",
-    "status": "pending",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-101",
     "note": null
   },
   {
@@ -165,28 +165,6 @@
     "note": null
   },
   {
-    "videoId": "O-CBZ3JtRvo",
-    "title": "Training Frontier Models to Out-Think Hackers — Uri Rolls, Arithmetic & Thom Wolf, Hugging Face",
-    "channel": "AI Engineer",
-    "published": "2026-07-24T05:19:15+00:00",
-    "thumb": "https://i.ytimg.com/vi/O-CBZ3JtRvo/hqdefault.jpg",
-    "url": "https://youtu.be/O-CBZ3JtRvo",
-    "status": "pending",
-    "docId": null,
-    "note": null
-  },
-  {
-    "videoId": "GgLQ02aO-hs",
-    "title": "The Unreasonable Effectiveness of Separating the Task from the Model — Maxime Rivest & Isaac Miller",
-    "channel": "AI Engineer",
-    "published": "2026-07-23T17:45:06+00:00",
-    "thumb": "https://i.ytimg.com/vi/GgLQ02aO-hs/hqdefault.jpg",
-    "url": "https://youtu.be/GgLQ02aO-hs",
-    "status": "pending",
-    "docId": null,
-    "note": null
-  },
-  {
     "videoId": "-I5W5QVAT8E",
     "title": "Notion's Token Town — Sarah Sachs, Notion",
     "channel": "AI Engineer",
@@ -325,6 +303,28 @@
     "published": "2026-07-22T20:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/khVX_BUnEwU/hqdefault.jpg",
     "url": "https://youtu.be/khVX_BUnEwU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Q0VkgCyNVUg",
+    "title": "CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens — Stephen Chin, Neo4j",
+    "channel": "AI Engineer",
+    "published": "2026-07-22T18:30:02+00:00",
+    "thumb": "https://i.ytimg.com/vi/Q0VkgCyNVUg/hqdefault.jpg",
+    "url": "https://youtu.be/Q0VkgCyNVUg",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "VGN22pPpb-8",
+    "title": "Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer — Emil Eifrem, Neo4j",
+    "channel": "AI Engineer",
+    "published": "2026-07-22T17:00:38+00:00",
+    "thumb": "https://i.ytimg.com/vi/VGN22pPpb-8/hqdefault.jpg",
+    "url": "https://youtu.be/VGN22pPpb-8",
     "status": "pending",
     "docId": null,
     "note": null
@@ -495,28 +495,6 @@
     "note": null
   },
   {
-    "videoId": "o-IunU6b1t8",
-    "title": "Brian Douglas - The beginners guide to training AI on your own code - AI Native DevCon June 2026",
-    "channel": "AI Native Dev",
-    "published": "2026-07-24T08:19:31+00:00",
-    "thumb": "https://i.ytimg.com/vi/o-IunU6b1t8/hqdefault.jpg",
-    "url": "https://youtu.be/o-IunU6b1t8",
-    "status": "pending",
-    "docId": null,
-    "note": null
-  },
-  {
-    "videoId": "qpbSecwtMTo",
-    "title": "Take All the Data, Put It in a Knowledge Graph, Then Don't Use It Like a RAG",
-    "channel": "AI Native Dev",
-    "published": "2026-07-23T18:00:09+00:00",
-    "thumb": "https://i.ytimg.com/vi/qpbSecwtMTo/hqdefault.jpg",
-    "url": "https://youtu.be/qpbSecwtMTo",
-    "status": "pending",
-    "docId": null,
-    "note": null
-  },
-  {
     "videoId": "Pb6vNbnFYHU",
     "title": "BONUS EPISODE: 76 Malicious AI Skills Were Hiding in Plain Sight",
     "channel": "AI Native Dev",
@@ -655,6 +633,28 @@
     "published": "2026-07-17T14:00:23+00:00",
     "thumb": "https://i.ytimg.com/vi/kJe2Nbxunco/hqdefault.jpg",
     "url": "https://youtu.be/kJe2Nbxunco",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "mB74LGAmmV0",
+    "title": "Daniel Jones & Tomasz Maj - More software, faster - Odevo's AI Native transformation - AI DevCon '26",
+    "channel": "AI Native Dev",
+    "published": "2026-07-17T05:53:27+00:00",
+    "thumb": "https://i.ytimg.com/vi/mB74LGAmmV0/hqdefault.jpg",
+    "url": "https://youtu.be/mB74LGAmmV0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "m9fRiMjhf1Y",
+    "title": "Stop blindly spending tokens",
+    "channel": "AI Native Dev",
+    "published": "2026-07-16T14:00:39+00:00",
+    "thumb": "https://i.ytimg.com/vi/m9fRiMjhf1Y/hqdefault.jpg",
+    "url": "https://youtu.be/m9fRiMjhf1Y",
     "status": "pending",
     "docId": null,
     "note": null

@@ -2,7 +2,7 @@
 
 > **English** · [繁體中文](README.zh-TW.md)
 
-A systematic read-through of **100 conference and YouTube talk notes** on AI
+A systematic read-through of **101 conference and YouTube talk notes** on AI
 engineering, sorted into **9 thematic categories** and distilled into short,
 skimmable key-point summaries — plus **9 cross-cutting insights** drawn from the
 entire corpus.
@@ -23,7 +23,7 @@ the toggle switches between them while preserving your place on the page.
 
 ## Highlights
 
-- **100 talks** distilled into short key-point summaries.
+- **101 talks** distilled into short key-point summaries.
 - **9 thematic categories** (A–I) with a category-distribution overview.
 - **9 cross-cutting insights** synthesized across all talks.
 - **Dual evidence for every summary:**
@@ -72,25 +72,59 @@ Each talk is assigned a single primary theme.
 
 ## Usage
 
-Open the published page in any modern browser:
+The two pages are **build artifacts and are no longer committed**, so build them
+from source first, then open one in a browser:
 
 ```bash
+npm run build          # emits index.html + index.zh.html
+
 # macOS
 open index.html
-
 # Linux
 xdg-open index.html
-
-# or serve it locally
+# or serve locally, then visit http://localhost:8000
 python3 -m http.server
-# then visit http://localhost:8000
 ```
+
+The always-on version is the live site — see [Deployment](#deployment).
+
+## Content pipeline
+
+New talks reach the site through a lightweight **discover → pick → draft → review
+→ publish** pipeline. The site itself stays backend-free — the "database" is just
+git-tracked JSON plus GitHub Actions:
+
+```text
+channels.json ─poll (cron)─▶ queue.json ─review (you pick)─▶ approved
+  ─gen-note --pr (transcript → Claude draft + 中文 + category)─▶
+  PR (CI: build + i18n-check · you review) ─merge to main─▶ Vercel build + deploy
+```
+
+- [`tools/poll.mjs`](tools/poll.mjs) — pull each channel's RSS into `queue.json`
+  (scheduled by [`.github/workflows/poll.yml`](.github/workflows/poll.yml))
+- [`tools/review.mjs`](tools/review.mjs) — local UI to Approve / Reject pending videos
+- [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` — transcript → house-style note +
+  Traditional-Chinese translation + category suggestion, then opens a review PR
+- **Two human gates:** which videos to keep, and reviewing each generated note in its PR
+
+Full design in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
+
+## Deployment
+
+Deployed on **Vercel** with Git integration — every push/merge to `main` runs
+`npm run build` and redeploys; pull requests get their own Preview Deployment.
+
+- **Live:** <!-- LIVE_URL -->_(add the Vercel URL after the first deploy)_
+- The pages (`index.html` / `index.zh.html`) are **not committed** — Vercel builds
+  them from source ([`vercel.json`](vercel.json) sets `buildCommand: npm run build`).
+- Pure-data commits — the poll bot updating `queue.json` — skip the rebuild via
+  Vercel's *Ignored Build Step*, so only real content changes trigger a deploy.
 
 ## Project structure
 
 ```
-index.html        # generated English page, self-contained (commit it)
-index.zh.html     # generated Traditional Chinese page (commit it)
+index.html        # generated English page (build artifact — git-ignored)
+index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
 tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
@@ -138,7 +172,7 @@ improve a translation.
 
 ## Method & evidence
 
-- **Data source:** all 100 Markdown talk notes, fully rendered and embedded in
+- **Data source:** all 101 Markdown talk notes, fully rendered and embedded in
   the built page (no dependency on external `.md` files).
 - **Dual grounding:** every summary links to both the full original notes
   (expandable in-page) and the source YouTube video.
