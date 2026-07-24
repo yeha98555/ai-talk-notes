@@ -119,6 +119,8 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] 建立 `vercel.json`(`buildCommand: npm run build`【B 必要】、`outputDirectory: .`、必要的 `cleanUrls`/路由)
 - [ ] Vercel 匯入 GitHub repo,Production Branch 設 `main`
 - [ ] 確認 PR 會產生 Preview Deployment
+- [ ] 用 `.vercelignore` 或 Vercel「Ignored Build Step」擋掉純資料變更觸發部署:
+      poll bot 每輪會 commit `queue.json` 到 main,不該因此重新部署(只有 `src/` 內容變動才需要 build)
 
 ### 自動重新部署
 - [ ] 驗證 merge 到 main 後 Vercel 自動觸發 build + deploy(Git 整合預設行為)
@@ -142,3 +144,4 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] doc id 不撞號
 - [ ] LLM 分類僅為「建議」,一律以 PR 複審為準
 - [ ] 不改動既有 `build.mjs` / `order.json` / `cat-*.md` 的格式與行為
+- [ ] `poll.yml` 的 `actions/checkout@v4` / `setup-node@v4` 依賴 Node 20(將淘汰,現被 GitHub 強制跑在 Node 24 上,功能正常);適時升到 `@v5`
