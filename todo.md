@@ -87,21 +87,26 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## Phase 3 — LLM 生成 note 草稿
 
+### `tools/transcript.mjs`(gen-note 前置,已獨立完成)
+- [x] 免 API key 抓 YouTube 字幕(InnerTube ANDROID → timedtext XML → 純文字)
+- [x] 無字幕優雅回 `{ text: null, reason }`,供 gen-note 標 `needs-transcript`
+
 ### `tools/gen-note.mjs`
-- [ ] 抓 transcript;抓不到 → 標 `needs-transcript`,不硬產
-- [ ] 呼叫 Claude,用既有 note(如 `doc-100.md`)當 few-shot 鎖 house style
-- [ ] doc id 依 `order.json` 現有最大值 +1 配號(同批不搶號)
-- [ ] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
-- [ ] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
-- [ ] LLM 分類 A–I → append 到 `cat-K.md` 的 `docs:` + `order.json`
-- [ ] 回填 queue 的 `docId`,status 標 `published`
-- [ ] API key 走環境變數,**絕不進 repo**
+- [x] 抓 transcript(用 `transcript.mjs`);抓不到 → 標 `needs-transcript`,不硬產
+- [x] 呼叫 Claude(`claude-opus-4-8`,`fetch` 直打 Messages API,零依賴),用 `doc-100.md` 當 few-shot 鎖 house style
+- [x] doc id 依 `order.json` 現有最大值 +1 配號(同批遞增不搶號)
+- [x] 產 `src/notes/doc-N.md`(frontmatter 三欄齊全 + 內文)
+- [x] 產中文翻譯 `src/i18n/zh/notes/doc-N.md`
+- [x] LLM 分類 A–I → 卡片依標題字母序插入 `cat-K.md`(`docs:` 對齊)+ zh 對照 + `order.json`
+- [x] 回填 queue 的 `docId`,status 標 `published`
+- [x] 額外:自動 bump 演講總數(精確 pattern,跳過 `doc-N`/`#tN`/`#N`/`%`)—— 定案「工具 bump + PR 複審把關」
+- [x] API key 走環境變數 `ANTHROPIC_API_KEY`,**絕不進 repo**;支援 `--dry-run` 免 key 驗機械環節
 
 ### 驗收
-- [ ] 對一支 approved 影片跑 gen-note,產物通過 `npm run build`
-- [ ] 通過 `node tools/i18n-check.mjs`
-- [ ] 草稿格式與既有 note 一致(frontmatter / 段落 / 清單)
-- [ ] 分類落進正確 cat 檔、`order.json` 有新 id
+- [x] `--dry-run` 實跑一支 approved 影片:產物通過 `npm run build`(兩頁 101 talk notes)
+- [x] 通過 `node tools/i18n-check.mjs`(coverage 101/101、structural parity OK)
+- [x] 分類落進正確 cat 檔(卡片字母序就位)、`order.json` 有新 id、總數 100→101 各檔命中正確
+- [ ] **需 live key 跑一次確認草稿品質**:實際 Claude 呼叫產出的 frontmatter/段落與既有 note house style 一致(structured output 形狀已按 claude-api skill 實作,待真實回應校準)
 
 ## Phase 4 — 複審與上站流程收斂
 
