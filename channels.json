@@ -2,5 +2,6 @@
   { "id": "UCAezwIIm1SfsqdmbQI-65pA", "name": "AI Council", "handle": "@aicouncilconf" },
   { "id": "UCLKPca3kwwd-B59HNr-_lvA", "name": "AI Engineer", "handle": "@aiDotEngineer" },
   { "id": "UCHlNU7kIZhRgSbhHvFoy72w", "name": "Hugging Face", "handle": "@HuggingFace" },
-  { "id": "UCg3pI4p6OKSFrDVZcwRIx8A", "name": "AI Native Dev", "handle": "@tessl-ai" }
+  { "id": "UCg3pI4p6OKSFrDVZcwRIx8A", "name": "AI Native Dev", "handle": "@tessl-ai" },
+  { "id": "UCteq_tbr6F-KZ0JhaY9fy0g", "name": "DataEngBytes", "handle": "@DataEngBytes" }
 ]
