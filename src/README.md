@@ -27,10 +27,10 @@ a translation falls back to English.
 | `partials/nav.html` | The sticky table-of-contents nav. |
 | `partials/footer.html` | The "Method & Evidence" footer. |
 | `sections/overview.html` | Category-distribution overview (HTML). |
-| `sections/themes.html` | The 9 cross-cutting insights, with inline `#doc-N` citations (HTML). |
+| `sections/themes.html` | The 9 cross-cutting insights, with inline `#t<N>` citations that link to the matching talk cards (HTML). |
 | `sections/cat-A.md` … `cat-I.md` | **English** card source: structural frontmatter (`color`, ordered `docs`) + per-card title/speaker/summary. |
 | `notes/shell.html` | The single lightbox **shell** all notes render into. |
-| `notes/doc-1.md` … `doc-99.md` | **English** note sources (frontmatter title/speaker/video + Markdown body). |
+| `notes/doc-1.md` … `doc-131.md` | **English** note sources (frontmatter title/speaker/video + Markdown body). |
 | `notes/order.json` | The order in which the note lightboxes are emitted. |
 | `scripts/modal.js` | Hash-driven lightbox open/close + Esc handling. |
 | `scripts/reading-progress.js` | Per-talk "finished" buttons and the reading-progress bar. |

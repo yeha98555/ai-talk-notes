@@ -26,10 +26,10 @@
 | `partials/nav.html` | 置頂固定的目錄導覽列。 |
 | `partials/footer.html` | 「方法與佐證（Method & Evidence）」頁尾。 |
 | `sections/overview.html` | 分類分布總覽（HTML）。 |
-| `sections/themes.html` | 9 項跨主題洞察，帶有行內 `#doc-N` 引用連結（HTML）。 |
+| `sections/themes.html` | 9 項跨主題洞察，帶有行內 `#t<N>` 引用連結，連往對應的演講卡片（HTML）。 |
 | `sections/cat-A.md` … `cat-I.md` | **英文**卡片來源：結構 frontmatter（`color`、有序的 `docs`）＋ 每張卡片的標題／講者／摘要。 |
 | `notes/shell.html` | 所有筆記共同渲染進去的單一燈箱**外殼**。 |
-| `notes/doc-1.md` … `doc-99.md` | **英文**筆記來源（frontmatter 的 title／speaker／video ＋ Markdown 內文）。 |
+| `notes/doc-1.md` … `doc-131.md` | **英文**筆記來源（frontmatter 的 title／speaker／video ＋ Markdown 內文）。 |
 | `notes/order.json` | 筆記燈箱輸出的順序。 |
 | `scripts/modal.js` | 以網址 hash 驅動的燈箱開關，以及 Esc 鍵處理。 |
 | `scripts/reading-progress.js` | 各演講的「已完成」按鈕與閱讀進度條。 |
