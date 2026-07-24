@@ -3,7 +3,7 @@
 > [English](OPERATIONS.md) · **繁體中文**
 
 日常怎麼跑內容 pipeline:哪些是自動發生的,哪些步驟需要**你**當品質關卡。背後設計
-見 [`PRD-v2.md`](docs/PRD-v2.md)(基礎 pipeline)與 [`PRD-v3.md`](docs/PRD-v3.md)(GitHub Issue
+見 [`PRD-v2.md`](PRD-v2.md)(基礎 pipeline)與 [`PRD-v3.md`](PRD-v3.md)(GitHub Issue
 控制面板);工具細節見 [`tools/`](tools/) 原始碼與 [`CONTRIBUTING.zh-TW.md`](CONTRIBUTING.zh-TW.md)。
 
 ## 資料流(一眼看懂)
@@ -92,9 +92,13 @@ node tools/review.mjs             # 開 http://localhost:4321
 對每支 pending 影片按 **Approve / Reject**(可填備註);這會即時改寫 `queue.json` 的 `status`。
 弄完自己 commit。
 
-> Issue 本來就會自動顯示 triage(CI,走 GitHub Models)。本機 **`triage-queue` skill**——講
-> 「幫我看 pending 哪個值得收」/「triage the queue」——是 `review.mjs` 路徑的離線等價:一樣的
-> **⭐ / 🤔 / ⏭️** 排名、建議分類、可複製的 approve 清單;不主動改 `status`,除非你要它套用。
+> **什麼時候用 `triage-queue` skill。** Issue 本來就會自動顯示 triage(CI,走 GitHub
+> Models)——那是預設,通常就夠用。以下情況才叫本機 **`triage-queue`** skill(「幫我看
+> pending」/「triage the queue」):**(1) 想隨時重新篩現有 pending**——CI 只在 poll 抓到
+> *新片*時才 triage,不會幫你重刷一份挑到一半的清單;**(2) 想要更謹慎的一次判斷**——它由
+> 互動 Claude 判,而非 `gpt-4o-mini`;或 **(3) 你正用本機 `review.mjs` UI 挑片**——那個 UI
+> 本身不顯示排名。一樣的 **⭐ / 🤔 / ⏭️** 排名 + 建議分類 + 可複製 approve 清單;不主動改
+> `status`,除非你要它套用。
 
 > Port 被占用?`PORT=4322 node tools/review.mjs`。
 

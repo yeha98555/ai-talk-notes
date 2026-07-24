@@ -103,10 +103,15 @@ node tools/review.mjs             # opens http://localhost:4321
 Click **Approve / Reject** on each pending video (optional note); this rewrites the
 `status` in `queue.json` live. Commit it when done.
 
-> The Issue already shows triage automatically (CI, via GitHub Models). The local
-> **`triage-queue` skill** — "triage the queue" / "幫我看 pending 哪個值得收" — is the
-> offline equivalent for the `review.mjs` path: same **⭐ / 🤔 / ⏭️** ranking, suggested
-> categories, and a copy-ready approve-list; it never changes `status` unless you ask.
+> **When to reach for the `triage-queue` skill.** The Issue already shows triage
+> automatically (CI, via GitHub Models) — that's the default, and usually enough. Run
+> the local **`triage-queue`** skill ("triage the queue" / "幫我看 pending") only when you
+> want to: **(1) re-triage the current pending list on demand** — the CI only triages
+> when poll finds *new* videos, so it won't refresh a list you're mid-way through;
+> **(2) get a more careful pass** — it's judged by interactive Claude rather than
+> `gpt-4o-mini`; or **(3) pick via the local `review.mjs` UI**, which shows no ranking of
+> its own. Same **⭐ / 🤔 / ⏭️** ranking + suggested categories + a copy-ready
+> approve-list; it never changes `status` unless you ask.
 
 > Port in use? `PORT=4322 node tools/review.mjs`.
 
