@@ -24,7 +24,10 @@ import { fileURLToPath } from "node:url";
 import { fetchTranscript } from "./transcript.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const MODEL = "claude-opus-4-8";
+// Summarize + translate + classify is a single-call task with a few-shot style
+// example and a human PR review after, so Sonnet is plenty. Override per run with
+// GEN_NOTE_MODEL=claude-opus-4-8 for an unusually hard talk.
+const MODEL = process.env.GEN_NOTE_MODEL || "claude-sonnet-5";
 const p = (...f) => path.join(ROOT, ...f);
 const readText = (f) => fs.readFileSync(p(f), "utf8");
 const readJSON = (f) => JSON.parse(readText(f));
