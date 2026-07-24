@@ -3,9 +3,9 @@
 > 對應 [`PRD-v3.md`](PRD-v3.md)。把「挑片 + 生草稿觸發」流程搬上 GitHub：review issue 變控制面板。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅ —— **全數完成並已 release 到 main（PR #6）、main 上端到端驗證通過**。
-> 控制面板實測有效：owner 在 issue #1 勾選 + 送出 → 一個 commit 到 develop + 重繪 + 留言；poll 於 main 抓新片 → 推 develop、triage 重建 body、main 不動。
-> **下一步：Phase 4**（gen-note 記錄 PR#，batched；純本機、無 main-gated 項）。
+> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅、Phase 4 ✅ —— **PRD-v3 四階段全數完成並驗證通過**。
+> Phase 1–3 已 release 到 main（PR #6）、main 上端到端實測有效；Phase 4（gen-note 記 PR#）本機 `--dry-run --pr` 驗過。
+> **v3 收工。** 後續只剩「未來優化」（Whisper fallback／全自動生成，皆非 MVP）。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -136,13 +136,16 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 > 提醒：approve/reject 本身**不開 PR**（只改 develop 的 `queue.json` status，reject 永不進生成）。
 
 ### `tools/gen-note.mjs`（微調）
-- [ ] `gh pr create` 成功後，找出 open 的 `video-queue` issue
-- [ ] `gh issue comment` 寫「🧾 這批 → PR #NN：<PR 連結>；videoId / docId 清單」
-- [ ] 找不到 open issue 時優雅略過（不讓記錄失敗中斷 PR 流程）
+- [x] `gh pr create` 成功後（`prUrl` 非空），找出 open 的 `video-queue` issue（`gh issue list`）
+- [x] `gh issue comment` 寫「🧾 這批 note 草稿 → PR #NN：<連結>」+ 每支 `docId · title (videoId)`
+- [x] 找不到 open issue／留言失敗 → log 後略過，不中斷 run（PR 已開）
 
 ### 驗收
-- [ ] 本機 `gen-note --pr`（可先 `--dry-run --pr`）後，review issue 出現一則含 PR# 與該批 ids 的留言
-- [ ] 留言的 ids 與該 PR 實際處理的影片一致
+- [x] 本機 `--dry-run --pr` 實測：review issue #1 出現含 PR #7 + doc-132 的留言（格式帶影片名稱）
+- [x] 留言 ids 與 PR 實際處理一致：無字幕的 `ztdTed5egrM` 被跳過、留言只列真正產出的 `doc-132`
+- [x] 測試痕跡已清除（刪留言、關 PR #7 + 刪分支；develop 的 approved 未受影響）
+
+> **狀態（2026-07-24）**：✅ 全綠。純本機、無 main-gated 項。腳本改動進 develop 即生效（gen-note 本就本機跑）。
 
 ## 橫向注意事項（每階段隨手檢查）
 
