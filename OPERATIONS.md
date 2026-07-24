@@ -24,6 +24,11 @@ YouTube RSS ──① poll (cron)──▶ queue.json + "Video review queue" Iss
 Steps **① and ⑤ are fully automatic**. Steps **②③④ are yours** — the human is
 the quality gate.
 
+> **Branch model:** `queue.json` (and `channels.json`) live on **`develop`** — poll
+> reads and writes them there, and you pick/draft there. **`main` is a pure release
+> branch**, updated only by the `develop → main` release PR (⑤). Nothing writes to
+> `main` directly.
+
 ## Prerequisites (one-time)
 
 - `gh` CLI installed and authenticated (`gh auth login`) — `gen-note --pr` uses it.
@@ -48,7 +53,9 @@ straight into the queue — which drops you into the normal
 Notes:
 
 - A channel change only takes effect for the daily 08:00 UTC poll **once it reaches
-  `main`** — commit `channels.json` to `main` (the skill proposes the commit and asks first).
+  `develop`** (poll now checks out `develop`) — commit `channels.json` to `develop`
+  (the skill proposes the commit and asks first). It reaches `main` later via the
+  `develop → main` release PR.
 - Removing a channel stops *future* polling only; videos already in `queue.json` stay.
 - Manual fallback (what the skill automates): edit `channels.json` — an entry is
   `{ "id": "UC…", "name": "…", "handle": "@…" }`, only `id` drives the fetch — then
@@ -61,7 +68,7 @@ Notes:
 The `poll.yml` GitHub Action runs every day at **08:00 UTC**. When there are new
 videos it:
 
-- appends them to `queue.json` as `status: pending` and pushes to `main` (`[skip ci]`)
+- appends them to `queue.json` as `status: pending` and pushes to `develop` (`[skip ci]`)
 - opens/updates a single **"📥 Video review queue"** Issue listing what's pending
 
 👉 **You:** open that Issue and glance at the pending list. On days with no new
@@ -72,12 +79,11 @@ videos the Action stays silent and the Issue is untouched — nothing to do.
 ### Step 2 — Pick videos (manual)
 
 Do the pick **and** the draft on the **same branch** (`develop`), so the
-`queue.json` edit never has to be carried across a `git switch`. Start from
-`develop`, pull in the queue the poll bot pushed to `main`, then open the picker UI:
+`queue.json` edit never has to be carried across a `git switch`. `queue.json` lives
+on `develop` now — the poll bot pushes there — so just pull, then open the picker UI:
 
 ```bash
-git switch develop && git pull
-git checkout main -- queue.json   # bring in the queue the poll bot pushed to main
+git switch develop && git pull    # queue.json is already here — no cross-branch checkout
 node tools/review.mjs             # opens http://localhost:4321
 ```
 
