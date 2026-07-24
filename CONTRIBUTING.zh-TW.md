@@ -28,14 +28,16 @@
 ## 建置與檢查
 
 ```bash
-npm run build              # or: node build.mjs — emits index.html + index.zh.html
+npm run build              # 會先跑 content-check（prebuild），再產生 index.html + index.zh.html
 node tools/i18n-check.mjs  # verify the two pages stay structurally identical
 ```
 
-`i18n-check.mjs` 會比對兩個建置後頁面的 `id`／`href`／SVG 結構與外殼數量是否
-一致，回報翻譯涵蓋率，並標記出任何未翻譯的文字，或因缺少 frontmatter 欄位而
-出現的字面 `undefined`。執行結果應以 `0` 結束，且不應出現任何 `FAIL` 訊息。
-需要 Node.js；無需安裝任何套件。
+`content-check.mjs` 會在每次 `npm run build` 前自動執行（掛在 `prebuild`），
+對不完整的來源直接 hard-fail：字面 `placeholder` 佔位、空的或被截斷成半句的內文
+／卡片摘要，或某分類的 `docs:` 列出的 id 數多於實際卡片數。接著 `i18n-check.mjs`
+會比對兩個建置後頁面的 `id`／`href`／SVG 結構與外殼數量是否一致，回報翻譯涵蓋率，
+並標記出任何未翻譯的文字，或因缺少 frontmatter 欄位而出現的字面 `undefined`。兩者
+都應以 `0` 結束，且不應出現任何 `FAIL` 訊息。需要 Node.js；無需安裝任何套件。
 
 ## Markdown 格式
 

@@ -5,6 +5,8 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
+        "check": "node tools/content-check.mjs",
+        "prebuild": "node tools/content-check.mjs",
         "build": "node build.mjs"
     },
     "dependencies": {

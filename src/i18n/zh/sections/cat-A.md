@@ -65,9 +65,9 @@ TextQL 的 Ethan Ding 主張 AI 讓資料搬遷成本趨近於零，使今日以
 
 
 
-## placeholder
-@ placeholder
-placeholder
+## 缺失的那一層：為何語意與知識圖譜是 AI-Ready 資料系統不可或缺的基礎
+@ Juan Sequeda, data.world
+data.world 的 Juan Sequeda 主張，「與你的資料對話」真正缺少的一味是語意：在一項基準測試中，讓 LLM 拿到 OWL 本體論、並在虛擬化知識圖譜上撰寫 SPARQL，準確度比單純的 text-to-SQL 高出約 3 倍（後來更達約 4 倍）——這項結果日後被廣泛引用。他提醒「語意層」已淪為被過度濫用的行銷術語，並攤開一條成熟度光譜——商業詞彙表 → 受控詞彙 → BI 式語意層 → 分類法 → 本體論 → 知識圖譜——並指出知識圖譜能以統一的方式表示關聯式資料表、樹狀 JSON／XML 與 NLP 抽取的實體，且立基於 W3C 語意網數十年的標準（RDF、OWL、SKOS、SHACL），而這些是在網路上受訓的 LLM 早已相當熟悉的。
 
 ## 更精簡的代理程式，架構在更聰明的基礎之上：以本體論為基礎的語意層
 @ Emil Eifrem, Neo4j

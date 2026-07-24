@@ -12,9 +12,9 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
-## placeholder
-@ placeholder
-placeholder
+## AsyncOPD：on-policy distillation 能有多「過時」？
+@ Hugging Face Journal Club, Hugging Face
+一場 Hugging Face Journal Club 的論文討論，主題是非同步的 on-policy distillation（AsyncOPD）：把 on-policy distillation 的迴圈改為非同步，能將樣本生成與最佳化器解耦以提升吞吐量，但訓練所用的樣本會來自略微過時（stale）的策略——這篇論文探討的正是該方法能容忍多少 staleness，才不會讓這種落差抵銷掉加速帶來的效益。
 
 
 

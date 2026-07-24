@@ -27,10 +27,10 @@ a translation falls back to English.
 | `partials/nav.html` | The sticky table-of-contents nav. |
 | `partials/footer.html` | The "Method & Evidence" footer. |
 | `sections/overview.html` | Category-distribution overview (HTML). |
-| `sections/themes.html` | The 9 cross-cutting insights, with inline `#doc-N` citations (HTML). |
+| `sections/themes.html` | The 9 cross-cutting insights, with inline `#t<N>` citations that link to the matching talk cards (HTML). |
 | `sections/cat-A.md` … `cat-I.md` | **English** card source: structural frontmatter (`color`, ordered `docs`) + per-card title/speaker/summary. |
 | `notes/shell.html` | The single lightbox **shell** all notes render into. |
-| `notes/doc-1.md` … `doc-99.md` | **English** note sources (frontmatter title/speaker/video + Markdown body). |
+| `notes/doc-1.md` … `doc-131.md` | **English** note sources (frontmatter title/speaker/video + Markdown body). |
 | `notes/order.json` | The order in which the note lightboxes are emitted. |
 | `scripts/modal.js` | Hash-driven lightbox open/close + Esc handling. |
 | `scripts/reading-progress.js` | Per-talk "finished" buttons and the reading-progress bar. |
@@ -68,6 +68,12 @@ translations mirror it under `src/i18n/<locale>/`. For `src/i18n/zh/`:
 | `notes/doc-*.md` | Markdown | Frontmatter `title` + `speaker`, then the body prose as Markdown. (`video` is inherited from the English note.) |
 | `sections/cat-*.md` | Flat text | Frontmatter `heading` + `desc`, then one `## <card title>` / `@ <speaker>` / summary block per card, in the cards' order and count. |
 | `partials/{hero,nav,footer}.html`, `sections/{overview,themes}.html` | HTML mirror | Full HTML copies with the same structure (SVGs, metrics, inline citations don't reduce to plain text). Translate visible text only; never touch `id`/`class`/`href`/SVG data. |
+
+`node tools/content-check.mjs` (dev-only, in `../tools/`) runs first — it is
+wired as `prebuild`, so every `npm run build` triggers it — and hard-fails on
+incomplete source across the English tree *and* every locale: a literal
+`placeholder` stub, an empty or mid-sentence-truncated note body or card summary,
+or a category whose `docs:` lists more ids than it has cards.
 
 `node tools/i18n-check.mjs` (dev-only, in `../tools/`) compares the two built
 pages for identical `id`/`href`/SVG/shell structure, reports coverage, and flags

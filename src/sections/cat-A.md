@@ -69,7 +69,7 @@ Argues that real enterprise data mostly lives in tables, so it uses a "tabular g
 
 ## The Missing Layer: Why Semantics and Knowledge Graphs Are Essential for AI-Ready Data Systems
 @ Juan Sequeda, data.world
-placeholder
+data.world's Juan Sequeda argues the missing ingredient in "chat with your data" is semantics: in a benchmark, giving the LLM an OWL ontology and asking it to write SPARQL over a virtualized knowledge graph proved about 3x (later ~4x) more accurate than plain text-to-SQL — a result widely cited since. He warns that "semantic layer" has become an overused marketing term and lays out a maturity spectrum — business glossary → controlled vocabulary → BI-style semantic layer → taxonomies → ontologies → knowledge graphs — noting that knowledge graphs uniformly represent relational tables, tree-shaped JSON/XML, and NLP-extracted entities, and rest on decades of W3C semantic-web standards (RDF, OWL, SKOS, SHACL) that web-trained LLMs already understand well.
 
 ## Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer
 @ Emil Eifrem, Neo4j

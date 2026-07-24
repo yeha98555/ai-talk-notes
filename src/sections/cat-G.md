@@ -16,7 +16,7 @@ Argues that today's LLMs are RLHF-optimized to be "assistants that please humans
 
 ## AsyncOPD: How Stale Can On-Policy Distillation Get?
 @ Hugging Face Journal Club, Hugging Face
-placeholder
+A Hugging Face Journal Club discussion of a paper on asynchronous on-policy distillation (AsyncOPD): making the on-policy distillation loop asynchronous decouples sample generation from the optimizer for higher throughput, but trains on samples drawn from a slightly stale policy — the paper asks how much staleness the method can tolerate before that drift outweighs the speedup.
 
 
 

@@ -31,14 +31,18 @@ are always safe to commit.
 ## Build & check
 
 ```bash
-npm run build              # or: node build.mjs — emits index.html + index.zh.html
+npm run build              # runs content-check first (prebuild), then emits index.html + index.zh.html
 node tools/i18n-check.mjs  # verify the two pages stay structurally identical
 ```
 
-`i18n-check.mjs` compares the two built pages for identical `id`/`href`/SVG
-structure and shell counts, reports translation coverage, and flags any
-untranslated text or a literal `undefined` from a missing frontmatter field. It
-should exit `0` with no `FAIL` lines. Requires Node.js; no packages to install.
+`content-check.mjs` runs automatically before every `npm run build` (wired as
+`prebuild`) and hard-fails on incomplete source: a literal `placeholder` stub, an
+empty or mid-sentence-truncated body/summary, or a category that lists more docs
+than it has cards. `i18n-check.mjs` then compares the two built pages for
+identical `id`/`href`/SVG structure and shell counts, reports translation
+coverage, and flags any untranslated text or a literal `undefined` from a missing
+frontmatter field. Both should exit `0` with no `FAIL` lines. Requires Node.js;
+no packages to install.
 
 ## Markdown formats
 
