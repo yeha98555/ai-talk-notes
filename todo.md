@@ -110,10 +110,13 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 ## Phase 4 — 複審與上站流程收斂
 
-- [ ] gen-note 後自動開 PR(或產生本機分支供開 PR)
-- [ ] CI 在 PR 跑 `npm run build` + `tools/i18n-check.mjs`
-- [ ] 在 PR 上複審/修訂 note 與分類 → merge → 上站
-- [ ] **驗收**:PR diff 正確、CI 綠燈、merge 後站點正確顯示新 note
+- [x] gen-note `--pr`:產出後自動 build → 開分支 → commit → push → `gh pr create`(base = 當前分支)
+- [x] `.github/workflows/ci.yml`:PR 與 push 到 main/develop 時跑 `npm run build` + `tools/i18n-check.mjs`
+- [x] 在 PR 上複審/修訂 note 與分類 → merge → 上站(人工關卡;分類僅為建議)
+- [x] **驗收(2026-07-24 GitHub 實跑)**:`--dry-run --pr` 開出真 PR #2、ci.yml 由 pull_request 觸發 `build-check pass`(綠燈)、PR diff 含 note+zh+cat+order+count+index;merge 後上站已由 doc-101 實證(develop 的 index 正確顯示)
+- [x] 額外修 bug:bumpCount 過度比對(101→102 誤改「Evals 101」標題)→ 改錨定後續名詞
+
+> 註:live 測試的 PR/分支已關閉清除;bumpCount 修正已用 20 處總數 + `Evals 101` 反例驗證。
 
 ## Phase 5 — Vercel 部署與自動重新部署
 
