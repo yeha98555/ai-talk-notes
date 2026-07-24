@@ -2,22 +2,22 @@
 
 > [English](OPERATIONS.md) · **繁體中文**
 
-日常怎麼跑內容 pipeline:哪些是自動發生的,哪些三步需要**你**當品質關卡。背後設計
-見 [`PRD-v2.md`](PRD-v2.md);工具細節見 [`tools/`](tools/) 原始碼與
-[`CONTRIBUTING.zh-TW.md`](CONTRIBUTING.zh-TW.md)。
+日常怎麼跑內容 pipeline:哪些是自動發生的,哪些步驟需要**你**當品質關卡。背後設計
+見 [`PRD-v2.md`](PRD-v2.md)(基礎 pipeline)與 [`PRD-v3.md`](PRD-v3.md)(GitHub Issue
+控制面板);工具細節見 [`tools/`](tools/) 原始碼與 [`CONTRIBUTING.zh-TW.md`](CONTRIBUTING.zh-TW.md)。
 
 ## 資料流(一眼看懂)
 
 ```text
-YouTube RSS ──① poll(cron)──▶ queue.json +「Video review queue」Issue
+YouTube RSS ──① poll(cron)──▶ queue.json + 📥 Issue 控制面板(triage + checkbox)
                                      │
-                    ② 你挑片  Approve / Reject   (tools/review.mjs)
+                    ② 你挑片 — 在 Issue 上勾 ✅/❌ 再勾 🚀 送出
+                                     │        (或本機 tools/review.mjs 按 Approve/Reject)
+                    ③ gen-note  字幕 → Claude 草稿 → PR(結果記回 Issue)
                                      │
-                    ③ gen-note  字幕 → Claude 草稿 → PR
+                    ④ 你在 PR 複審(筆記 + 分類)→ merge 進 develop
                                      │
-                    ④ 你在 PR 複審(筆記 + 分類)→ merge
-                                     │
-                    ⑤ Vercel  build + deploy ──▶ 上站
+                    ⑤ Release(develop → main)──▶ Vercel build + deploy ──▶ 上站
 ```
 
 **① 與 ⑤ 全自動**,**②③④ 是你的活**——人是品質關卡。
@@ -63,43 +63,48 @@ skill 會解析 `channel_id`、驗 RSS feed、安全地改 `channels.json`(去�
 `poll.yml` GitHub Action 每天 **08:00 UTC** 自動跑。有新片時:
 
 - 以 `status: pending` 追加進 `queue.json` 並 push 回 `develop`(`[skip ci]`)
-- 開/更新單一 **「📥 Video review queue」** Issue,列出待挑清單
+- 把單一 **「📥 Video review queue」** Issue 重建成**控制面板**:`triage.mjs` 用 GitHub
+  Models(`gpt-4o-mini`)把每支 pending 評成 **⭐ / 🤔 / ⏭️**,附建議分類與一句理由,每支
+  帶 **✅ approve / ❌ reject** checkbox,底部再放一個 **🚀 送出** box。
 
-👉 **你:** 打開那個 Issue,掃一眼待挑清單。沒新片的日子 Action 安靜、Issue 不動
+👉 **你:** 打開那個 Issue,掃一眼 triage。沒新片的日子 Action 安靜、Issue 不動
 ——什麼都不用做。
 
-> 想手動催一次:GitHub → **Actions → `poll` → Run workflow**。
+> 想手動催一次:GitHub → **Actions → `poll` → Run workflow**。triage 走 Action 的
+> `GITHUB_TOKEN` 打 GitHub Models(不用額外 key);萬一它暫時不可用,Issue 仍會列出每支
+> 影片、checkbox 照常可用。
 
-### Step 2 — 挑片(手動)
+### Step 2 — 挑片(在 Issue 上,或本機)
 
-挑片**和**生草稿都在**同一條分支**(`develop`)做完,`queue.json` 的改動就不用跨
-`git switch` 帶來帶去。`queue.json` 現在就住在 `develop`——poll bot 直接 push 到這裡
-——所以 pull 一下就好,再開挑片 UI:
+**主要 — 直接在 Issue 上(手機也能做):** 在每支影片下勾 **✅ approve** 或 **❌ reject**,
+全部勾好後勾底部的 **🚀 送出**。只勾 approve/reject 不會有動作——只有勾送出才套用:
+`queue-control.yml`(owner-only)把整批一次寫進 `develop`(**一個 commit**)、把每支 reject 的
+triage 理由寫進它的 `note`,再重繪 Issue(送出取消、已處理列移除)並留言 summary。兩個都不勾就
+維持 `pending` 留待之後。
+
+**備援 — 本機(離線或大量修改):** `queue.json` 住在 `develop`,pull 一下就好,再開本機挑片 UI:
 
 ```bash
 git switch develop && git pull    # queue.json 已在手邊,不用跨分支 checkout
 node tools/review.mjs             # 開 http://localhost:4321
 ```
 
-對每支 pending 影片按 **Approve / Reject**(可填備註)。這會即時改寫 `queue.json`
-的 `status`。挑完關掉分頁即可。
+對每支 pending 影片按 **Approve / Reject**(可填備註);這會即時改寫 `queue.json` 的 `status`。
+弄完自己 commit。
 
-> **先預篩(選用,advisory):** pending 一多時,先用 **`triage-queue` skill**——講
-> 「幫我看 pending 哪個值得收」/「triage the queue」。它會把每支 pending 排成
-> **⭐ Strong / 🤔 Maybe / ⏭️ Skip**,附建議分類與一句理由、標出重複片,並給你一份可直接
-> 複製的 approve 清單。它不改 `status`——你仍在 UI 按 Approve/Reject(或請它幫你套用選擇、
-> 把拒絕原因寫進各項的 `note`)。
+> Issue 本來就會自動顯示 triage(CI,走 GitHub Models)。本機 **`triage-queue` skill**——講
+> 「幫我看 pending 哪個值得收」/「triage the queue」——是 `review.mjs` 路徑的離線等價:一樣的
+> **⭐ / 🤔 / ⏭️** 排名、建議分類、可複製的 approve 清單;不主動改 `status`,除非你要它套用。
 
 > Port 被占用?`PORT=4322 node tools/review.mjs`。
 
 ### Step 3 — 生成筆記草稿 + 開 PR(手動)
 
-停在 `develop`——就是你剛 approve 的那條分支——`queue.json` 的改動就在這裡、不跨分支
-帶動,PR 也會以 `develop` 為 base 開出。`gen-note --pr` 會 `git add -A` 把**整個工作
-區**都 commit 進去,所以先確認乾淨:
+若你在 Issue 上批的,approve 已經在 `develop` 上了——**先 pull**。`gen-note --pr` 以 `develop`
+為 base 開 PR,而且**只 stage 它動到的檔**(不是 `git add -A`):
 
 ```bash
-git status        # 預期:只有 queue.json 被改動
+git switch develop && git pull    # 取回 queue-control 幫你 commit 的 approve
 
 # 正式跑(需要 API key;走環境變數,絕不進 repo)。
 ANTHROPIC_API_KEY=sk-... node tools/gen-note.mjs --pr
@@ -107,7 +112,8 @@ ANTHROPIC_API_KEY=sk-... node tools/gen-note.mjs --pr
 
 對「已 approve 且還沒 `docId`」的影片,每支它會一路做完:抓字幕 → Claude 產 `doc-N.md` + 繁體中文翻譯 → 分類 A–I 並把
 卡片插進對應的 `cat-*.md` → 更新 `order.json` 與演講總數 → 回填 queue 的 `docId`
-標 `published` → `npm run build` → 開分支、commit、push、`gh pr create`。
+標 `published` → `npm run build` → 開分支、commit、push、`gh pr create`,並在 review Issue
+**留言「🧾 這批 → PR #NN」**(一次一個 PR,每批 queue 對應到它的 PR)。
 
 實用變化:
 
@@ -148,16 +154,16 @@ Actions → **「Release (develop → main)」→ Run workflow** —— 它會�
 
 | 步驟 | 動作 | 位置 / 指令 |
 |---|---|---|
-| ① | 看有無 pending | GitHub Issue「📥 Video review queue」 |
-| ② | Approve / Reject | `git pull` → `node tools/review.mjs` |
-| ③ | 產草稿 + 開 PR | `ANTHROPIC_API_KEY=... node tools/gen-note.mjs --pr` |
-| ④ | 複審分類 + 內容 → merge | GitHub PR(等 CI 綠燈) |
-| ⑤ | 自動上站 | Vercel(merge 到 `main` 後) |
+| ① | 掃一眼 triage 過的 queue | GitHub Issue「📥 Video review queue」(⭐/🤔/⏭️ + checkbox) |
+| ② | Approve / Reject | 在 Issue 上勾 ✅/❌ + **🚀 送出**(或 `node tools/review.mjs`) |
+| ③ | 產草稿 + 開 PR | `git pull` → `ANTHROPIC_API_KEY=... node tools/gen-note.mjs --pr` |
+| ④ | 複審分類 + 內容 → merge 進 develop | GitHub PR(等 CI 綠燈) |
+| ⑤ | Release + 上站 | Actions → **「Release (develop → main)」** → Vercel |
 
 **沒新片的日子只有 ① 要做——瞄一眼 Issue,其餘免動。**
 
-> 挑片前可先用 **`triage-queue`** skill 預篩(⭐/🤔/⏭️ 排名 + 建議分類 + approve 清單)
-> ——advisory,加速 Step ②。
+> Issue 會自動顯示 triage(CI,走 GitHub Models)。本機 **`triage-queue`** skill 是
+> `review.mjs` 路徑的離線等價。
 >
 > 偶爾、非每日:用 **`manage-channels`** skill 新增/移除追蹤頻道(貼網址即可)——它餵給
 > Step ①。詳見上面的《管理訂閱頻道》。
