@@ -42,7 +42,7 @@
 |---|---|---|
 | `queue.json` 的家 | **搬到 `develop`** | 消掉本機的 `git checkout main -- queue.json`；`main` 只被人工 release PR 更新，issue 自動化永不碰 production 分支。 |
 | poll 推送目標 | **一起改推 `develop`** | 否則 poll 塞 pending 到 main、控制面板改 status 到 develop，`queue.json` 兩邊分岔。必須同源。 |
-| 批核互動方式 | **Task-list checkbox** | 在 issue body 每片一列，勾 ✅/❌ 觸發 `issues.edited`。視覺直覺；靠隱藏 `vid` 錨點保證對應可靠。 |
+| 批核互動方式 | **Task-list checkbox + 底部「🚀 送出」** | 每片勾 ✅/❌ 只存進 body、不觸發任何動作；勾最底部「送出」才套用，一次變**一個 commit**。勾選中途不動作（順帶免除改錯字誤觸）；靠隱藏 `vid` 錨點保證對應可靠。 |
 | CI triage 後端 | **GPT-4o-mini（GitHub Models）** | 免費 tier、零雲端 key、零 Azure 帳單；title-only 評分綽綽有餘（後面還有 gen-note 讀逐字稿 + PR 複審兩道關卡）。 |
 | 生成程度 | **維持本機 `gen-note --pr`** | CI 抓不到字幕（見非目標）。生成本來就是人的守門點，留本機最省事也最安全。 |
 | 權限邊界 | **owner-only** | 控制面板 workflow 只認負責人的操作，其他人的編輯忽略。 |
@@ -54,10 +54,10 @@ YouTube RSS ──poll.yml(cron，改推 develop)──▶ queue.json[pending] @
                                                     │
                                     tools/triage.mjs（GPT-4o-mini / GitHub Models）
                                                     ▼
-        📥 Review Issue：每片一列 + ☐approve / ☐reject（含隱藏 <!-- vid:xxx --> 錨點 + triage 理由）
+        📥 Review Issue：每片 ☐approve/☐reject（含隱藏 <!-- vid:xxx --> 錨點 + triage 理由）＋ 底部 ☐🚀送出
                                                     │
-                    你(owner) 在 issue 打勾 ──issues.edited──▶ queue-control.yml
-                                                    │   （owner-only；改 status，reject 沿用 triage 理由為 note）
+              你(owner) 勾選 approve/reject（不觸發）→ 勾「🚀送出」──issues.edited──▶ queue-control.yml
+                                                    │   （owner-only；僅在送出勾選時套用＝一個 commit；reject 沿用 triage 理由為 note；套用後送出自動取消）
                                                     ▼
                               queue.json[approved/rejected] commit → develop
                                                     │
@@ -138,20 +138,26 @@ YouTube RSS ──poll.yml(cron，改推 develop)──▶ queue.json[pending] @
 
 ### Phase 3 — issue checkbox 批核控制面板（1.5 天）
 
-**目標**：負責人在 issue 打勾即改 `queue.json`，owner-only、可靠、冪等。
+**目標**：負責人在 issue 勾好 approve/reject，勾一下**底部「🚀 送出」**把整批變**一個 commit**；owner-only、可靠、冪等。
 
-- `queue-control.yml`：`on: issues.edited`；`if:` 同時滿足（a）該 issue 有 `video-queue` label、（b）
-  `github.event.sender.login == '<owner>'`（或 `author_association == 'OWNER'`）。非負責人的編輯直接忽略。
-- `tools/queue-apply.mjs`：解析 body → 依 `vid` 錨點與其下 checkbox 勾選狀態，組 id→action map
-  （✅ 勾 → approved；❌ 勾 → rejected + 把該列 triage 理由寫進 `note`；兩者皆未勾 → 維持 pending）→
-  只動當前 `pending` 項目、驗證 JSON → commit push develop。
-- **冪等 / 防重複**：套用後重繪 body，把已處理列標為「✔ 已 approved／❌ 已 rejected」並移除其 checkbox；
-  只對「勾選狀態 ≠ 已提交 status」的列動作，避免任何 body 編輯（改錯字）誤觸。加 `concurrency` group 串行化多次快速編輯。
-- `permissions: contents: write`（推 develop）、`issues: write`（重繪 body）。
+**送出機制（本 Phase 的核心）**：issue body 最底部有一個 `- [ ] 🚀 送出以上所有勾選` checkbox。逐一勾
+approve/reject **不觸發任何套用**（只是存進 body）；只有勾「送出」時 `queue-control.yml` 才動作，一次解析所有勾選、
+套用成一個 commit，再重繪 body（送出鍵自動取消、已處理列鎖定）。這同時消除「每勾一次一個 commit」的雜訊與改錯字誤觸。
+> 底部送出 checkbox 是 **body 契約的一部分**，由 Phase 2 的 `triage.mjs` 與本 Phase 的 `queue-apply.mjs` 共同渲染。
+
+- `tools/triage.mjs`（Phase 2 微調）：body 最底部渲染 `- [ ] 🚀 送出以上所有勾選（打勾＝套用成一個 commit；套用完自動取消）`。
+- `queue-control.yml`：`on: issues.edited`；`if:` 同時滿足（a）`video-queue` label、（b）
+  `github.event.sender.login == '<owner>'`、（c）body 的**送出 checkbox 已勾選**。三者缺一即 no-op（bot 重繪、非 owner 編輯、
+  只勾 approve/reject 未送出——全部安靜略過，故無迴圈、無雜訊）。
+- `tools/queue-apply.mjs`：解析 body → 依 `vid` 錨點與其下 checkbox，組 id→action map
+  （✅ → approved；❌ → rejected + 把該列 triage 理由寫進 `note`；皆未勾 → 維持 pending；兩者皆勾 → 跳過並標記）→
+  只動當前 `pending` 項目、驗證 JSON → commit push develop → 產出重繪 body（送出取消、已處理列標「✔ 已 approved／❌ 已 rejected」並移除 checkbox）。
+- `permissions: contents: write`（推 develop）、`issues: write`（重繪 body）；`concurrency` group 串行化。
 - **驗收**：
-  - 勾 ✅ 某片 → develop 的 `queue.json` 該片變 approved；勾 ❌ → rejected 且 `note` 帶理由。
-  - 非負責人編輯 body → 無任何變更。
-  - 重複編輯／改錯字不會重跑已處理項目。
+  - 只勾 approve/reject、不勾送出 → `queue.json` 無變化、無 commit。
+  - 勾好一批 + 勾送出 → **一個 commit**：✅ 片變 approved、❌ 片變 rejected 且 `note` 帶理由；送出鍵自動取消、已處理列鎖定。
+  - 非負責人編輯（含勾送出）→ 無任何變更。
+  - 重繪造成的 bot 編輯不觸發二次套用（無迴圈）。
 
 ### Phase 4 — 批核後記錄 PR#（0.5 天）
 
@@ -165,7 +171,7 @@ YouTube RSS ──poll.yml(cron，改推 develop)──▶ queue.json[pending] @
 ## 7. 風險與注意事項
 
 - **checkbox → 動作的可靠性**：靠隱藏 `<!-- vid:xxx -->` 錨點對應，不靠標題（標題會變、會撞）；套用後重繪鎖定已處理列，防重複。
-- **`issues.edited` 誤觸**：任何 body 編輯都會觸發；用「勾選狀態 ≠ 已提交 status」的差異判斷 + owner-only guard + concurrency 串行化。
+- **`issues.edited` 誤觸 / 每勾一 commit**：改用**底部送出 checkbox 當 gate**——只有勾送出才套用，逐一勾選與 bot 重繪都 no-op；配 owner-only guard + concurrency 串行化。整批一次成一個 commit。
 - **reject 理由**：checkbox 帶不了自由文字 → 預設沿用 triage 那句理由當 `note`；要自訂就改 `note` 行或本機 review.mjs 補。
 - **poll 必須同步改推 develop**：否則 `queue.json` 在 main/develop 分岔（Phase 1 一起處理，不可只做一半）。
 - **排程 workflow 掛在 default branch**：`poll.yml`（含 triage 呼叫）要合進 `main` 才會定時觸發；改動當下不會立即生效。

@@ -91,29 +91,37 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 
 > **狀態（2026-07-24）**：實作 + 本機/CI 驗收通過，已 `--no-ff` 併回 develop。剩「排程實跑」綁 release 到 main。
 
-## Phase 3 — issue checkbox 批核控制面板
+## Phase 3 — issue checkbox 批核控制面板（含底部「🚀 送出」）
 
-**目標**：負責人在 issue 打勾即改 `queue.json`，owner-only、可靠、冪等。與 Phase 2 共用 body 契約，建議連著做。
+**目標**：負責人在 issue 勾好 approve/reject，勾一下**底部「🚀 送出」**把整批變**一個 commit**；owner-only、可靠、冪等。
+
+> **送出機制（定案 2026-07-24）**：GitHub issue 沒有真按鈕 → 用**底部送出 checkbox** 當 gate。逐一勾 approve/reject
+> **不觸發套用**（只存進 body）；只有勾「送出」時才套用成一個 commit，套用後送出鍵自動取消、已處理列鎖定。
+> 這消除「每勾一次一個 commit」的雜訊與改錯字誤觸。底部送出 checkbox 是 **body 契約的一部分**。
+
+### `tools/triage.mjs`（Phase 2 微調 — body 契約補送出鍵）
+- [ ] body 最底部渲染 `- [ ] 🚀 送出以上所有勾選（打勾＝套用成一個 commit；套用完自動取消）`
+- [ ] 重推 live issue #1 預覽、確認送出鍵有出現
 
 ### `tools/queue-apply.mjs`（新）
 - [ ] 解析 issue body：依 `<!-- vid:xxx -->` 錨點與其下 checkbox 勾選狀態，組 id→action map
-- [ ] 套用：✅ 勾 → `approved`；❌ 勾 → `rejected` + 把該列 triage 理由寫進 `note`；兩者皆未勾 → 維持 `pending`
+- [ ] 套用：✅ 勾 → `approved`；❌ 勾 → `rejected` + 把該列 triage 理由寫進 `note`；皆未勾 → 維持 `pending`；兩者皆勾 → 跳過並標記
 - [ ] 安全規則（沿用 PRD-v2）：只動當前 `pending` 項目、不覆寫人手寫 `note`、寫完 `JSON.parse` 驗證
-- [ ] 只對「勾選狀態 ≠ 已提交 status」的列動作（冪等，避免改錯字誤觸）
-- [ ] 產出重繪後的 body：已處理列標「✔ 已 approved／❌ 已 rejected」並移除其 checkbox
+- [ ] 產出重繪後的 body：**送出鍵取消勾選**、已處理列標「✔ 已 approved／❌ 已 rejected」並移除其 checkbox
 
 ### `.github/workflows/queue-control.yml`（新）
 - [ ] `on: issues.edited`
-- [ ] `if:` 同時滿足（a）issue 有 `video-queue` label、（b）`github.event.sender.login == '<owner>'`（owner-only；預設 `yeha98555`）
-- [ ] 呼叫 `queue-apply.mjs` → commit/`push` develop → 用重繪 body 更新 issue
-- [ ] `permissions: contents: write`（推 develop）+ `issues: write`（重繪 body）
-- [ ] `concurrency` group 串行化多次快速編輯，避免競態
+- [ ] `if:` 同時滿足（a）`video-queue` label、（b）`github.event.sender.login == '<owner>'`（預設 `yeha98555`）、（c）**body 送出 checkbox 已勾**
+- [ ] 三者缺一即 no-op（bot 重繪、非 owner、只勾未送出 → 全部安靜略過，無迴圈無雜訊）
+- [ ] 呼叫 `queue-apply.mjs` → commit/`push` develop（一批一個 commit）→ 用重繪 body 更新 issue
+- [ ] `permissions: contents: write` + `issues: write`；`concurrency` group 串行化
 
 ### 驗收
-- [ ] 勾 ✅ 某片 → develop 的 `queue.json` 該片變 `approved`；勾 ❌ → `rejected` 且 `note` 帶理由
-- [ ] 非負責人編輯 body → 無任何變更
-- [ ] 重複編輯/改錯字 → 不重跑已處理項目（冪等）
-- [ ] （workflow 檔改動）release 到 main 後，`issues` 事件在 main 上實跑確認 owner-only 與套用正確
+- [ ] 只勾 approve/reject、不勾送出 → `queue.json` 無變化、無 commit
+- [ ] 勾一批 + 勾送出 → **一個 commit**：✅ 變 approved、❌ 變 rejected 且 `note` 帶理由；送出鍵自動取消、已處理列鎖定
+- [ ] 非負責人編輯（含勾送出）→ 無任何變更
+- [ ] 重繪造成的 bot 編輯不觸發二次套用（無迴圈）
+- [ ] （workflow 檔改動）release 到 main 後，`issues` 事件在 main 上實跑確認 owner-only + 送出 gate + 套用正確
 
 ## Phase 4 — 批核後記錄 PR#
 
