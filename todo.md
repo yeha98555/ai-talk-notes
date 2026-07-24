@@ -80,8 +80,10 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ### 驗收
 - [x] workflow 邏輯本機實跑驗證:有變動→commit 條件成立、有新 pending→通知條件成立;無變動→兩者皆 skip
 - [x] YAML 合法(ruby/psych 解析通過)、`queue-report.mjs --check` 邊界(0 / N)正確
-- [ ] **需 push 後在 GitHub 實跑一次確認**:排程/dispatch 真的觸發、commit 成功 push、`video-queue` Issue 正確建立/更新
-  - 註:排程只在 default branch(未來的 `main`)生效;先在分支上用 workflow_dispatch 測
+- [x] **GitHub 實跑確認**(2026-07-24,dispatch on `main`):
+  - run #30081686673:有新片 → commit `27d8a3c chore(poll): update video queue [skip ci]` 推回 main、開 Issue #1「📥 Video review queue」(52 pending)✅
+  - run #30081780665:無新片 → `changed=false, new_pending=0`,commit 與 Issue 兩步皆 skip、不製造雜訊 ✅
+  - 前置:預設分支設為 `main`、Actions Workflow permissions 設 Read and write
 
 ## Phase 3 — LLM 生成 note 草稿
 
