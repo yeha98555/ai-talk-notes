@@ -1,0 +1,63 @@
+name: Release (develop → main)
+
+# One-click publish: open a develop -> main PR, wait for CI, merge → Vercel deploys.
+# Run from Actions → "Release (develop → main)" → Run workflow. Keeps the deliberate
+# two-step model (review notes into develop; release when ready) but makes the
+# release itself a single action.
+#
+# NOTE: workflow_dispatch workflows must live on the DEFAULT branch (main) to be
+# dispatchable, so this button only appears after release.yml first reaches main
+# (i.e. after the next manual develop -> main release).
+
+on:
+  workflow_dispatch:
+    inputs:
+      merge:
+        description: "Auto-merge once CI is green (uncheck to only open the PR)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Open or reuse the develop → main PR
+        id: pr
+        run: |
+          num=$(gh pr list --base main --head develop --state open --json number --jq '.[0].number // empty')
+          if [ -z "$num" ]; then
+            gh pr create --base main --head develop \
+              --title "Release: develop → main" \
+              --body "One-click release via release.yml — publishes reviewed develop content to main (Vercel deploy)." \
+              2>/dev/null || true
+            num=$(gh pr list --base main --head develop --state open --json number --jq '.[0].number // empty')
+          fi
+          if [ -z "$num" ]; then
+            echo "Nothing to release — develop is already merged into main."
+          else
+            echo "Release PR #$num"
+          fi
+          echo "num=$num" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for CI, then merge
+        if: ${{ inputs.merge && steps.pr.outputs.num != '' }}
+        run: |
+          echo "Waiting for checks on PR #${{ steps.pr.outputs.num }}…"
+          gh pr checks ${{ steps.pr.outputs.num }} --watch --fail-fast || {
+            echo "::error::CI did not pass — not merging."
+            exit 1
+          }
+          gh pr merge ${{ steps.pr.outputs.num }} --merge
+          echo "Merged PR #${{ steps.pr.outputs.num }} → main. Vercel will deploy."

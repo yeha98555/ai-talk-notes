@@ -135,6 +135,15 @@ merge/push 到 **`main`** 後,**Vercel 自動 build + deploy**,線上一分鐘�
 - 純資料 commit(只動 `queue.json` / `channels.json`)會被 Vercel 的 *Ignored
   Build Step* 略過,不觸發重建。
 
+**上線(`develop → main`)。** 複審過的 note 累積在 `develop`,要上站時**一鍵**發佈:
+Actions → **「Release (develop → main)」→ Run workflow** —— 它會開 release PR、等 CI 綠、
+自動 merge(把 *merge* 取消勾選則只開 PR)。或自己手動開/併 `develop → main` PR。
+
+> **什麼要 release、什麼不用。** 工具*腳本*(`triage.mjs`、`queue-apply.mjs`、`gen-note.mjs`)
+> 改動進 `develop` **就生效**——`poll.yml` / `queue-control.yml` 都 checkout `develop`,`gen-note`
+> 本機跑。只有**workflow YAML 本身**(`poll.yml`、`queue-control.yml`、`release.yml`)的改動要進到
+> `main` 才生效,因為 `schedule` / `issues` / `workflow_dispatch` 一律跑 **default branch** 上的版本。
+
 ## 濃縮表(貼在手邊)
 
 | 步驟 | 動作 | 位置 / 指令 |

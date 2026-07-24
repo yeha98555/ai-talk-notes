@@ -151,6 +151,18 @@ site updates within a minute.
 - Pure-data commits (only `queue.json` / `channels.json`) are skipped by Vercel's
   *Ignored Build Step*, so they don't trigger a rebuild.
 
+**Releasing (`develop → main`).** Reviewed notes accumulate on `develop`; publish when
+ready with **one click**: Actions → **"Release (develop → main)" → Run workflow** — it
+opens the release PR, waits for CI, and merges (uncheck *merge* to only open the PR).
+Or open/merge the `develop → main` PR by hand.
+
+> **What needs a release vs. what doesn't.** The tool *scripts* (`triage.mjs`,
+> `queue-apply.mjs`, `gen-note.mjs`) take effect on `develop` with **no release** —
+> `poll.yml` / `queue-control.yml` check out `develop`, and `gen-note` runs locally.
+> Only changes to the **workflow YAML themselves** (`poll.yml`, `queue-control.yml`,
+> `release.yml`) must reach `main` to take effect, because `schedule` / `issues` /
+> `workflow_dispatch` always run the **default-branch** copy.
+
 ## Cheat sheet
 
 | Step | Do | Where / command |
