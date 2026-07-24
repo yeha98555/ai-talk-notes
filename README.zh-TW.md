@@ -81,6 +81,26 @@ python3 -m http.server
 
 隨時可用的版本是線上站點——見 [部署](#部署)。
 
+## 內容 pipeline
+
+新演講透過一條輕量的**發現 → 挑選 → 生草稿 → 複審 → 上站** pipeline 進到站上。
+站點本身維持零後端——「資料庫」就是進 git 的 JSON 加上 GitHub Actions:
+
+```text
+channels.json ─poll(cron)─▶ queue.json ─review(你挑片)─▶ approved
+  ─gen-note --pr(字幕 → Claude 草稿 + 中文 + 分類)─▶
+  PR(CI:build + i18n-check・你複審)─merge 到 main─▶ Vercel build + 部署
+```
+
+- [`tools/poll.mjs`](tools/poll.mjs) —— 把各頻道 RSS 抓進 `queue.json`
+  (由 [`.github/workflows/poll.yml`](.github/workflows/poll.yml) 排程)
+- [`tools/review.mjs`](tools/review.mjs) —— 本機 UI,Approve / Reject 待挑選影片
+- [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` —— 字幕 → house-style 筆記 +
+  繁體中文翻譯 + 分類建議,並自動開複審 PR
+- **兩道人工關卡:** 決定收哪些影片、以及在 PR 上複審每篇生成的筆記
+
+完整設計見 [`PRD-v2.md`](PRD-v2.md);逐階段狀態見 [`todo.md`](todo.md)。
+
 ## 部署
 
 部署在 **Vercel**,採 Git 整合——每次 push/merge 到 `main` 就跑 `npm run build`

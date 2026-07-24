@@ -88,6 +88,27 @@ python3 -m http.server
 
 The always-on version is the live site — see [Deployment](#deployment).
 
+## Content pipeline
+
+New talks reach the site through a lightweight **discover → pick → draft → review
+→ publish** pipeline. The site itself stays backend-free — the "database" is just
+git-tracked JSON plus GitHub Actions:
+
+```text
+channels.json ─poll (cron)─▶ queue.json ─review (you pick)─▶ approved
+  ─gen-note --pr (transcript → Claude draft + 中文 + category)─▶
+  PR (CI: build + i18n-check · you review) ─merge to main─▶ Vercel build + deploy
+```
+
+- [`tools/poll.mjs`](tools/poll.mjs) — pull each channel's RSS into `queue.json`
+  (scheduled by [`.github/workflows/poll.yml`](.github/workflows/poll.yml))
+- [`tools/review.mjs`](tools/review.mjs) — local UI to Approve / Reject pending videos
+- [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` — transcript → house-style note +
+  Traditional-Chinese translation + category suggestion, then opens a review PR
+- **Two human gates:** which videos to keep, and reviewing each generated note in its PR
+
+Full design in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
+
 ## Deployment
 
 Deployed on **Vercel** with Git integration — every push/merge to `main` runs
