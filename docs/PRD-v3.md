@@ -1,6 +1,6 @@
 # PRD v3 — 把「挑片 + 生草稿」流程搬上 GitHub（issue 控制面板）
 
-> 把 [`OPERATIONS`](OPERATIONS.md) 的 **Step ②（挑片）** 與 **Step ③ 的觸發** 從「本機 CLI + 手」
+> 把 [`OPERATIONS`](../OPERATIONS.md) 的 **Step ②（挑片）** 與 **Step ③ 的觸發** 從「本機 CLI + 手」
 > 搬到 GitHub：review issue 變成可操作的控制面板，負責人直接在上面批核，並讓每批 queue 對應到 PR。
 > 延續 [`PRD-v2`](PRD-v2.md) 的核心原則：**不破壞成品的零後端、零依賴、單檔靜態站本質**；repo 即資料庫。
 
@@ -119,7 +119,7 @@ YouTube RSS ──poll.yml(cron，改推 develop)──▶ queue.json[pending] @
 
 - `tools/triage.mjs`：讀 `queue.json` 的 pending → 呼叫 GitHub Models（`gpt-4o-mini`，`Authorization: Bearer $GITHUB_TOKEN`）
   → 每片產出 tier（⭐/🤔/⏭️）+ 建議分類 A–I + 一句貼題理由 → 渲染 issue body。移植 `triage-queue` skill 的判準
-  （見 [`.claude/skills/triage-queue/SKILL.md`](.claude/skills/triage-queue/SKILL.md) 的分類表與 tier 定義）到 prompt。
+  （見 [`.claude/skills/triage-queue/SKILL.md`](../.claude/skills/triage-queue/SKILL.md) 的分類表與 tier 定義）到 prompt。
 - body 格式（**Phase 3 的契約**），每片一列，例如：
 
   ```markdown

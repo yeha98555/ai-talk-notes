@@ -40,14 +40,14 @@ source on GitHub*」按鈕正上方；首次造訪時會依照瀏覽器語言設
 
 | # | 分類 | 演講數 |
 |---|----------|:-----:|
-| A | BI / 分析 / 語意層 | 11 |
-| B | Agent 評估與可觀測性 | 15 |
-| C | Agent 架構、可靠性與上線部署 | 12 |
-| D | Agent 安全與身分 | 6 |
-| E | 上下文 / 記憶 / RAG | 11 |
-| F | 資料基礎設施 | 14 |
-| G | 模型訓練與推論 | 15 |
-| H | AI 輔助開發與 AI 原生工程 | 9 |
+| A | BI / 分析 / 語意層 | 15 |
+| B | Agent 評估與可觀測性 | 16 |
+| C | Agent 架構、可靠性與上線部署 | 17 |
+| D | Agent 安全與身分 | 8 |
+| E | 上下文 / 記憶 / RAG | 18 |
+| F | 資料基礎設施 | 18 |
+| G | 模型訓練與推論 | 21 |
+| H | AI 輔助開發與 AI 原生工程 | 12 |
 | I | 產品策略與商業 | 6 |
 
 每場演講皆歸入單一主要主題。
@@ -84,35 +84,46 @@ python3 -m http.server
 ## 內容 pipeline
 
 新演講透過一條輕量的**發現 → 挑選 → 生草稿 → 複審 → 上站** pipeline 進到站上。
-站點本身維持零後端——「資料庫」就是進 git 的 JSON 加上 GitHub Actions:
+站點本身維持零後端——「資料庫」就是進 git 的 JSON 加上 GitHub Actions——而且**一個
+GitHub Issue 就是你操作的控制面板**,連手機都能挑片:
 
 ```text
-channels.json ─poll(cron)─▶ queue.json ─review(你挑片)─▶ approved
-  ─gen-note --pr(字幕 → Claude 草稿 + 中文 + 分類)─▶
-  PR(CI:build + i18n-check・你複審)─merge 到 main─▶ Vercel build + 部署
+channels.json ─poll(cron)─▶ queue.json(develop)+ 📥 review Issue
+                    Issue:triage.mjs 把每支 pending 評成 ⭐/🤔/⏭️(GitHub Models)+ ✅/❌ checkbox
+   ② 勾 ✅/❌ + 🚀 送出 ─queue-control─▶ approved   (develop 上一個 commit)
+   ③ gen-note --pr(字幕 → Claude 草稿 + 中文 + 分類)─▶ PR(記回 Issue)
+   ④ 複審 PR ─merge─▶ develop ─⑤ Release(一鍵)─▶ main ─▶ Vercel build + 部署
 ```
 
-- [`tools/poll.mjs`](tools/poll.mjs) —— 把各頻道 RSS 抓進 `queue.json`
+- [`tools/poll.mjs`](tools/poll.mjs) —— 把各頻道 RSS 抓進 `develop` 上的 `queue.json`
   (由 [`.github/workflows/poll.yml`](.github/workflows/poll.yml) 排程)
-- [`tools/review.mjs`](tools/review.mjs) —— 本機 UI,Approve / Reject 待挑選影片
+- [`tools/triage.mjs`](tools/triage.mjs) —— 用 GitHub Models(`gpt-4o-mini`)替 pending
+  評分,並把 review Issue 渲染成 ⭐/🤔/⏭️ + checkbox 的控制面板
+- **在 Issue 上挑片** —— 勾 ✅/❌ 再勾底部 🚀 送出;
+  [`queue-control.yml`](.github/workflows/queue-control.yml) 用
+  [`tools/queue-apply.mjs`](tools/queue-apply.mjs) 把整批一次寫進 `develop`(一個 commit)。
+  離線替代:[`tools/review.mjs`](tools/review.mjs) 本機 approve/reject UI。
 - [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` —— 字幕 → house-style 筆記 +
-  繁體中文翻譯 + 分類建議,並自動開複審 PR
+  繁體中文翻譯 + 分類建議;開複審 PR,並把「這批 → PR#」記回 Issue
+- **分支模型:** `queue.json` 住在 `develop`;`main` 是純 release 分支,用 **Release
+  (develop → main)** workflow 一鍵發佈。
 - **兩道人工關卡:** 決定收哪些影片、以及在 PR 上複審每篇生成的筆記
 
 每日操作手冊(你實際要做的步驟)見 **[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)**
-([English](OPERATIONS.md))。完整設計見 [`PRD-v2.md`](PRD-v2.md);逐階段狀態見
-[`todo.md`](todo.md)。
+([English](OPERATIONS.md))。設計筆記與逐階段狀態放在 [`docs/`](docs/)(PRD + todo)。
 
 ## 部署
 
 部署在 **Vercel**,採 Git 整合——每次 push/merge 到 `main` 就跑 `npm run build`
-並重新部署;Pull Request 會各自產生 Preview Deployment。
+並重新部署;Pull Request 會各自產生 Preview Deployment。要把 `develop` 上複審過的
+內容上站,用 **Release (develop → main)** workflow 一鍵發佈(Actions → Run workflow)
+——它會開 release PR、等 CI 綠、自動 merge。
 
 - **Live:** <https://ai-talk-notes.vercel.app>
 - 頁面(`index.html` / `index.zh.html`)**不進版控**——由 Vercel 從來源建置
   ([`vercel.json`](vercel.json) 設定 `buildCommand: npm run build`)。
-- 純資料 commit(poll bot 更新 `queue.json`)會透過 Vercel 的 *Ignored Build Step*
-  略過重建,只有真正的內容變更才觸發部署。
+- 純資料 commit(poll bot / Issue 控制面板更新 `develop` 上的 `queue.json`)會透過
+  Vercel 的 *Ignored Build Step* 略過重建,只有真正的內容變更才觸發部署。
 
 ## 專案結構
 
@@ -121,7 +132,7 @@ index.html        # generated English page (build artifact — git-ignored)
 index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
-tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
+tools/            # content pipeline (poll · triage · review · gen-note · queue-apply) + i18n-check
 src/
   head.html       # document head (minus styles)
   styles.css      # all page styles

@@ -3,22 +3,23 @@
 > **English** · [繁體中文](OPERATIONS.zh-TW.md)
 
 How to run the content pipeline day to day: what happens automatically, and the
-three steps where **you** are the quality gate. For the design behind it see
-[`PRD-v2.md`](PRD-v2.md); for tool internals see the [`tools/`](tools/) sources
-and [`CONTRIBUTING.md`](CONTRIBUTING.md).
+steps where **you** are the quality gate. For the design behind it see
+[`PRD-v2.md`](docs/PRD-v2.md) (base pipeline) and [`PRD-v3.md`](docs/PRD-v3.md) (the GitHub
+Issue control panel); for tool internals see the [`tools/`](tools/) sources and
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## The flow at a glance
 
 ```text
-YouTube RSS ──① poll (cron)──▶ queue.json + "Video review queue" Issue
+YouTube RSS ──① poll (cron)──▶ queue.json + 📥 Issue control panel (triage + checkboxes)
                                      │
-                    ② you pick  Approve / Reject   (tools/review.mjs)
+                    ② you pick — tick ✅/❌ then 🚀 submit on the Issue
+                                     │        (or Approve/Reject in tools/review.mjs locally)
+                    ③ gen-note  transcript → Claude draft → PR (linked back on the Issue)
                                      │
-                    ③ gen-note  transcript → Claude draft → PR
+                    ④ you review the PR (note + category) → merge to develop
                                      │
-                    ④ you review the PR (note + category) → merge
-                                     │
-                    ⑤ Vercel  build + deploy ──▶ live site
+                    ⑤ Release (develop → main) ──▶ Vercel build + deploy ──▶ live site
 ```
 
 Steps **① and ⑤ are fully automatic**. Steps **②③④ are yours** — the human is
@@ -69,46 +70,59 @@ The `poll.yml` GitHub Action runs every day at **08:00 UTC**. When there are new
 videos it:
 
 - appends them to `queue.json` as `status: pending` and pushes to `develop` (`[skip ci]`)
-- opens/updates a single **"📥 Video review queue"** Issue listing what's pending
+- rebuilds the single **"📥 Video review queue"** Issue as a **control panel**:
+  `triage.mjs` scores each pending video with GitHub Models (`gpt-4o-mini`) into
+  **⭐ / 🤔 / ⏭️** with a suggested category and a one-line reason, and renders
+  **✅ approve / ❌ reject** checkboxes per video plus a bottom **🚀 submit** box.
 
-👉 **You:** open that Issue and glance at the pending list. On days with no new
-videos the Action stays silent and the Issue is untouched — nothing to do.
+👉 **You:** open that Issue and skim the triage. On days with no new videos the
+Action stays silent and the Issue is untouched — nothing to do.
 
-> To trigger a poll on demand: GitHub → **Actions → `poll` → Run workflow**.
+> To trigger a poll on demand: GitHub → **Actions → `poll` → Run workflow**. Triage
+> runs on GitHub Models via the Action's `GITHUB_TOKEN` (no extra key); if it's ever
+> unavailable the Issue still lists every video with working checkboxes.
 
-### Step 2 — Pick videos (manual)
+### Step 2 — Pick videos (on the Issue, or locally)
 
-Do the pick **and** the draft on the **same branch** (`develop`), so the
-`queue.json` edit never has to be carried across a `git switch`. `queue.json` lives
-on `develop` now — the poll bot pushes there — so just pull, then open the picker UI:
+**Primary — right on the Issue (works from your phone):** tick **✅ approve** or
+**❌ reject** under each video, then tick the bottom **🚀 送出 (submit)**. Ticking
+approve/reject alone does nothing — only submit applies the batch: `queue-control.yml`
+(owner-only) writes the whole batch to `develop` as **one commit**, copies each
+reject's triage reason into its `note`, re-renders the Issue (submit cleared,
+processed rows dropped), and comments a summary. Leave both boxes unticked to keep a
+video `pending` for later.
+
+**Fallback — locally (offline or bulk edits):** `queue.json` lives on `develop`, so
+just pull, then use the local picker UI:
 
 ```bash
 git switch develop && git pull    # queue.json is already here — no cross-branch checkout
 node tools/review.mjs             # opens http://localhost:4321
 ```
 
-Click **Approve / Reject** on each pending video (an optional note field is
-available). This rewrites the `status` in `queue.json` live. Close the tab when
-done.
+Click **Approve / Reject** on each pending video (optional note); this rewrites the
+`status` in `queue.json` live. Commit it when done.
 
-> **Pre-screen first (optional, advisory):** with a big pending list, run the
-> **`triage-queue` skill** — "triage the queue" / "幫我看 pending 哪個值得收". It ranks
-> every pending video **⭐ Strong / 🤔 Maybe / ⏭️ Skip** with a suggested category and a
-> one-line reason, flags duplicates, and hands you a copy-ready approve-list. It never
-> changes `status` — you still Approve/Reject in the UI (or ask it to apply the picks
-> and write the reject reasons into each item's `note`).
+> **When to reach for the `triage-queue` skill.** The Issue already shows triage
+> automatically (CI, via GitHub Models) — that's the default, and usually enough. Run
+> the local **`triage-queue`** skill ("triage the queue" / "幫我看 pending") only when you
+> want to: **(1) re-triage the current pending list on demand** — the CI only triages
+> when poll finds *new* videos, so it won't refresh a list you're mid-way through;
+> **(2) get a more careful pass** — it's judged by interactive Claude rather than
+> `gpt-4o-mini`; or **(3) pick via the local `review.mjs` UI**, which shows no ranking of
+> its own. Same **⭐ / 🤔 / ⏭️** ranking + suggested categories + a copy-ready
+> approve-list; it never changes `status` unless you ask.
 
 > Port in use? `PORT=4322 node tools/review.mjs`.
 
 ### Step 3 — Generate note drafts + open a PR (manual)
 
-Stay on `develop` — the branch you just approved on — so the `queue.json` edit is
-right here, nothing is carried across a switch, and the PR opens against `develop`.
-`gen-note --pr` stages the **whole working tree** (`git add -A`), so confirm it's
-clean first:
+If you approved on the Issue, those approvals are already on `develop` — **pull
+first**. `gen-note --pr` opens the PR against `develop` and stages **only the files
+it touched** (never `git add -A`):
 
 ```bash
-git status        # expect: only queue.json modified
+git switch develop && git pull    # get the approvals queue-control committed
 
 # Live run (needs the API key; passed via env, never committed).
 ANTHROPIC_API_KEY=sk-... node tools/gen-note.mjs --pr
@@ -118,8 +132,9 @@ For every video that is **approved and has no `docId` yet**, it does all of this
 per video: fetch transcript → Claude drafts `doc-N.md` +
 Traditional-Chinese translation → classify A–I and insert the card into the right
 `cat-*.md` → update `order.json` and the talk count → backfill the queue item's
-`docId` and mark it `published` → `npm run build` → branch, commit, push, and
-`gh pr create`.
+`docId` and mark it `published` → `npm run build` → branch, commit, push,
+`gh pr create`, and **comment "🧾 this batch → PR #NN" on the review Issue** (one PR
+per run, so each queue batch maps to its PR).
 
 Useful variants:
 
@@ -167,16 +182,16 @@ Or open/merge the `develop → main` PR by hand.
 
 | Step | Do | Where / command |
 |---|---|---|
-| ① | Check for pending videos | GitHub Issue "📥 Video review queue" |
-| ② | Approve / Reject | `git pull` → `node tools/review.mjs` |
-| ③ | Draft + open PR | `ANTHROPIC_API_KEY=... node tools/gen-note.mjs --pr` |
-| ④ | Review category + content → merge | GitHub PR (wait for green CI) |
-| ⑤ | Auto-publish | Vercel (on merge to `main`) |
+| ① | Skim the triaged queue | GitHub Issue "📥 Video review queue" (⭐/🤔/⏭️ + checkboxes) |
+| ② | Approve / Reject | Tick ✅/❌ + **🚀 submit** on the Issue (or `node tools/review.mjs`) |
+| ③ | Draft + open PR | `git pull` → `ANTHROPIC_API_KEY=... node tools/gen-note.mjs --pr` |
+| ④ | Review category + content → merge to develop | GitHub PR (wait for green CI) |
+| ⑤ | Release + publish | Actions → **"Release (develop → main)"** → Vercel |
 
 **On a day with no new videos, only ① matters — a glance at the Issue, nothing else.**
 
-> Before picking, optionally pre-screen the queue with the **`triage-queue`** skill
-> (⭐/🤔/⏭️ ranking + suggested categories + approve-list) — advisory, speeds up Step ②.
+> The Issue shows triage automatically (CI, via GitHub Models). The local
+> **`triage-queue`** skill is the offline equivalent for the `review.mjs` path.
 >
 > Occasional, not daily: add/remove a tracked channel with the **`manage-channels`**
 > skill (paste a URL) — it feeds Step ①. See *Managing subscriptions* above.

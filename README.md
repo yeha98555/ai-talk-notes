@@ -43,14 +43,14 @@ the toggle switches between them while preserving your place on the page.
 
 | # | Category | Talks |
 |---|----------|:-----:|
-| A | BI / Analytics / Semantic Layer | 11 |
-| B | Agent Evaluation & Observability | 15 |
-| C | Agent Architecture, Reliability & Productionization | 12 |
-| D | Agent Security & Identity | 6 |
-| E | Context / Memory / RAG | 11 |
-| F | Data Infrastructure | 14 |
-| G | Model Training & Inference | 15 |
-| H | AI Coding & AI-Native Engineering | 9 |
+| A | BI / Analytics / Semantic Layer | 15 |
+| B | Agent Evaluation & Observability | 16 |
+| C | Agent Architecture, Reliability & Productionization | 17 |
+| D | Agent Security & Identity | 8 |
+| E | Context / Memory / RAG | 18 |
+| F | Data Infrastructure | 18 |
+| G | Model Training & Inference | 21 |
+| H | AI Coding & AI-Native Engineering | 12 |
 | I | Product Strategy & Business | 6 |
 
 Each talk is assigned a single primary theme.
@@ -91,36 +91,51 @@ The always-on version is the live site — see [Deployment](#deployment).
 ## Content pipeline
 
 New talks reach the site through a lightweight **discover → pick → draft → review
-→ publish** pipeline. The site itself stays backend-free — the "database" is just
-git-tracked JSON plus GitHub Actions:
+→ release** pipeline. The site stays backend-free — the "database" is git-tracked
+JSON plus GitHub Actions — and a **GitHub Issue is the control panel** you drive it
+from, so you can even pick from your phone:
 
 ```text
-channels.json ─poll (cron)─▶ queue.json ─review (you pick)─▶ approved
-  ─gen-note --pr (transcript → Claude draft + 中文 + category)─▶
-  PR (CI: build + i18n-check · you review) ─merge to main─▶ Vercel build + deploy
+channels.json ─poll (cron)─▶ queue.json (develop) + 📥 review Issue
+                     Issue: triage.mjs ranks each pending video ⭐/🤔/⏭️ (GitHub Models) + ✅/❌ boxes
+   ② tick ✅/❌ + 🚀 submit ─queue-control─▶ approved   (one commit on develop)
+   ③ gen-note --pr (transcript → Claude draft + 中文 + category) ─▶ PR (linked on the Issue)
+   ④ review PR ─merge─▶ develop ─⑤ Release (one click)─▶ main ─▶ Vercel build + deploy
 ```
 
-- [`tools/poll.mjs`](tools/poll.mjs) — pull each channel's RSS into `queue.json`
-  (scheduled by [`.github/workflows/poll.yml`](.github/workflows/poll.yml))
-- [`tools/review.mjs`](tools/review.mjs) — local UI to Approve / Reject pending videos
+- [`tools/poll.mjs`](tools/poll.mjs) — pull each channel's RSS into `queue.json` on
+  `develop` (scheduled by [`.github/workflows/poll.yml`](.github/workflows/poll.yml))
+- [`tools/triage.mjs`](tools/triage.mjs) — score the pending queue with GitHub Models
+  (`gpt-4o-mini`) and render the review Issue as a ⭐/🤔/⏭️ control panel with checkboxes
+- **Pick on the Issue** — tick ✅/❌ then the bottom 🚀 submit;
+  [`queue-control.yml`](.github/workflows/queue-control.yml) applies the batch to
+  `develop` as one commit (via [`tools/queue-apply.mjs`](tools/queue-apply.mjs)). Offline
+  alternative: [`tools/review.mjs`](tools/review.mjs), a local approve/reject UI.
 - [`tools/gen-note.mjs`](tools/gen-note.mjs) `--pr` — transcript → house-style note +
-  Traditional-Chinese translation + category suggestion, then opens a review PR
+  Traditional-Chinese translation + category suggestion; opens a review PR and records
+  the batch → PR back on the Issue
+- **Branch model:** `queue.json` lives on `develop`; `main` is a pure release branch,
+  published with one click via the **Release (develop → main)** workflow.
 - **Two human gates:** which videos to keep, and reviewing each generated note in its PR
 
 Day-to-day runbook — the steps you actually perform — in
-**[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Full design
-in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
+**[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Design notes and
+phase-by-phase status live under [`docs/`](docs/) (PRDs + todos).
 
 ## Deployment
 
 Deployed on **Vercel** with Git integration — every push/merge to `main` runs
 `npm run build` and redeploys; pull requests get their own Preview Deployment.
+Publish reviewed content from `develop` with one click via the **Release
+(develop → main)** workflow (Actions → Run workflow) — it opens the release PR,
+waits for CI, and merges.
 
 - **Live:** <https://ai-talk-notes.vercel.app>
 - The pages (`index.html` / `index.zh.html`) are **not committed** — Vercel builds
   them from source ([`vercel.json`](vercel.json) sets `buildCommand: npm run build`).
-- Pure-data commits — the poll bot updating `queue.json` — skip the rebuild via
-  Vercel's *Ignored Build Step*, so only real content changes trigger a deploy.
+- Pure-data commits — the poll bot / the Issue control panel updating `queue.json` on
+  `develop` — skip the rebuild via Vercel's *Ignored Build Step*, so only real content
+  changes trigger a deploy.
 
 ## Project structure
 
@@ -129,7 +144,7 @@ index.html        # generated English page (build artifact — git-ignored)
 index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
-tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
+tools/            # content pipeline (poll · triage · review · gen-note · queue-apply) + i18n-check
 src/
   head.html       # document head (minus styles)
   styles.css      # all page styles

@@ -110,7 +110,8 @@ id——因此 `docs` 與 `##` 區塊的數量必須一致，且位置需保持�
    （`README.md`、`README.zh-TW.md`）。可用
    `grep -rn '<舊計數>' src README.md README.zh-TW.md` 找出全部（忽略 `#tNN`、
    `doc-<id>` 與 `NN%` 等結果）。此總數並非自動衍生，`i18n-check.mjs` 也不會
-   驗證它。
+   驗證它。兩份 README 的**分類**表裡各分類的數字同樣是手動維護、不會被驗證——
+   新演講屬於哪一類就在那裡一併 +1。
 5. **（選用）重點主題** —— 「重點主題」區塊（`src/sections/themes.html`）是一組
    *精選* 的 9 項跨領域洞察，每項各引用數場代表性演講——並非每場演講都會出現。
    若新演講能佐證其中一（或多）項洞察，請在該主題的 `.refs` 區塊中新增一個 ref
@@ -152,12 +153,13 @@ Markdown／文字處理流程與語系無關，但全新語言仍需要一些額
 3. 在 `src/scripts/reading-progress.js` 與 `src/scripts/notes.js` 中新增
    `T[<locale>]` 字串表，讓它們所注入的 UI 也能在地化。
 
-## 探索 pipeline 資料檔（v2）
+## 探索 pipeline 資料檔
 
-repo 根目錄有兩個進 git 的 JSON 檔，供 v2「發現 → 追蹤 → 挑選 → 生成」pipeline
-使用——這段流程接在上述手動撰寫筆記之前（詳見 [`PRD-v2.md`](PRD-v2.md)）。它們
-是該 pipeline 的單一事實來源（single source of truth）；每個階段只讀寫這兩個檔
-加上 `src/`。
+有兩個進 git 的 JSON 檔，供「發現 → 挑選 → 生草稿」pipeline 使用——這段流程接在
+上述手動撰寫筆記之前，屬於**維護者**的流程，一般內容貢獻者不需碰。它們是該
+pipeline 的單一事實來源（single source of truth）；每個階段只讀寫這兩個檔加上
+`src/`，而且住在 **`develop`** 分支（`main` 是純 release 分支）。日常步驟見
+[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)；設計文件放在 [`docs/`](docs/)。
 
 ### `channels.json` —— 追蹤頻道清單
 
@@ -177,7 +179,8 @@ repo 根目錄有兩個進 git 的 JSON 檔，供 v2「發現 → 追蹤 → 挑
 ### `queue.json` —— 影片佇列
 
 初始為 `[]`。`poll.mjs` 會把新發現的影片以 `pending` 附加進來；你來 approve 或
-reject；之後 `gen-note.mjs` 會把它標成 `published`。
+reject——在 review Issue 的 checkbox（由 `queue-control.yml` 套用）或本機 `review.mjs`
+UI；之後 `gen-note.mjs` 會回填 `docId` 並標成 `published`。
 
 ```json
 [
@@ -197,7 +200,7 @@ reject；之後 `gen-note.mjs` 會把它標成 `published`。
 
 - `status` —— 生命週期：`pending` → `approved` / `rejected` → `published`。
 - `docId` —— 產出筆記後回填（例如 `doc-100`），確保同一支影片不會被處理兩次。
-- `note` —— 選填，挑片時寫的備註（例如「主題偏離，再考慮」）。
+- `note` —— 選填，挑片時寫的備註；在 Issue 上 reject 會把該影片的 triage 理由寫進這裡。
 
 ## 慣例
 
