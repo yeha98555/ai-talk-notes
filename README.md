@@ -107,7 +107,9 @@ channels.json ─poll (cron)─▶ queue.json ─review (you pick)─▶ approve
   Traditional-Chinese translation + category suggestion, then opens a review PR
 - **Two human gates:** which videos to keep, and reviewing each generated note in its PR
 
-Full design in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
+Day-to-day runbook — the steps you actually perform — in
+**[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Full design
+in [`PRD-v2.md`](PRD-v2.md); phase-by-phase status in [`todo.md`](todo.md).
 
 ## Deployment
 

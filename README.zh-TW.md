@@ -99,7 +99,9 @@ channels.json ─poll(cron)─▶ queue.json ─review(你挑片)─▶ approved
   繁體中文翻譯 + 分類建議,並自動開複審 PR
 - **兩道人工關卡:** 決定收哪些影片、以及在 PR 上複審每篇生成的筆記
 
-完整設計見 [`PRD-v2.md`](PRD-v2.md);逐階段狀態見 [`todo.md`](todo.md)。
+每日操作手冊(你實際要做的步驟)見 **[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)**
+([English](OPERATIONS.md))。完整設計見 [`PRD-v2.md`](PRD-v2.md);逐階段狀態見
+[`todo.md`](todo.md)。
 
 ## 部署
 
