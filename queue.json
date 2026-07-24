@@ -633,9 +633,9 @@
     "published": "2026-07-17T14:00:23+00:00",
     "thumb": "https://i.ytimg.com/vi/kJe2Nbxunco/hqdefault.jpg",
     "url": "https://youtu.be/kJe2Nbxunco",
-    "status": "pending",
+    "status": "rejected",
     "docId": null,
-    "note": null
+    "note": "標題似乎離題，無工程內容"
   },
   {
     "videoId": "mB74LGAmmV0",
@@ -897,7 +897,7 @@
     "published": "2026-07-24T15:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/cO8qC6HBuBg/hqdefault.jpg",
     "url": "https://youtu.be/cO8qC6HBuBg",
-    "status": "pending",
+    "status": "approved",
     "docId": null,
     "note": null
   },
