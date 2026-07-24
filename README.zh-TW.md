@@ -1,6 +1,6 @@
 # AI 工程演講 — 分類與精華整理
 
-> [English](README.md) · **繁體中文**
+> [English](README.md) · **繁體中文** · **[線上站點 ↗](https://ai-talk-notes.vercel.app)**
 
 本專案有系統地整理了 **101 篇 AI 工程領域的研討會與 YouTube 演講筆記**，依 **9
 大主題分類**歸類，並濃縮成簡短、易讀的重點摘要——另外還提煉出橫跨全部語料庫的
@@ -106,7 +106,7 @@ channels.json ─poll(cron)─▶ queue.json ─review(你挑片)─▶ approved
 部署在 **Vercel**,採 Git 整合——每次 push/merge 到 `main` 就跑 `npm run build`
 並重新部署;Pull Request 會各自產生 Preview Deployment。
 
-- **Live:** <!-- LIVE_URL -->_(首次部署後補上 Vercel 網址)_
+- **Live:** <https://ai-talk-notes.vercel.app>
 - 頁面(`index.html` / `index.zh.html`)**不進版控**——由 Vercel 從來源建置
   ([`vercel.json`](vercel.json) 設定 `buildCommand: npm run build`)。
 - 純資料 commit(poll bot 更新 `queue.json`)會透過 Vercel 的 *Ignored Build Step*
