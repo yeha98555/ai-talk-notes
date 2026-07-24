@@ -22,6 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # queue.json (and channels.json) live on develop now — read the latest
+          # from there and write back to it. main stays a pure release branch,
+          # touched only by the develop -> main release PR.
+          ref: develop
 
       - uses: actions/setup-node@v4
         with:
@@ -52,7 +57,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add queue.json
           git commit -m "chore(poll): update video queue [skip ci]"
-          git push
+          # Explicit refspec: push back to develop regardless of checkout HEAD state.
+          git push origin HEAD:develop
 
       - name: Open or update review Issue
         if: steps.q.outputs.new_pending != '0'
