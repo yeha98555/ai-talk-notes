@@ -165,6 +165,11 @@ Node.js。執行一次即可同時產生 `index.html` 與 `index.zh.html`。
 - **分類方式：** 每場演講在 9 大分類（A–I）中歸入單一主要主題；每項洞察皆取
   材自完整語料庫。
 
+## 致謝
+
+本專案改作自 [cyyeh/ai-talk-notes](https://github.com/cyyeh/ai-talk-notes)
+（MIT 授權），並由 [yeha98555](https://github.com/yeha98555) 加入額外功能。
+
 ## 授權
 
-採用 [MIT 授權](LICENSE) 釋出。© 2026 cyyeh。
+採用 [MIT 授權](LICENSE) 釋出。© 2026 cyyeh、yeha98555。

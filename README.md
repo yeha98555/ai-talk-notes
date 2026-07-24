@@ -179,6 +179,11 @@ improve a translation.
 - **Classification:** a single primary theme per talk across the 9 categories
   (A–I); every insight is drawn from the full corpus.
 
+## Credits
+
+This project is based on [cyyeh/ai-talk-notes](https://github.com/cyyeh/ai-talk-notes)
+(MIT License), with additional features by [yeha98555](https://github.com/yeha98555).
+
 ## License
 
-Released under the [MIT License](LICENSE). © 2026 cyyeh.
+Released under the [MIT License](LICENSE). © 2026 cyyeh, yeha98555.
