@@ -166,8 +166,7 @@ Two git-tracked JSON files feed the "discover → pick → draft" pipeline that 
 content contributor needs to touch. They are the single source of truth for that
 pipeline; every stage only reads/writes these two files plus `src/`, and they live on
 the **`develop`** branch (`main` is a pure release branch). Day-to-day steps are in
-[`OPERATIONS.md`](OPERATIONS.md); the design is in [`docs/PRD-v2.md`](docs/PRD-v2.md)
-(base pipeline) and [`docs/PRD-v3.md`](docs/PRD-v3.md) (the GitHub Issue control panel).
+[`OPERATIONS.md`](OPERATIONS.md); the design lives under [`docs/`](docs/).
 
 ### `channels.json` — the tracked-channel list
 

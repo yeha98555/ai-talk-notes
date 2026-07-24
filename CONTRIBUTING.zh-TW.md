@@ -159,8 +159,7 @@ Markdown／文字處理流程與語系無關，但全新語言仍需要一些額
 上述手動撰寫筆記之前，屬於**維護者**的流程，一般內容貢獻者不需碰。它們是該
 pipeline 的單一事實來源（single source of truth）；每個階段只讀寫這兩個檔加上
 `src/`，而且住在 **`develop`** 分支（`main` 是純 release 分支）。日常步驟見
-[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)；設計見 [`PRD-v2.md`](docs/PRD-v2.md)
-（基礎 pipeline）與 [`PRD-v3.md`](docs/PRD-v3.md)（GitHub Issue 控制面板）。
+[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)；設計文件放在 [`docs/`](docs/)。
 
 ### `channels.json` —— 追蹤頻道清單
 
