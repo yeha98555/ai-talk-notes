@@ -1,7 +1,9 @@
 # TODO — PRD v3 實作清單
 
 > 對應 [`PRD-v3.md`](PRD-v3.md)。把「挑片 + 生草稿觸發」流程搬上 GitHub：review issue 變控制面板。
-> 依 Phase 順序執行，每個 Phase 跑通驗收再進下一個。建議起步：**Phase 1**（其他階段的地基）。
+> 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
+>
+> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅（皆已併回 develop、本機/CI 驗收通過；各剩「release 到 main 排程實跑」一項待收尾）。**下一步：Phase 3**。尚未 push 到 origin、尚未 release 到 main。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -46,42 +48,48 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 **目標**：`queue.json` 唯一寫入分支改成 `develop`，`main` 收斂為純 release 分支。
 
 ### `.github/workflows/poll.yml`（改）
-- [ ] job 內 `actions/checkout@v4` 指定 `ref: develop`（抓 develop 的 queue 當基準）
-- [ ] poll 後 commit + `push` **回 develop**（保留 `[skip ci]`）；不再推 main
-- [ ] Issue 開/更新邏輯不變（仍 `video-queue` 單一 issue）
-- [ ] 確認 `queue-report.mjs` 的 `git show HEAD:queue.json` diff 在 develop checkout 下仍正確
+- [x] job 內 `actions/checkout@v4` 指定 `ref: develop`（抓 develop 的 queue 當基準）
+- [x] poll 後 commit + `push origin HEAD:develop`（顯式 refspec，保留 `[skip ci]`）；不再推 main
+- [x] Issue 開/更新邏輯不變（仍 `video-queue` 單一 issue）
+- [x] 確認 `queue-report.mjs` 的 `git show HEAD:queue.json` diff 在 develop checkout 下仍正確（HEAD=poll 前 develop tip，working=poll 後，diff 正確）
 
 ### 文件（改）
-- [ ] `OPERATIONS.md` / `OPERATIONS.zh-TW.md` Step ②：拿掉 `git checkout main -- queue.json`，改 `git switch develop && git pull`
-- [ ] 把「queue 的家 = `develop`、`main` = 純 release 分支」寫進 OPERATIONS（含 cheat sheet）
+- [x] `OPERATIONS.md` / `OPERATIONS.zh-TW.md` Step ②：拿掉 `git checkout main -- queue.json`，改 `git switch develop && git pull`
+- [x] 把「queue 的家 = `develop`、`main` = 純 release 分支」寫進 OPERATIONS（分支模型 note + 頻道生效改 develop）
 
 ### 驗收
-- [ ] `workflow_dispatch` 跑 poll：新 pending 落在 **develop** 的 `queue.json`，`main` 不被動到
-- [ ] 本機在 develop `git pull` 即拿到最新 queue，不需跨分支 checkout
-- [ ] `develop → main` release PR 合併後，`main` 的 `queue.json` 追上
-- [ ] release 到 main 後，`schedule` 觸發的 poll 也確實推 develop（等一次每日排程或再 dispatch 驗證）
+- [x] `workflow_dispatch` 跑 poll：新 pending 落在 **develop** 的 `queue.json`，`main` 不被動到（run 30107389079：18 新片 → commit `a7f0d29` push develop、issue #1 更新；main tip `08fe9ea` 前後一致）
+- [x] 本機在 develop `git pull` 即拿到最新 queue，不需跨分支 checkout（queue 現住 develop）
+- [ ] `develop → main` release PR 合併後，`main` 的 `queue.json` 追上 —— **待 release 到 main**
+- [ ] release 到 main 後，`schedule` 觸發的 poll 也確實推 develop —— **待 release 到 main**（poll.yml 排程版仍在 main 舊版）
+
+> **狀態（2026-07-24）**：實作 + `workflow_dispatch` 驗收通過，已 `--no-ff` 併回 develop。剩兩項驗收綁 release 到 main，屬 Phase 收尾、非阻擋 Phase 2。
 
 ## Phase 2 — CI triage 寫進 issue
 
 **目標**：review issue 自動呈現 triage 建議，並帶上 Phase 3 要用的 checkbox 與 `vid` 錨點。
 
 ### `tools/triage.mjs`（新）
-- [ ] 讀 `queue.json` 的 `pending` 項目（忽略 approved/rejected/published）
-- [ ] 呼叫 GitHub Models（`gpt-4o-mini`，endpoint + `Authorization: Bearer $GITHUB_TOKEN`）— 實作時確認正式 endpoint/model id
-- [ ] 移植 `triage-queue` skill 判準到 prompt：tier（⭐/🤔/⏭️）+ 建議分類 A–I + 一句貼題理由（分類表見 `.claude/skills/triage-queue/SKILL.md`）
-- [ ] 渲染 issue body：**每片一列**，含隱藏 `<!-- vid:VIDEOID -->` 錨點 + `- [ ] ✅ approve` / `- [ ] ❌ reject`（Phase 3 契約）
-- [ ] flag 疑似重複/近似標題
-- [ ] **降級**：GitHub Models 失敗（rate limit/不可用）→ 退回純 pending 清單 body（仍附 checkbox 與錨點），不擋流程
+- [x] 讀 `queue.json` 的 `pending` 項目（忽略 approved/rejected/published）
+- [x] 呼叫 GitHub Models：endpoint `https://models.github.ai/inference/chat/completions`、model `openai/gpt-4o-mini`、`Bearer $GITHUB_TOKEN`、`response_format: json_object`（皆實測確認）
+- [x] 移植 `triage-queue` skill 判準到 prompt：tier（⭐/🤔/⏭️）+ 建議分類 A–I + 一句貼題理由（繁中）
+- [x] 渲染 issue body：tier 分組、每片含隱藏 `<!-- vid:VIDEOID -->` 錨點 + `- [ ] ✅ approve` / `- [ ] ❌ reject`（Phase 3 契約）
+- [x] flag 疑似重複/近似標題（`duplicateOf` → 標「⚠️ 疑似與 \`id\` 重複」）
+- [x] **降級**：無 token / HTTP 失敗 / JSON 壞掉 → 退回純清單 body（仍附 checkbox 與錨點），exit 0 不擋流程
+- [x] 額外修 bug：gpt-4o-mini 一次吃 42 支會漏 ~10 支 → 改**分批 12（allSettled）+ 漏網補抓**，degraded 42→0
 
 ### `.github/workflows/poll.yml`（接 triage）
-- [ ] 有新 pending 時呼叫 `triage.mjs` 產 body（取代/包住 `queue-report.mjs`）
-- [ ] workflow 加 `permissions: models: read`（沿用 `GITHUB_TOKEN`，不放額外 secret）
+- [x] 有新 pending 時 body 產生器換成 `triage.mjs`（`--check` 計數仍用便宜的 `queue-report.mjs`，不花模型）
+- [x] workflow 加 `permissions: models: read` + 該 step 傳 `GITHUB_TOKEN`（不放額外 secret）
 
 ### 驗收
-- [ ] 有新片時 issue body 每片有 tier/分類/理由 + 兩個 checkbox + 隱藏 `vid` 錨點
-- [ ] triage 失敗（模擬）時 issue 仍正常更新為純清單、不擋流程
-- [ ] 用量落在免費 tier、無 Azure 帳單
-- [ ] （workflow 檔改動）release 到 main 後在 main 上實跑確認
+- [x] issue body 每片有 tier/分類/理由 + 兩個 checkbox + 隱藏 `vid` 錨點（本機 live：42/42、degraded 0、tier 15/23/4）
+- [x] triage 失敗（模擬無 token）→ 純清單、仍 42 錨點 + checkbox、exit 0
+- [x] 用量落在免費 tier、無 Azure 帳單（Actions `GITHUB_TOKEN` + `models: read`，非付費呼叫）
+- [x] **Actions 實測**（throwaway probe run 30108522633）：Actions 的 `GITHUB_TOKEN` 打得到 GitHub Models、degraded 0、tier 3 組、42 錨點；probe 分支/workflow 已清除
+- [ ] （workflow 檔改動）release 到 main 後在 main 上排程實跑確認 —— **待 release 到 main**
+
+> **狀態（2026-07-24）**：實作 + 本機/CI 驗收通過，已 `--no-ff` 併回 develop。剩「排程實跑」綁 release 到 main。
 
 ## Phase 3 — issue checkbox 批核控制面板
 
@@ -126,8 +134,8 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 - [ ] **事件/排程 workflow 要上 main 才生效**：poll.yml、queue-control.yml 改動未 release 到 main 前，`schedule`/`issues` 觸發跑的是舊版
 - [ ] **checkbox 對應靠 `vid` 錨點**，不靠標題（標題會變、會撞）；套用後重繪鎖定已處理列防重複
 - [ ] **owner-only guard**：非負責人的 issue 編輯一律忽略
-- [ ] **API key/token**：triage 只用 `GITHUB_TOKEN`（零額外 secret）；`ANTHROPIC_API_KEY` 只在本機 gen-note，絕不上雲/進 repo
-- [ ] **字幕在 CI 抓不到**：已定案，生成留本機（依 2026-07-24 實測）
+- [x] **API key/token**：triage 只用 `GITHUB_TOKEN`（零額外 secret）；`ANTHROPIC_API_KEY` 只在本機 gen-note，絕不上雲/進 repo
+- [x] **字幕在 CI 抓不到**：已定案，生成留本機（依 2026-07-24 實測）
 - [ ] `actions/checkout` / `setup-node` 適時升 `@v5`（沿用 v2 的注意事項）
 
 ## 開放問題（PRD-v3 第 8 節，做之前確認；已給預設）
