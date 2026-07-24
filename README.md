@@ -72,25 +72,38 @@ Each talk is assigned a single primary theme.
 
 ## Usage
 
-Open the published page in any modern browser:
+The two pages are **build artifacts and are no longer committed**, so build them
+from source first, then open one in a browser:
 
 ```bash
+npm run build          # emits index.html + index.zh.html
+
 # macOS
 open index.html
-
 # Linux
 xdg-open index.html
-
-# or serve it locally
+# or serve locally, then visit http://localhost:8000
 python3 -m http.server
-# then visit http://localhost:8000
 ```
+
+The always-on version is the live site — see [Deployment](#deployment).
+
+## Deployment
+
+Deployed on **Vercel** with Git integration — every push/merge to `main` runs
+`npm run build` and redeploys; pull requests get their own Preview Deployment.
+
+- **Live:** <!-- LIVE_URL -->_(add the Vercel URL after the first deploy)_
+- The pages (`index.html` / `index.zh.html`) are **not committed** — Vercel builds
+  them from source ([`vercel.json`](vercel.json) sets `buildCommand: npm run build`).
+- Pure-data commits — the poll bot updating `queue.json` — skip the rebuild via
+  Vercel's *Ignored Build Step*, so only real content changes trigger a deploy.
 
 ## Project structure
 
 ```
-index.html        # generated English page, self-contained (commit it)
-index.zh.html     # generated Traditional Chinese page (commit it)
+index.html        # generated English page (build artifact — git-ignored)
+index.zh.html     # generated Traditional Chinese page (build artifact — git-ignored)
 build.mjs         # renders src/* into both pages (inlines CSS + JS)
 package.json      # `npm run build`
 tools/            # i18n-check.mjs — dev-only structure checker (not shipped)
