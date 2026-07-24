@@ -3,7 +3,7 @@
 > 對應 [`PRD-v3.md`](PRD-v3.md)。把「挑片 + 生草稿觸發」流程搬上 GitHub：review issue 變控制面板。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅（皆已併回 develop、本機/CI 驗收通過；各剩「release 到 main 排程實跑」一項待收尾）。**下一步：Phase 3**。尚未 push 到 origin、尚未 release 到 main。
+> **進度（2026-07-24）**：Phase 1 ✅、Phase 2 ✅（本機/CI 驗收通過，已併回 develop 並 **push 到 `origin/develop` `a7f72cb`**；各剩「release 到 main 排程實跑」一項待收尾）。live **issue #1 已更新為 triage 控制面板預覽**（42 錨點、⭐15/🤔23/⏭️4；checkbox 目前點了無反應——套用邏輯是 Phase 3）。**下一步：Phase 3**。`main` 仍為 v3 前舊版、尚未 release。
 
 ## Git 工作流（每個 Phase 都遵守）
 
