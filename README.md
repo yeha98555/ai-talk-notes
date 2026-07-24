@@ -119,10 +119,8 @@ channels.json ─poll (cron)─▶ queue.json (develop) + 📥 review Issue
 - **Two human gates:** which videos to keep, and reviewing each generated note in its PR
 
 Day-to-day runbook — the steps you actually perform — in
-**[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Design: the base
-pipeline in [`docs/PRD-v2.md`](docs/PRD-v2.md), the Issue control panel in
-[`docs/PRD-v3.md`](docs/PRD-v3.md); phase-by-phase status in
-[`docs/todo-v2.md`](docs/todo-v2.md) / [`docs/todo-v3.md`](docs/todo-v3.md).
+**[`OPERATIONS.md`](OPERATIONS.md)** ([繁體中文](OPERATIONS.zh-TW.md)). Design notes and
+phase-by-phase status live under [`docs/`](docs/) (PRDs + todos).
 
 ## Deployment
 

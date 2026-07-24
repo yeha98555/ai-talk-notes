@@ -110,9 +110,7 @@ channels.json ─poll(cron)─▶ queue.json(develop)+ 📥 review Issue
 - **兩道人工關卡:** 決定收哪些影片、以及在 PR 上複審每篇生成的筆記
 
 每日操作手冊(你實際要做的步驟)見 **[`OPERATIONS.zh-TW.md`](OPERATIONS.zh-TW.md)**
-([English](OPERATIONS.md))。設計:基礎 pipeline 見 [`PRD-v2.md`](docs/PRD-v2.md)、Issue
-控制面板見 [`PRD-v3.md`](docs/PRD-v3.md);逐階段狀態見 [`todo-v2.md`](docs/todo-v2.md) /
-[`todo-v3.md`](docs/todo-v3.md)。
+([English](OPERATIONS.md))。設計筆記與逐階段狀態放在 [`docs/`](docs/)(PRD + todo)。
 
 ## 部署
 
