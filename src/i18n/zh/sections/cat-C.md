@@ -7,9 +7,11 @@ desc: 從 PoC 到正式上線路上的架構抉擇：持久性、長時間運行
 Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，代理彼此只能透過共享、不可變、具型別的事件日誌溝通，而非直接對話，藉此原生支援重播、回溯與分支；文中並分享 LongMemEval、自我研究實驗室與寶可夢牌組優化等自我改進實驗，進而提出代理需要「經驗性世界模型」的觀點。
 
 
+
 ## AI 系統設計：從構想到上線
 @ Apoorva Joshi, MongoDB
 以健康保險理賠審核系統為例，提出一套四階段框架——產品需求 → 系統設計 → 評測與監控 → 最佳化——強調在 AI 能自行寫程式的時代，真正困難的是定義產品規格與系統設計，而非實作本身。涵蓋資料策略（結合向量與中繼資料的混合搜尋）、RAG／router／human-in-the-loop 模式、護欄與領域指標評測，以及重新排序（reranking）、語意快取與結構化輸出等最佳化手法。
+
 
 
 
@@ -25,9 +27,11 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 
 
 
+
 ## 超越 AI 試點：打造真正能交付成果的系統框架
 @ InterSystems
 主張 95% 的 AI 試點都卡在 POC 階段，主因是兩道落差：基礎設施落差（AI 無法取得準確、即時的商業情境，也沒有安全、受控的執行方式）與執行落差（願景從未被拆解為可執行的計畫）。提出三項工具——Read Contract（讀取合約）、Write Contract（寫入合約）與 Execution Ladder（執行階梯）——並輔以加拿大航空、Zillow、Knight Capital 與摩根大通 COIN 等案例佐證。
+
 
 
 
@@ -43,9 +47,11 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 
 
 
+
 ## 打造持久、可長時間運行的自主 Agent
 @ RedScope AI
 主張 Agent 難免會犯錯，真正重要的是事後能否安全地繼續運行。將「持久性 Agent」拆解為三大支柱：持久執行（狀態持久化與容錯，比較 Temporal 與 LangGraph）、持久自主權（運用不確定性／新穎性／介入價值來學習「何時該找人類」），以及持久狀態性（區分狀態／記憶／上下文，並將進度外部化）。
+
 
 
 
@@ -58,9 +64,11 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 
 
 
+
 ## RL 系統「看起來沒事，直到真的出事」的教訓
 @ Aethon
 借鏡量化基金的經驗，說明 RL 系統經常「看起來一切正常，直到在正式環境中翻車」——根本原因往往不是獎勵設計不良，而是最佳化範圍與行為邊界設計不當。解法包括把世界模型精簡到只保留有用的結構、用競賽式篩選淘汰脆弱的模型、加入人類設定的「護欄」與一個評估 agent，以及把追蹤紀錄拆成可加權的小型規格檔以供稽核。
+
 
 
 
@@ -76,9 +84,11 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 
 
 
+
 ## 不花大錢執行數百萬個（毫秒級）AI 沙盒
 @ Felipe, Unikraft
 說明多租戶、不受信任的 AI Agent 需要的是 VM 層級的隔離，而非容器；Unikraft 使用極小的 unikernel，讓 VM 同時具備毫秒級啟動與強隔離性，並把毫秒級喚醒延伸到整條鏈路。透過快照／fork／checkpoint 與 scale-to-zero，實測可在單台 48 核心伺服器上容納超過百萬個可喚醒的 VM。
+
 
 
 
@@ -94,9 +104,11 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 
 
 
+
 ## 未來屬於領域專用 Agent
 @ Justin Schroeder, StandardAgents
 主張未來屬於「由小型、領域專精的 Agent 組合而成」的架構，而非單一全能巨型 Agent，並批評不斷把情境塞進單一 Agent 的做法就像 OOP 的繼承——應該改用組合（composition）：每個領域配備一個小型專精 Agent，再由上層的協調者以自然語言統籌。好處是 token 效率（可能超過 80%）與成本節省、更容易做權限安全與水平擴展；並預測 2027 年將是多 Agent 協同的元年。
+
 
 
 
@@ -107,9 +119,15 @@ Yohei Nakajima 發表 ActiveGraph：一個事件溯源的圖形執行環境，�
 @ Maxime Rivest 與 Isaac Miller,DSPy
 DSPy 的創作者主張把 AI 任務當作函式來處理——透過指令、程式碼約束與評估來固定輸入輸出的契約——如此一來,背後的模型、提示詞或 harness 就能自由替換、優化或升級,而不必動到呼叫端的程式碼。
 
+
+## Vending-Bench: Long-Horizon Agent Evals — Lukas Petersson, Andon Labs
+@ Dry Run, Placeholder Co.
+假的一段式卡片摘要(dry run)。
+
 ## 打造正式營運可靠 AI 系統的關鍵要素
 @ Steven, Resolve AI
 指出當寫程式的成本變低之後，瓶頸就轉移到「上線後的維運與除錯」，並運用多 Agent 蜂群進行事故分診與根因分析。強調正式環境的 AI 是系統設計問題，主張「先設計評測、再設計系統」：正向評測、負向評測（Agent 敢不敢承認「我不知道」）、證據鏈評測（每一步都需要遙測證據以防止 reward hacking），以及信心校準——透過漸進式權限逐步建立信任。
+
 
 
 
@@ -124,9 +142,11 @@ DSPy 的創作者主張把 AI 任務當作函式來處理——透過指令、�
 
 
 
+
 ## 為什麼代理式系統需要 Ontology
 @ Frank Coyle, UC Berkeley
 Frank Coyle 主張，建立在機率性 LLM 之上的 agent 迴圈需要 ontology——由實體、關係與 RDFS/OWL 推論規則構成的正式圖結構——作為符號式護欄層，在 agent 行動前驗證工具輸出（以及以 Pydantic 定型的輸入），以捕捉如重複退款或幻覺狀態值等錯誤。
+
 
 
 

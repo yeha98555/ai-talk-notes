@@ -897,8 +897,8 @@
     "published": "2026-07-24T15:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/cO8qC6HBuBg/hqdefault.jpg",
     "url": "https://youtu.be/cO8qC6HBuBg",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-132",
     "note": null
   },
   {
