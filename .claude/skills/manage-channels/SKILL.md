@@ -31,15 +31,22 @@ The user usually pastes a URL or `@handle`. Any of these forms is valid input:
 ### 1. Resolve the channel_id (`UC…`)
 
 - If the input **already contains `/channel/UC…`**, take that id directly.
-- Otherwise fetch the page and grep the raw HTML (markdown/WebFetch strips it — use `curl`):
+- Otherwise fetch the page and grep the raw HTML (markdown/WebFetch strips it — use `curl`).
+  **Use `externalId` or the `canonical` link — NOT a bare `channelId`.** On `/c/`, `/user/`,
+  and `@handle` pages the HTML also lists *recommended* channels, so the first `channelId`
+  match can belong to a different channel. `externalId` and `<link rel="canonical">` always
+  point to the page's own channel:
 
 ```bash
 URL="<the url; if only @handle given, use https://www.youtube.com/@handle>"
-curl -s -L -A "Mozilla/5.0" "$URL" \
-  | grep -oE '"(externalId|channelId)":"UC[A-Za-z0-9_-]{22}"' | head -1
+HTML=$(curl -s -L -A "Mozilla/5.0" "$URL")
+echo "$HTML" | grep -oE '"externalId":"UC[A-Za-z0-9_-]{22}"' | head -1          # page owner
+echo "$HTML" | grep -oE 'channel/UC[A-Za-z0-9_-]{22}' | head -1                 # canonical, must agree
+echo "$HTML" | grep -oE '<meta property="og:title" content="[^"]+">' | head -1  # sanity: is this the right channel?
 ```
 
-Take the `UC…` string from the match.
+Take the `UC…` from `externalId`; confirm the canonical `channel/UC…` **matches it**, and
+that `og:title` looks like the channel the user meant. If they disagree, re-check before writing.
 
 ### 2. Verify the feed works and get the real display name
 
