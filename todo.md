@@ -143,8 +143,13 @@ git branch -d <該階段分支名>          # 清掉已併入的分支
 ### 驗收(線上)
 - [x] Vercel 網址可開:`/`(EN,101 talks 含 doc-101)HTTP 200、`/index.zh`(中文)200、`/index.zh.html`→308(cleanUrls)
 - [x] push 到 main 後線上內容自動更新(策略 B:Vercel 從來源乾淨 build)
-- [ ] PR Preview Deployment:待下次真實 gen-note PR 確認(Vercel 連結後為預設行為)
+- [x] PR Preview Deployment:PR #3(Vercel Web Analytics)實證產生 Preview + CI 綠
 - [x] 兩份 README 皆已反映 Live 網址與部署流程
+
+### 追加:Vercel Web Analytics(PR #3,經 Vercel Agent)
+- [x] analytics script 加在 `src/head.html`(來源模板)→ build 注入兩頁、撐過 rebuild、相容策略 B
+- [x] `@vercel/analytics` 依賴保留(Vercel Agent 流程需要)、`node_modules/` 已 ignore
+- [x] 線上已載入 `/_vercel/insights/script.js`;需在 Vercel 儀表板 Analytics → Enable 才會收數據
 
 ## 橫向注意事項(每階段隨手檢查)
 
