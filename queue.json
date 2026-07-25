@@ -1087,5 +1087,82 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "Ib5t2RLtxvM",
+    "title": "From Agent Traces to Agent Simulations — Rustem Feyzkhanov, Snorkel AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-25T01:00:02+00:00",
+    "thumb": "https://i.ytimg.com/vi/Ib5t2RLtxvM/hqdefault.jpg",
+    "url": "https://youtu.be/Ib5t2RLtxvM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "b_PmGocP4rc",
+    "title": "Evaling Video Slop — Maor Bril, Character.ai",
+    "channel": "AI Engineer",
+    "published": "2026-07-25T00:00:02+00:00",
+    "thumb": "https://i.ytimg.com/vi/b_PmGocP4rc/hqdefault.jpg",
+    "url": "https://youtu.be/b_PmGocP4rc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "31GUkCBD-Uc",
+    "title": "Building Closed-Loop Evals for a Multimodal Agent at Scale — Soumya Gupta & Jai Chopra, Uber",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T22:00:25+00:00",
+    "thumb": "https://i.ytimg.com/vi/31GUkCBD-Uc/hqdefault.jpg",
+    "url": "https://youtu.be/31GUkCBD-Uc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "xyL2Ltkh-SA",
+    "title": "How Evals and Prompts Shape Agent Behavior — Preetika Bhateja & Daniel Bump, YouTube Ads",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T21:00:00+00:00",
+    "thumb": "https://i.ytimg.com/vi/xyL2Ltkh-SA/hqdefault.jpg",
+    "url": "https://youtu.be/xyL2Ltkh-SA",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "9HbzAWnKbo4",
+    "title": "From Signal to PR: Anatomy of a Self-Improving Agent — Jason Lopatecki, Arize",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T20:15:32+00:00",
+    "thumb": "https://i.ytimg.com/vi/9HbzAWnKbo4/hqdefault.jpg",
+    "url": "https://youtu.be/9HbzAWnKbo4",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "q2JrUKBMf0w",
+    "title": "The Future of Evals: From LLM as a Judge to Agent as a Judge — Aparna Dhinakaran, Arize AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-24T20:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/q2JrUKBMf0w/hqdefault.jpg",
+    "url": "https://youtu.be/q2JrUKBMf0w",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "bFBNXIoLkW4",
+    "title": "Oleg Šelajev - You're absolutely right, it was your home directory! - AI Native DevCon June 2026",
+    "channel": "AI Native Dev",
+    "published": "2026-07-25T05:51:04+00:00",
+    "thumb": "https://i.ytimg.com/vi/bFBNXIoLkW4/hqdefault.jpg",
+    "url": "https://youtu.be/bFBNXIoLkW4",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
