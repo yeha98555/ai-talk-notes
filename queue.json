@@ -1164,5 +1164,71 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "KhYifX22yhE",
+    "title": "The Messy Reality of Scale: Synthetic Data and Pre-Training — Marah Abdin & Robert McHardy, poolside",
+    "channel": "AI Engineer",
+    "published": "2026-07-26T01:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/KhYifX22yhE/hqdefault.jpg",
+    "url": "https://youtu.be/KhYifX22yhE",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "O72p-rBb2bA",
+    "title": "Evals-Driven Development for a Mental Health AI Coach — Akele Reed & Dave Revere, SonderMind",
+    "channel": "AI Engineer",
+    "published": "2026-07-25T23:00:36+00:00",
+    "thumb": "https://i.ytimg.com/vi/O72p-rBb2bA/hqdefault.jpg",
+    "url": "https://youtu.be/O72p-rBb2bA",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "xIt_mTQp6mY",
+    "title": "Loop Engineering from First Principles — Kyle Mistele, HumanLayer",
+    "channel": "AI Engineer",
+    "published": "2026-07-25T20:41:40+00:00",
+    "thumb": "https://i.ytimg.com/vi/xIt_mTQp6mY/hqdefault.jpg",
+    "url": "https://youtu.be/xIt_mTQp6mY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "hacEQHHhu2Q",
+    "title": "Why Large? Tiny LMs & Agents on Edge/Robotics — Cormac Brick, Google",
+    "channel": "AI Engineer",
+    "published": "2026-07-25T17:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/hacEQHHhu2Q/hqdefault.jpg",
+    "url": "https://youtu.be/hacEQHHhu2Q",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "KzhjnILSP0Y",
+    "title": "Tammuz Dubnov - When Our PM Started Writing Code: What Merge Rate Taught Us About AI Adoption - AI N",
+    "channel": "AI Native Dev",
+    "published": "2026-07-26T06:59:23+00:00",
+    "thumb": "https://i.ytimg.com/vi/KzhjnILSP0Y/hqdefault.jpg",
+    "url": "https://youtu.be/KzhjnILSP0Y",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "libNzUdL9eM",
+    "title": "Dave Farley - Vibe Coding - Is this really the best we can do? - AI Native DevCon June 2026",
+    "channel": "AI Native Dev",
+    "published": "2026-07-25T09:16:26+00:00",
+    "thumb": "https://i.ytimg.com/vi/libNzUdL9eM/hqdefault.jpg",
+    "url": "https://youtu.be/libNzUdL9eM",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
