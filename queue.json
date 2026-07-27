@@ -1230,5 +1230,27 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "Yk87oUPVaxU",
+    "title": "DeepSWE: A Contamination-Resistant Coding Benchmark — James Shi, Datacurve",
+    "channel": "AI Engineer",
+    "published": "2026-07-26T18:10:56+00:00",
+    "thumb": "https://i.ytimg.com/vi/Yk87oUPVaxU/hqdefault.jpg",
+    "url": "https://youtu.be/Yk87oUPVaxU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ZyIoTOAbRfs",
+    "title": "State of Data — Sean Cai, Independent / State of Data",
+    "channel": "AI Engineer",
+    "published": "2026-07-26T17:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/ZyIoTOAbRfs/hqdefault.jpg",
+    "url": "https://youtu.be/ZyIoTOAbRfs",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
