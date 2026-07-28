@@ -1252,5 +1252,49 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "CgsWxRUY5Eo",
+    "title": "AI Agents for Performance: Ship Faster, Pay Less — Rajat Shah, Netflix",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T00:59:04+00:00",
+    "thumb": "https://i.ytimg.com/vi/CgsWxRUY5Eo/hqdefault.jpg",
+    "url": "https://youtu.be/CgsWxRUY5Eo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "wUzfRBi9wZ0",
+    "title": "The Hugging Face Hub for Enterprise & Academia",
+    "channel": "Hugging Face",
+    "published": "2026-07-27T09:16:37+00:00",
+    "thumb": "https://i.ytimg.com/vi/wUzfRBi9wZ0/hqdefault.jpg",
+    "url": "https://youtu.be/wUzfRBi9wZ0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "bUtAGFXPc3A",
+    "title": "Harness Engineering: Building an AI Software Factory",
+    "channel": "AI Native Dev",
+    "published": "2026-07-27T15:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/bUtAGFXPc3A/hqdefault.jpg",
+    "url": "https://youtu.be/bUtAGFXPc3A",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "4d3-Zrmf9Wo",
+    "title": "Simon Obstbaum & Rob Willoughby - Why evals are hard and how we're solving it - AI Native DevCon Jun",
+    "channel": "AI Native Dev",
+    "published": "2026-07-27T11:34:56+00:00",
+    "thumb": "https://i.ytimg.com/vi/4d3-Zrmf9Wo/hqdefault.jpg",
+    "url": "https://youtu.be/4d3-Zrmf9Wo",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
