@@ -1296,5 +1296,148 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "wpOA-UXynoM",
+    "title": "How Forward Deployed Engineering is done at Factory — Eno Reyes",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T22:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/wpOA-UXynoM/hqdefault.jpg",
+    "url": "https://youtu.be/wpOA-UXynoM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "l0FLhNqBOic",
+    "title": "AI tools for Forward Deployed Engineering — Vasuman Moza, Varick Agents",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T21:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/l0FLhNqBOic/hqdefault.jpg",
+    "url": "https://youtu.be/l0FLhNqBOic",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "RVxym6mmIns",
+    "title": "How Forward Deployed Engineering is done at Cognition — Jia Wu",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T20:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/RVxym6mmIns/hqdefault.jpg",
+    "url": "https://youtu.be/RVxym6mmIns",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ITMXwI6QL6A",
+    "title": "How Forward Deployed Engineering is done at Ramp — Leo Mehr",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T19:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/ITMXwI6QL6A/hqdefault.jpg",
+    "url": "https://youtu.be/ITMXwI6QL6A",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Byv311hdoHE",
+    "title": "The Dirty Secret of Forward Deployed Engineering — Natalie Meurer, Sierra",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T18:00:18+00:00",
+    "thumb": "https://i.ytimg.com/vi/Byv311hdoHE/hqdefault.jpg",
+    "url": "https://youtu.be/Byv311hdoHE",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "7wu2hsRfvV0",
+    "title": "How Forward Deployed Engineering is done at Decagon — Sunny Rekhi",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T17:00:35+00:00",
+    "thumb": "https://i.ytimg.com/vi/7wu2hsRfvV0/hqdefault.jpg",
+    "url": "https://youtu.be/7wu2hsRfvV0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "1OMHGsUZiqA",
+    "title": "How Forward Deployed Engineering is done at Kepler — Vinoo Ganesh",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T16:00:00+00:00",
+    "thumb": "https://i.ytimg.com/vi/1OMHGsUZiqA/hqdefault.jpg",
+    "url": "https://youtu.be/1OMHGsUZiqA",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "KwhgfwOSToQ",
+    "title": "Forward Deployed Engineering 101 — Kevin Bai, Anthropic, ex Palantir & Rippling Founding FDE",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T15:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/KwhgfwOSToQ/hqdefault.jpg",
+    "url": "https://youtu.be/KwhgfwOSToQ",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "lyL5QhgIOxc",
+    "title": "Serving 2 Million Models Without Melting: Scaling the Hugging Face Hub — Arek Borucki, Hugging Face",
+    "channel": "AI Engineer",
+    "published": "2026-07-28T13:41:11+00:00",
+    "thumb": "https://i.ytimg.com/vi/lyL5QhgIOxc/hqdefault.jpg",
+    "url": "https://youtu.be/lyL5QhgIOxc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "BInpv7lGp1o",
+    "title": "Your Agent Didn't Fail. Your Harness Did. — Vinoth Govindarajan, OpenAI",
+    "channel": "AI Engineer",
+    "published": "2026-07-26T03:14:14+00:00",
+    "thumb": "https://i.ytimg.com/vi/BInpv7lGp1o/hqdefault.jpg",
+    "url": "https://youtu.be/BInpv7lGp1o",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "1grkxo4cyKY",
+    "title": "Stephane Jourdan, Simon Rohrer & Pini Reznik - From Pipelines to Prompts: Surviving the Shift to AI",
+    "channel": "AI Native Dev",
+    "published": "2026-07-29T05:54:23+00:00",
+    "thumb": "https://i.ytimg.com/vi/1grkxo4cyKY/hqdefault.jpg",
+    "url": "https://youtu.be/1grkxo4cyKY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "JqhiRdEnP5w",
+    "title": "Inside the Dark Factory: AI That Ships Code Solo",
+    "channel": "AI Native Dev",
+    "published": "2026-07-28T13:00:22+00:00",
+    "thumb": "https://i.ytimg.com/vi/JqhiRdEnP5w/hqdefault.jpg",
+    "url": "https://youtu.be/JqhiRdEnP5w",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "APYUJoQkVUo",
+    "title": "Inside the Dark Factory: AI That Ships Code Solo",
+    "channel": "AI Native Dev",
+    "published": "2026-07-28T12:00:22+00:00",
+    "thumb": "https://i.ytimg.com/vi/APYUJoQkVUo/hqdefault.jpg",
+    "url": "https://youtu.be/APYUJoQkVUo",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
