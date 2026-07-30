@@ -1439,5 +1439,170 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "z0sh8HyTrDo",
+    "title": "Your Finance Agent's Bottleneck Is You — Ramana Siddanth Emani, Auditoria AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T03:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/z0sh8HyTrDo/hqdefault.jpg",
+    "url": "https://youtu.be/z0sh8HyTrDo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "tJFjeMBKbIY",
+    "title": "Build for the Memo, Not the Demo — Shawn Chan, China Resources Holdings",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T02:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/tJFjeMBKbIY/hqdefault.jpg",
+    "url": "https://youtu.be/tJFjeMBKbIY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "o6U_2vd967Y",
+    "title": "Let's integrate AI Agents in Event-Sourced Systems — Divakar Kumar, FlyersSoft",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T00:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/o6U_2vd967Y/hqdefault.jpg",
+    "url": "https://youtu.be/o6U_2vd967Y",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "s67bE2Ur3bY",
+    "title": "Wearing the Agent: From Group Chats to Glasses — Sai Krishna Rallabandi",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T22:58:19+00:00",
+    "thumb": "https://i.ytimg.com/vi/s67bE2Ur3bY/hqdefault.jpg",
+    "url": "https://youtu.be/s67bE2Ur3bY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "iKQ78wyJEXU",
+    "title": "We Vetted 2000 AI Skills Before They Reached Developers — Lucas Palma, Nubank",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T22:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/iKQ78wyJEXU/hqdefault.jpg",
+    "url": "https://youtu.be/iKQ78wyJEXU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Tt2kX2sgQio",
+    "title": "How Kepler Built Verifiable AI for Financial Services — Vinoo Ganesh",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T21:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/Tt2kX2sgQio/hqdefault.jpg",
+    "url": "https://youtu.be/Tt2kX2sgQio",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "YnNF55QV0zs",
+    "title": "Persona Engineering: A Field Guide to AI Synthetic Personas — Ishan Anand, InsightSciences.ai",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T20:15:35+00:00",
+    "thumb": "https://i.ytimg.com/vi/YnNF55QV0zs/hqdefault.jpg",
+    "url": "https://youtu.be/YnNF55QV0zs",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Owb8g3yDyzo",
+    "title": "Why Off-the-Shelf AI Doesn't Understand Money — Udi Menkes, Intuit",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T20:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/Owb8g3yDyzo/hqdefault.jpg",
+    "url": "https://youtu.be/Owb8g3yDyzo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "KMR_RBoCa4M",
+    "title": "SimulationMaxxing: How we ship agents 20× faster — Aman Gupta (Nubank) + Shreya Rajpal (Snowglobe)",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T19:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/KMR_RBoCa4M/hqdefault.jpg",
+    "url": "https://youtu.be/KMR_RBoCa4M",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "7jjudsEhBtM",
+    "title": "Skills are new features: Building Skill-Centric Harness — Yogendra Miraje, FactSet",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T18:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/7jjudsEhBtM/hqdefault.jpg",
+    "url": "https://youtu.be/7jjudsEhBtM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "kiqubc5b5Yo",
+    "title": "Morgan Stanley's ALPHALAB: Multi-Agent Research Across Optimization Domains — Brendan Rappazzo",
+    "channel": "AI Engineer",
+    "published": "2026-07-29T17:06:26+00:00",
+    "thumb": "https://i.ytimg.com/vi/kiqubc5b5Yo/hqdefault.jpg",
+    "url": "https://youtu.be/kiqubc5b5Yo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "MW8-kqd2SD8",
+    "title": "Hugging Face Journal Club: Kimi K3",
+    "channel": "Hugging Face",
+    "published": "2026-07-29T18:31:00+00:00",
+    "thumb": "https://i.ytimg.com/vi/MW8-kqd2SD8/hqdefault.jpg",
+    "url": "https://youtu.be/MW8-kqd2SD8",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Jwz0k8ZK9TE",
+    "title": "We Scored Oracle's Database Skill Live: 95% Isn't Enough",
+    "channel": "AI Native Dev",
+    "published": "2026-07-29T18:30:20+00:00",
+    "thumb": "https://i.ytimg.com/vi/Jwz0k8ZK9TE/hqdefault.jpg",
+    "url": "https://youtu.be/Jwz0k8ZK9TE",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "hVUuUebEY8M",
+    "title": "New Skills Clinic: Oracle's Database Skill, Reviewed",
+    "channel": "AI Native Dev",
+    "published": "2026-07-29T18:00:33+00:00",
+    "thumb": "https://i.ytimg.com/vi/hVUuUebEY8M/hqdefault.jpg",
+    "url": "https://youtu.be/hVUuUebEY8M",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Sf-zf97iX_U",
+    "title": "Context Beats the Model",
+    "channel": "AI Native Dev",
+    "published": "2026-07-29T16:00:05+00:00",
+    "thumb": "https://i.ytimg.com/vi/Sf-zf97iX_U/hqdefault.jpg",
+    "url": "https://youtu.be/Sf-zf97iX_U",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
