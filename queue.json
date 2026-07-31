@@ -1604,5 +1604,82 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "AVMr9PMINyo",
+    "title": "Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It — Olive Song",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T03:00:14+00:00",
+    "thumb": "https://i.ytimg.com/vi/AVMr9PMINyo/hqdefault.jpg",
+    "url": "https://youtu.be/AVMr9PMINyo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "AMiyLItEtLA",
+    "title": "fighting slop with slop — Vaibhav Gupta, Boundary",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T01:11:30+00:00",
+    "thumb": "https://i.ytimg.com/vi/AMiyLItEtLA/hqdefault.jpg",
+    "url": "https://youtu.be/AMiyLItEtLA",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "pWXUkLP9uWM",
+    "title": "First Steps Toward Automated AI Research — Richard Socher, CEO Recursive AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T16:59:37+00:00",
+    "thumb": "https://i.ytimg.com/vi/pWXUkLP9uWM/hqdefault.jpg",
+    "url": "https://youtu.be/pWXUkLP9uWM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "jWq-aZIU0kM",
+    "title": "Benchmarks: The Good, the Bad, and the Ugly — Ali Khial, G2i",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T11:23:32+00:00",
+    "thumb": "https://i.ytimg.com/vi/jWq-aZIU0kM/hqdefault.jpg",
+    "url": "https://youtu.be/jWq-aZIU0kM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "AQv3qRCG6Gw",
+    "title": "Reinforcement Learning without Verifiable Rewards — Will Brown, Prime Intellect",
+    "channel": "AI Engineer",
+    "published": "2026-07-30T11:21:02+00:00",
+    "thumb": "https://i.ytimg.com/vi/AQv3qRCG6Gw/hqdefault.jpg",
+    "url": "https://youtu.be/AQv3qRCG6Gw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "DLjarZe0Xqc",
+    "title": "The Hallway Track: What Even Is Harness Engineering",
+    "channel": "AI Native Dev",
+    "published": "2026-07-30T16:00:19+00:00",
+    "thumb": "https://i.ytimg.com/vi/DLjarZe0Xqc/hqdefault.jpg",
+    "url": "https://youtu.be/DLjarZe0Xqc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "nnYHNhOw5Vs",
+    "title": "The Bug That Took 60 PRs to Kill",
+    "channel": "AI Native Dev",
+    "published": "2026-07-30T15:15:03+00:00",
+    "thumb": "https://i.ytimg.com/vi/nnYHNhOw5Vs/hqdefault.jpg",
+    "url": "https://youtu.be/nnYHNhOw5Vs",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
