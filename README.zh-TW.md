@@ -89,7 +89,7 @@ GitHub Issue 就是你操作的控制面板**,連手機都能挑片:
 
 ```text
 channels.json ─poll(cron)─▶ queue.json(develop)+ 📥 review Issue
-                    Issue:triage.mjs 把每支 pending 評成 ⭐/🤔/⏭️(GitHub Models)+ ✅/❌ checkbox
+                    Issue:triage.mjs 把每支 pending 評成 ⭐/🤔/⏭️(OpenAI)+ ✅/❌ checkbox
    ② 勾 ✅/❌ + 🚀 送出 ─queue-control─▶ approved   (develop 上一個 commit)
    ③ gen-note --pr(字幕 → Claude 草稿 + 中文 + 分類)─▶ PR(記回 Issue)
    ④ 複審 PR ─merge─▶ develop ─⑤ Release(一鍵)─▶ main ─▶ Vercel build + 部署
@@ -97,7 +97,7 @@ channels.json ─poll(cron)─▶ queue.json(develop)+ 📥 review Issue
 
 - [`tools/poll.mjs`](tools/poll.mjs) —— 把各頻道 RSS 抓進 `develop` 上的 `queue.json`
   (由 [`.github/workflows/poll.yml`](.github/workflows/poll.yml) 排程)
-- [`tools/triage.mjs`](tools/triage.mjs) —— 用 GitHub Models(`gpt-4o-mini`)替 pending
+- [`tools/triage.mjs`](tools/triage.mjs) —— 用 OpenAI API(`gpt-4o-mini`)替 pending
   評分,並把 review Issue 渲染成 ⭐/🤔/⏭️ + checkbox 的控制面板
 - **在 Issue 上挑片** —— 勾 ✅/❌ 再勾底部 🚀 送出;
   [`queue-control.yml`](.github/workflows/queue-control.yml) 用

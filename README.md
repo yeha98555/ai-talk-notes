@@ -97,7 +97,7 @@ from, so you can even pick from your phone:
 
 ```text
 channels.json ─poll (cron)─▶ queue.json (develop) + 📥 review Issue
-                     Issue: triage.mjs ranks each pending video ⭐/🤔/⏭️ (GitHub Models) + ✅/❌ boxes
+                     Issue: triage.mjs ranks each pending video ⭐/🤔/⏭️ (OpenAI) + ✅/❌ boxes
    ② tick ✅/❌ + 🚀 submit ─queue-control─▶ approved   (one commit on develop)
    ③ gen-note --pr (transcript → Claude draft + 中文 + category) ─▶ PR (linked on the Issue)
    ④ review PR ─merge─▶ develop ─⑤ Release (one click)─▶ main ─▶ Vercel build + deploy
@@ -105,7 +105,7 @@ channels.json ─poll (cron)─▶ queue.json (develop) + 📥 review Issue
 
 - [`tools/poll.mjs`](tools/poll.mjs) — pull each channel's RSS into `queue.json` on
   `develop` (scheduled by [`.github/workflows/poll.yml`](.github/workflows/poll.yml))
-- [`tools/triage.mjs`](tools/triage.mjs) — score the pending queue with GitHub Models
+- [`tools/triage.mjs`](tools/triage.mjs) — score the pending queue with the OpenAI API
   (`gpt-4o-mini`) and render the review Issue as a ⭐/🤔/⏭️ control panel with checkboxes
 - **Pick on the Issue** — tick ✅/❌ then the bottom 🚀 submit;
   [`queue-control.yml`](.github/workflows/queue-control.yml) applies the batch to
