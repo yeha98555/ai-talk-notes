@@ -330,8 +330,9 @@ function buildPage(locale) {
         "<!-- lang-toggle -->",
         langToggle,
     );
-    const nav = read("partials/nav.html", locale);
-    const overview = fillDistribution(read("sections/overview.html", locale), categoryCounts());
+    const counts = categoryCounts();
+    const nav = fillDistribution(read("partials/nav.html", locale), counts);
+    const overview = fillDistribution(read("sections/overview.html", locale), counts);
     const themes = read("sections/themes.html", locale);
     const footer = read("partials/footer.html", locale);
 
