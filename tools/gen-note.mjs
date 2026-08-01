@@ -3,10 +3,13 @@
  * gen-note.mjs — turn an approved queue video into a house-style note draft.
  *
  * For each queue item with status "approved" (no docId yet): fetch its transcript,
- * ask Claude for a note draft + Traditional-Chinese translation + a category
- * suggestion, then write doc-N.md (+ zh mirror), append to order.json, insert a
- * card into the chosen cat-K.md (+ zh mirror) at its alphabetical position, bump
- * the hard-coded talk count, and backfill the queue item to "published". A video
+ * ask Claude for an English note draft + category (call 1), then a Traditional-
+ * Chinese translation of that finalized note (call 2), then write doc-N.md
+ * (+ zh mirror), append to order.json, insert a card into the chosen cat-K.md
+ * (+ zh mirror) at its alphabetical position, bump the hard-coded talk count, and
+ * backfill the queue item to "published". Every call's fields are validated with
+ * prose-check (same rules as the build-time content-check) and retried at most
+ * once; a video that still fails stays "approved" and the batch continues. A video
  * with no captions is marked "needs-transcript" and skipped — never hard-produced.
  *
  * The category suggestion and every draft are advisory: the Phase-4 PR review is
@@ -24,6 +27,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { fetchTranscript } from "./transcript.mjs";
+import { checkDraftFields } from "./prose-check.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 // Summarize + translate + classify is a single-call task with a few-shot style
@@ -52,16 +56,30 @@ const catMeta = CATS.map((k) => {
 
 // ---- draft source: Claude (live) or a deterministic stub (--dry-run) ----------
 
-const DRAFT_SCHEMA = {
+// Two calls per video (PRD-v4): call 1 drafts the English note + category from
+// the transcript; call 2 translates the FINALIZED English note (no transcript)
+// into zh. Each call gets the full max_tokens budget — the single-call version
+// ran out of room on long talks and returned schema-valid JSON with truncated
+// prose. `category` exists only in EN_SCHEMA, so the zh call structurally
+// cannot override the classification.
+const EN_SCHEMA = {
     type: "object",
     additionalProperties: false,
-    required: ["title", "speaker", "category", "body", "card_summary", "zh_title", "zh_speaker", "zh_body", "zh_card_summary"],
+    required: ["title", "speaker", "category", "body", "card_summary"],
     properties: {
         title: { type: "string" },
         speaker: { type: "string" },
         category: { type: "string", enum: CATS },
         body: { type: "string" },
         card_summary: { type: "string" },
+    },
+};
+
+const ZH_SCHEMA = {
+    type: "object",
+    additionalProperties: false,
+    required: ["zh_title", "zh_speaker", "zh_body", "zh_card_summary"],
+    properties: {
         zh_title: { type: "string" },
         zh_speaker: { type: "string" },
         zh_body: { type: "string" },
@@ -69,7 +87,7 @@ const DRAFT_SCHEMA = {
     },
 };
 
-const buildPrompt = (item, transcript) => {
+const buildEnPrompt = (item, transcript) => {
     const example = readText("src/notes/doc-100.md");
     const catList = catMeta.map((c) => `${c.k}: ${c.heading} — ${c.desc}`).join("\n");
     const system =
@@ -78,7 +96,6 @@ const buildPrompt = (item, transcript) => {
         example +
         "\n\nRules: write flowing prose in blank-line-separated paragraphs (no headings, no bullet dumps unless the talk is genuinely a list). " +
         "Be faithful to the transcript; do not invent facts. `speaker` is \"Name, Company\" (infer from the transcript/title; use the name only if the company is unclear). " +
-        "Translate the Chinese fields into Traditional Chinese, Taiwan style (zh-Hant); keep product/company names and established jargon (RAG, LLM, MCP, …) as-is. " +
         "Pick the single best-fitting category.";
     const user =
         `Video title: ${item.title}\nChannel: ${item.channel}\nURL: ${item.url}\n\n` +
@@ -87,7 +104,23 @@ const buildPrompt = (item, transcript) => {
     return { system, user };
 };
 
-const callClaude = async ({ system, user }) => {
+const buildZhPrompt = (en) => {
+    const example = readText("src/i18n/zh/notes/doc-100.md");
+    const system =
+        "You translate finalized English AI-engineering talk notes into Traditional Chinese, Taiwan style (zh-Hant), matching an existing site's zh house style. " +
+        "Study this example zh note (frontmatter + body) and mirror its register:\n\n" +
+        example +
+        "\n\nRules: translate faithfully — do not add, drop, or reorder information; keep the same paragraph structure as the English. " +
+        "Keep product/company names, people's names, and established jargon (RAG, LLM, MCP, …) as-is.";
+    const user =
+        `English note to translate:\n\n---\ntitle: ${en.title}\nspeaker: ${en.speaker}\n---\n${en.body.trim()}\n\n` +
+        `Card summary (translate as zh_card_summary):\n${en.card_summary.trim()}`;
+    return { system, user };
+};
+
+const MAX_TOKENS = 16000;
+
+const callClaude = async ({ system, user }, schema, retryNote) => {
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) throw new Error("ANTHROPIC_API_KEY is not set");
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -99,35 +132,62 @@ const callClaude = async ({ system, user }) => {
         },
         body: JSON.stringify({
             model: MODEL,
-            max_tokens: 16000,
+            max_tokens: MAX_TOKENS,
             thinking: { type: "adaptive" },
-            output_config: { effort: "high", format: { type: "json_schema", schema: DRAFT_SCHEMA } },
+            output_config: { effort: "high", format: { type: "json_schema", schema } },
             system,
-            messages: [{ role: "user", content: user }],
+            messages: [{ role: "user", content: retryNote ? `${user}\n\n${retryNote}` : user }],
         }),
     });
     if (!res.ok) throw new Error(`Messages API HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
     const data = await res.json();
+    // Truncation's leading indicator is output riding close to the budget —
+    // surface usage on every call so the 16k ceiling can be judged from logs.
+    const out = data.usage?.output_tokens ?? 0;
+    const pct = Math.round((out / MAX_TOKENS) * 100);
+    console.log(`    tokens: in=${data.usage?.input_tokens ?? "?"} out=${out} (out/max=${pct}%)${pct >= 80 ? " ⚠ near max_tokens" : ""}`);
     if (data.stop_reason === "refusal") throw new Error(`model refused: ${data.stop_details?.category}`);
     if (data.stop_reason === "max_tokens") throw new Error("hit max_tokens — draft truncated");
     const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("");
     return JSON.parse(text);
 };
 
-const stubDraft = (item) => {
-    const zh = "（--dry-run 佔位內容）這是用來驗證寫檔管線的假草稿,不含真實重點。\n\n第二段落,確認段落與空行處理正確。";
-    return {
-        title: item.title,
-        speaker: "Dry Run, Placeholder Co.",
-        category: "C",
-        body: `(--dry-run placeholder) A stub draft used to exercise the file-writing pipeline for "${item.title}".\n\nA second paragraph to verify blank-line paragraph handling renders correctly.`,
-        card_summary: `Placeholder one-paragraph card summary for "${item.title}" (dry run).`,
-        zh_title: item.title,
-        zh_speaker: "Dry Run, Placeholder Co.",
-        zh_body: zh,
-        zh_card_summary: "假的一段式卡片摘要(dry run)。",
-    };
+// Draft-time gate (PRD-v4): validate every call's fields with the same rules
+// content-check applies at build time, and retry AT MOST ONCE with the failures
+// spelled out. The model can return schema-valid JSON whose strings were cut
+// off mid-sentence (or literal "placeholder" filler) when it runs low on
+// budget — stop_reason checks can't see that. Still failing after the retry
+// throws, which the per-video catch turns into "left approved for retry"
+// (nothing written, batch continues). Worst case per video: 4 calls.
+const callWithRetry = async (prompt, schema, label) => {
+    let draft = await callClaude(prompt, schema);
+    let problems = checkDraftFields(draft);
+    if (!problems.length) return draft;
+    console.log(`    ✗ ${label} draft failed checks — retrying once:\n      ${problems.join("\n      ")}`);
+    draft = await callClaude(
+        prompt,
+        schema,
+        `Previous attempt failed checks: ${problems.join("; ")}. Ensure every field is complete prose ending with terminal punctuation; never output the word "placeholder".`,
+    );
+    problems = checkDraftFields(draft);
+    if (problems.length) throw new Error(`${label} draft still incomplete after retry (${problems[0]})`);
+    return draft;
 };
+
+const stubEnDraft = (item) => ({
+    title: item.title,
+    speaker: "Dry Run, Placeholder Co.",
+    category: "C",
+    body: `(--dry-run placeholder) A stub draft used to exercise the file-writing pipeline for "${item.title}".\n\nA second paragraph to verify blank-line paragraph handling renders correctly.`,
+    card_summary: `Placeholder one-paragraph card summary for "${item.title}" (dry run).`,
+});
+
+const stubZhDraft = (item) => ({
+    zh_title: item.title,
+    zh_speaker: "Dry Run, Placeholder Co.",
+    zh_body: "（--dry-run 佔位內容）這是用來驗證寫檔管線的假草稿,不含真實重點。\n\n第二段落,確認段落與空行處理正確。",
+    zh_card_summary: "假的一段式卡片摘要(dry run)。",
+});
 
 // ---- cat-K.md card insertion (alphabetical by title, docs stays aligned) ------
 
@@ -230,7 +290,18 @@ const main = async () => {
 
         let draft;
         try {
-            draft = DRY ? stubDraft(item) : await callClaude(buildPrompt(item, text));
+            if (DRY) {
+                // Stubs must pass the same gate — keeps dry-run an honest
+                // smoke test of the checker (mind sentence-final punctuation
+                // when editing stub copy).
+                draft = { ...stubEnDraft(item), ...stubZhDraft(item) };
+                const problems = checkDraftFields(draft);
+                if (problems.length) throw new Error(`stub draft failed checks (${problems[0]})`);
+            } else {
+                const en = await callWithRetry(buildEnPrompt(item, text), EN_SCHEMA, "en");
+                const zh = await callWithRetry(buildZhPrompt(en), ZH_SCHEMA, "zh");
+                draft = { ...en, ...zh };
+            }
         } catch (err) {
             console.log(`  ✗ draft failed: ${err.message} — left approved for retry`);
             continue;
