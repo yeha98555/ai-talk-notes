@@ -52,16 +52,30 @@ const catMeta = CATS.map((k) => {
 
 // ---- draft source: Claude (live) or a deterministic stub (--dry-run) ----------
 
-const DRAFT_SCHEMA = {
+// Two calls per video (PRD-v4): call 1 drafts the English note + category from
+// the transcript; call 2 translates the FINALIZED English note (no transcript)
+// into zh. Each call gets the full max_tokens budget — the single-call version
+// ran out of room on long talks and returned schema-valid JSON with truncated
+// prose. `category` exists only in EN_SCHEMA, so the zh call structurally
+// cannot override the classification.
+const EN_SCHEMA = {
     type: "object",
     additionalProperties: false,
-    required: ["title", "speaker", "category", "body", "card_summary", "zh_title", "zh_speaker", "zh_body", "zh_card_summary"],
+    required: ["title", "speaker", "category", "body", "card_summary"],
     properties: {
         title: { type: "string" },
         speaker: { type: "string" },
         category: { type: "string", enum: CATS },
         body: { type: "string" },
         card_summary: { type: "string" },
+    },
+};
+
+const ZH_SCHEMA = {
+    type: "object",
+    additionalProperties: false,
+    required: ["zh_title", "zh_speaker", "zh_body", "zh_card_summary"],
+    properties: {
         zh_title: { type: "string" },
         zh_speaker: { type: "string" },
         zh_body: { type: "string" },
@@ -69,7 +83,7 @@ const DRAFT_SCHEMA = {
     },
 };
 
-const buildPrompt = (item, transcript) => {
+const buildEnPrompt = (item, transcript) => {
     const example = readText("src/notes/doc-100.md");
     const catList = catMeta.map((c) => `${c.k}: ${c.heading} — ${c.desc}`).join("\n");
     const system =
@@ -78,7 +92,6 @@ const buildPrompt = (item, transcript) => {
         example +
         "\n\nRules: write flowing prose in blank-line-separated paragraphs (no headings, no bullet dumps unless the talk is genuinely a list). " +
         "Be faithful to the transcript; do not invent facts. `speaker` is \"Name, Company\" (infer from the transcript/title; use the name only if the company is unclear). " +
-        "Translate the Chinese fields into Traditional Chinese, Taiwan style (zh-Hant); keep product/company names and established jargon (RAG, LLM, MCP, …) as-is. " +
         "Pick the single best-fitting category.";
     const user =
         `Video title: ${item.title}\nChannel: ${item.channel}\nURL: ${item.url}\n\n` +
@@ -87,7 +100,21 @@ const buildPrompt = (item, transcript) => {
     return { system, user };
 };
 
-const callClaude = async ({ system, user }) => {
+const buildZhPrompt = (en) => {
+    const example = readText("src/i18n/zh/notes/doc-100.md");
+    const system =
+        "You translate finalized English AI-engineering talk notes into Traditional Chinese, Taiwan style (zh-Hant), matching an existing site's zh house style. " +
+        "Study this example zh note (frontmatter + body) and mirror its register:\n\n" +
+        example +
+        "\n\nRules: translate faithfully — do not add, drop, or reorder information; keep the same paragraph structure as the English. " +
+        "Keep product/company names, people's names, and established jargon (RAG, LLM, MCP, …) as-is.";
+    const user =
+        `English note to translate:\n\n---\ntitle: ${en.title}\nspeaker: ${en.speaker}\n---\n${en.body.trim()}\n\n` +
+        `Card summary (translate as zh_card_summary):\n${en.card_summary.trim()}`;
+    return { system, user };
+};
+
+const callClaude = async ({ system, user }, schema) => {
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) throw new Error("ANTHROPIC_API_KEY is not set");
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -101,7 +128,7 @@ const callClaude = async ({ system, user }) => {
             model: MODEL,
             max_tokens: 16000,
             thinking: { type: "adaptive" },
-            output_config: { effort: "high", format: { type: "json_schema", schema: DRAFT_SCHEMA } },
+            output_config: { effort: "high", format: { type: "json_schema", schema } },
             system,
             messages: [{ role: "user", content: user }],
         }),
@@ -114,20 +141,20 @@ const callClaude = async ({ system, user }) => {
     return JSON.parse(text);
 };
 
-const stubDraft = (item) => {
-    const zh = "（--dry-run 佔位內容）這是用來驗證寫檔管線的假草稿,不含真實重點。\n\n第二段落,確認段落與空行處理正確。";
-    return {
-        title: item.title,
-        speaker: "Dry Run, Placeholder Co.",
-        category: "C",
-        body: `(--dry-run placeholder) A stub draft used to exercise the file-writing pipeline for "${item.title}".\n\nA second paragraph to verify blank-line paragraph handling renders correctly.`,
-        card_summary: `Placeholder one-paragraph card summary for "${item.title}" (dry run).`,
-        zh_title: item.title,
-        zh_speaker: "Dry Run, Placeholder Co.",
-        zh_body: zh,
-        zh_card_summary: "假的一段式卡片摘要(dry run)。",
-    };
-};
+const stubEnDraft = (item) => ({
+    title: item.title,
+    speaker: "Dry Run, Placeholder Co.",
+    category: "C",
+    body: `(--dry-run placeholder) A stub draft used to exercise the file-writing pipeline for "${item.title}".\n\nA second paragraph to verify blank-line paragraph handling renders correctly.`,
+    card_summary: `Placeholder one-paragraph card summary for "${item.title}" (dry run).`,
+});
+
+const stubZhDraft = (item) => ({
+    zh_title: item.title,
+    zh_speaker: "Dry Run, Placeholder Co.",
+    zh_body: "（--dry-run 佔位內容）這是用來驗證寫檔管線的假草稿,不含真實重點。\n\n第二段落,確認段落與空行處理正確。",
+    zh_card_summary: "假的一段式卡片摘要(dry run)。",
+});
 
 // ---- cat-K.md card insertion (alphabetical by title, docs stays aligned) ------
 
@@ -230,7 +257,13 @@ const main = async () => {
 
         let draft;
         try {
-            draft = DRY ? stubDraft(item) : await callClaude(buildPrompt(item, text));
+            if (DRY) {
+                draft = { ...stubEnDraft(item), ...stubZhDraft(item) };
+            } else {
+                const en = await callClaude(buildEnPrompt(item, text), EN_SCHEMA);
+                const zh = await callClaude(buildZhPrompt(en), ZH_SCHEMA);
+                draft = { ...en, ...zh };
+            }
         } catch (err) {
             console.log(`  ✗ draft failed: ${err.message} — left approved for retry`);
             continue;
