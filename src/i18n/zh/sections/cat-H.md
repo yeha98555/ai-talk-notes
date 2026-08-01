@@ -9,13 +9,16 @@ desc: 編碼 Agent、AI 原生開發工作流程與組織轉型：方法論值�
 
 
 
+
 ## 打造程式碼編輯 Agent：國王的新衣
 @ Jeff Huntley, Sourcegraph (AMP)
 一場現場實作的演講，展示程式碼編輯 agent 其實就是約 300 行程式碼、跑在一個對 LLM 推論並呼叫工具的迴圈裡，並逐一堆疊出 list_files、read_file、bash、edit 等原語——同時提供了如何依任務選對模型類型，以及如何避免 MCP 過度堆疊與任務混雜污染 context window 的實務準則。
 
+
 ## Calvin French-Owen 談 Agentic 編碼的未來
 @ Calvin French-Owen（前 OpenAI Codex）
 拆解編碼 Agent 如何被預訓練與 RL 塑造，以及推論／harness 層如何管理上下文與長時間運行的任務，進而建議工程師應把時間轉移到「難以驗證、高度依賴情境」的設計決策上，把可驗證、可自動化的實作交給 Agent。同時比較不同模型的「性格」，並以管理思維把自己定位為「軟體工廠」的瓶頸管理者。
+
 
 
 
@@ -26,9 +29,15 @@ Dex Horthy 主張,AI coding 日益嚴重的事故與品質問題並非框架或�
 
 
 
+
+## Harness Engineering:打造 AI 軟體工廠
+@ Dru, Tessl
+Tessl 產品負責人提出「harness engineering」框架——建構測試、agentic 審查與維護型 agent 組成的內/外/元迴圈——作為從互動式 coding agent 對話邁向完整「軟體工廠」的實務路徑,同時剖析伴隨而來的組織性阻力。
+
 ## 行動偏誤如何破壞自主軟體維護
 @ LogicStar.ai
 指出負責自主維護的編碼 Agent 存在「行動偏誤」：即使程式碼其實已經修好（約 50% 的錯誤回報屬於重複或過時），Agent 仍有 35-65% 的機率做出不必要的變更、堆積技術債。用 FixedBench 顯示提高推理預算並無幫助——真正有效的做法是在提示／任務設計的結果空間中，明確納入「什麼都不做也算成功」；根本原因在於 RL 幾乎只獎勵「採取行動」。
+
 
 
 
@@ -40,14 +49,17 @@ Dex Horthy 主張,AI coding 日益嚴重的事故與品質問題並非框架或�
 
 
 
+
 ## 規格驅動開發的經驗教訓
 @ Simon Martinelli
 Simon Martinelli 提出一套「AI Unified Process」，以系統使用案例與實體模型取代 Kiro、Spec Kit 等工具的計劃／任務流程，直接餵給 coding agent；並說明自足系統架構、嚴謹的技能／護欄設計，以及從既有程式碼反向工程規格，如何讓這套方法在真實企業現代化專案中可靠運作。
 
 
+
 ## 讓 Vibe Coding 更安全：如何用 Playwright 測試
 @ Amazon AGI Lab
 說明如何運用 Playwright（搭配 Playwright Test MCP）為 vibe coding 出來的網頁功能打造可靠的端對端測試：讓 Agent 實際開啟瀏覽器、讀取渲染後的無障礙樹（accessibility tree），以挑選最穩定的定位器（locator）。建議測試應保持小而聚焦、每次 commit 都執行，並把失敗視為需要調查的錯誤。
+
 
 
 
@@ -59,6 +71,7 @@ Simon Martinelli 提出一套「AI Unified Process」，以系統使用案例與
 
 
 
+
 ## 現場最強的工程師不寫程式碼
 @ Emilie, Kilo Code
 主張最強工程師的價值不在於寫最多程式碼，而在於承擔問題與成果的主人翁責任，未來的關鍵是把 AI 從一次性工作階段的工具，轉變成「全天候、對成果負責」的 AI 同事。以全天候運行的 Agent 為例，說明需要賦予 Agent 持久的身分、精細劃分的權限、事件驅動的觸發機制，以及控制平面與執行平面的分離。
@@ -66,9 +79,11 @@ Simon Martinelli 提出一套「AI Unified Process」，以系統使用案例與
 
 
 
+
 ## 神話般的 Agent-Month
 @ Posit
 既然 Agent 已能代替我們寫出大量程式碼，主張工程師真正的價值在於界定問題範圍、設計架構，並展現「品味」——借用《人月神話》中本質複雜度與附帶複雜度的區分，因為 Agent 擅長處理附帶複雜度，卻難以應付本質性的設計。並描述他們自家的 Agentic 工程堆疊（自動化程式碼審查、工作階段資料庫、自建的 issue tracker）。
+
 
 
 

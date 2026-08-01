@@ -193,8 +193,8 @@
     "published": "2026-07-23T16:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/2JX6JYyQG4Y/hqdefault.jpg",
     "url": "https://youtu.be/2JX6JYyQG4Y",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-134",
     "note": null
   },
   {
@@ -721,8 +721,8 @@
     "published": "2026-06-19T08:13:46+00:00",
     "thumb": "https://i.ytimg.com/vi/_OHSZTy62_w/hqdefault.jpg",
     "url": "https://youtu.be/_OHSZTy62_w",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-135",
     "note": null
   },
   {
@@ -908,8 +908,8 @@
     "published": "2026-07-24T14:00:17+00:00",
     "thumb": "https://i.ytimg.com/vi/xR-BiPz45-4/hqdefault.jpg",
     "url": "https://youtu.be/xR-BiPz45-4",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-136",
     "note": null
   },
   {
@@ -952,8 +952,8 @@
     "published": "2026-06-22T14:00:05+00:00",
     "thumb": "https://i.ytimg.com/vi/RSs0PDsULJM/hqdefault.jpg",
     "url": "https://youtu.be/RSs0PDsULJM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-137",
     "note": null
   },
   {
@@ -996,8 +996,8 @@
     "published": "2026-06-15T14:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/jXtnhyro-QE/hqdefault.jpg",
     "url": "https://youtu.be/jXtnhyro-QE",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-138",
     "note": null
   },
   {
@@ -1018,8 +1018,8 @@
     "published": "2026-05-28T05:46:11+00:00",
     "thumb": "https://i.ytimg.com/vi/kDAlW3vRQzI/hqdefault.jpg",
     "url": "https://youtu.be/kDAlW3vRQzI",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-139",
     "note": null
   },
   {
@@ -1095,8 +1095,8 @@
     "published": "2026-07-25T01:00:02+00:00",
     "thumb": "https://i.ytimg.com/vi/Ib5t2RLtxvM/hqdefault.jpg",
     "url": "https://youtu.be/Ib5t2RLtxvM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-140",
     "note": null
   },
   {
@@ -1106,8 +1106,8 @@
     "published": "2026-07-25T00:00:02+00:00",
     "thumb": "https://i.ytimg.com/vi/b_PmGocP4rc/hqdefault.jpg",
     "url": "https://youtu.be/b_PmGocP4rc",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-141",
     "note": null
   },
   {
@@ -1128,8 +1128,8 @@
     "published": "2026-07-24T21:00:00+00:00",
     "thumb": "https://i.ytimg.com/vi/xyL2Ltkh-SA/hqdefault.jpg",
     "url": "https://youtu.be/xyL2Ltkh-SA",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-142",
     "note": null
   },
   {
@@ -1139,8 +1139,8 @@
     "published": "2026-07-24T20:15:32+00:00",
     "thumb": "https://i.ytimg.com/vi/9HbzAWnKbo4/hqdefault.jpg",
     "url": "https://youtu.be/9HbzAWnKbo4",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-143",
     "note": null
   },
   {
@@ -1194,8 +1194,8 @@
     "published": "2026-07-25T20:41:40+00:00",
     "thumb": "https://i.ytimg.com/vi/xIt_mTQp6mY/hqdefault.jpg",
     "url": "https://youtu.be/xIt_mTQp6mY",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-144",
     "note": null
   },
   {
@@ -1260,8 +1260,8 @@
     "published": "2026-07-28T00:59:04+00:00",
     "thumb": "https://i.ytimg.com/vi/CgsWxRUY5Eo/hqdefault.jpg",
     "url": "https://youtu.be/CgsWxRUY5Eo",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-145",
     "note": null
   },
   {
@@ -1282,8 +1282,8 @@
     "published": "2026-07-27T15:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/bUtAGFXPc3A/hqdefault.jpg",
     "url": "https://youtu.be/bUtAGFXPc3A",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-146",
     "note": null
   },
   {
@@ -1304,8 +1304,8 @@
     "published": "2026-07-28T22:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/wpOA-UXynoM/hqdefault.jpg",
     "url": "https://youtu.be/wpOA-UXynoM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-147",
     "note": null
   },
   {
@@ -1315,8 +1315,8 @@
     "published": "2026-07-28T21:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/l0FLhNqBOic/hqdefault.jpg",
     "url": "https://youtu.be/l0FLhNqBOic",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-148",
     "note": null
   },
   {
@@ -1381,8 +1381,8 @@
     "published": "2026-07-28T15:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/KwhgfwOSToQ/hqdefault.jpg",
     "url": "https://youtu.be/KwhgfwOSToQ",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-149",
     "note": null
   },
   {
@@ -1403,8 +1403,8 @@
     "published": "2026-07-26T03:14:14+00:00",
     "thumb": "https://i.ytimg.com/vi/BInpv7lGp1o/hqdefault.jpg",
     "url": "https://youtu.be/BInpv7lGp1o",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-150",
     "note": null
   },
   {
@@ -1535,8 +1535,8 @@
     "published": "2026-07-29T19:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/KMR_RBoCa4M/hqdefault.jpg",
     "url": "https://youtu.be/KMR_RBoCa4M",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-151",
     "note": null
   },
   {
@@ -1612,8 +1612,8 @@
     "published": "2026-07-31T03:00:14+00:00",
     "thumb": "https://i.ytimg.com/vi/AVMr9PMINyo/hqdefault.jpg",
     "url": "https://youtu.be/AVMr9PMINyo",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-152",
     "note": null
   },
   {
@@ -1634,8 +1634,8 @@
     "published": "2026-07-30T16:59:37+00:00",
     "thumb": "https://i.ytimg.com/vi/pWXUkLP9uWM/hqdefault.jpg",
     "url": "https://youtu.be/pWXUkLP9uWM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-153",
     "note": null
   },
   {
@@ -1645,8 +1645,8 @@
     "published": "2026-07-30T11:23:32+00:00",
     "thumb": "https://i.ytimg.com/vi/jWq-aZIU0kM/hqdefault.jpg",
     "url": "https://youtu.be/jWq-aZIU0kM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-154",
     "note": null
   },
   {
@@ -1689,8 +1689,8 @@
     "published": "2026-08-01T00:30:06+00:00",
     "thumb": "https://i.ytimg.com/vi/ZFxh7sqbUZo/hqdefault.jpg",
     "url": "https://youtu.be/ZFxh7sqbUZo",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-155",
     "note": null
   },
   {
@@ -1700,8 +1700,8 @@
     "published": "2026-08-01T00:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/2aS7aKoXn64/hqdefault.jpg",
     "url": "https://youtu.be/2aS7aKoXn64",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-156",
     "note": null
   },
   {
@@ -1722,8 +1722,8 @@
     "published": "2026-07-31T23:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/_PdK6x7PQNM/hqdefault.jpg",
     "url": "https://youtu.be/_PdK6x7PQNM",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-157",
     "note": null
   },
   {
@@ -1744,8 +1744,8 @@
     "published": "2026-07-31T22:00:06+00:00",
     "thumb": "https://i.ytimg.com/vi/ewtOo0scUh0/hqdefault.jpg",
     "url": "https://youtu.be/ewtOo0scUh0",
-    "status": "approved",
-    "docId": null,
+    "status": "published",
+    "docId": "doc-158",
     "note": null
   },
   {
