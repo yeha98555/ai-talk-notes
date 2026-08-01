@@ -2,16 +2,44 @@
 heading: Agent Architecture, Reliability & Productionization
 desc: Architectural choices on the road from PoC to production: durability, long-running execution, coordination / state / control, and progressive autonomy.
 color: #0891b2
-docs: 111, 5, 13, 16, 19, 22, 108, 54, 67, 68, 72, 80, 123, 92, 95, 107, 104
+docs: 111, 145, 5, 13, 148, 139, 16, 19, 22, 153, 147, 108, 54, 144, 134, 67, 68, 72, 80, 123, 92, 95, 107, 104, 150
 ---
 ## Active Graph Agent Runtime (BabyAGI 4)
 @ Yohei Nakajima, Untapped Capital
 Yohei Nakajima presents ActiveGraph, an event-sourced graph runtime where agents communicate only through a shared, immutable, typed event log rather than directly — enabling native replay, rollback, and forking, plus self-improvement experiments (LongMemEval, a self-researching lab, and a Pokémon-deck optimizer) that motivate treating agent memory as an "experiential world model."
 
 
+
+
+
+
+
+
+
+
+## AI Agents for Performance: Ship Faster, Pay Less
+@ Rajat Shah, Netflix
+profiler gives the estimate, canary gives ground truth, and the engineer makes the final call.
+
+The long-term goal is to shift this workflow left along the software development lifecycle: from reactive (finding and fixing bad patterns already in production) to a review-time reviewer agent that flags anti-patterns via inline comments using the catalog, to ideally catching problems at code-authoring time, where a coding agent consults the catalog before generating tokens so inefficient code is never written. This authoring-time integration adds latency and token cost, so the catalog must be well-indexed for hierarchical, low-context lookup rather than dumped wholesale into the prompt.
+
+The closing takeaways stress getting foundations right first — solid test coverage, reliable canary automation, and a well-maintained pattern catalog — before layering on agent autonomy, and starting with the reactive path rather than trying to automate everything at once. The talk frames this as a staged autonomy spectrum: level one is manual profiling with no LLM; level two, which the talk mainly covers, is a fixed, predefined agent workflow (trigger profiling, analyze, run canary, propose fix) that can run on a schedule to catch regressions weekly; level three would give the agent open-ended planning and reasoning autonomy, but requires much heavier investment in evaluation and sandboxing to guard against prompt injection and other security risks. The recommendation is to start at level one, move to level two for the bulk of the benefit, and only consider level three once the guardrails justify it.
+
+
+
+
+
 ## AI System Design: From Idea to Production
 @ Apoorva Joshi, MongoDB
 Using a health-insurance claims-review system as the example, presents a four-stage framework — product requirements → system design → evaluation & monitoring → optimization — emphasizing that in the age of AI writing code, the hard part is defining the product spec and system design, not the implementation. Covers data strategy (hybrid search combining vectors and metadata), RAG/router/human-in-the-loop patterns, guardrails and domain-metric evaluation, and optimizations such as reranking, semantic caching, and structured outputs.
+
+
+
+
+
+
+
+
 
 
 
@@ -27,9 +55,41 @@ Argues that building a reliable agent is a systems-engineering problem, not a se
 
 
 
+
+
+
+
+
+
+
+
+## AI Tools for Forward Deployed Engineering
+@ Vasuman Moza, Varick Agents
+Varick Agents' Vasuman Moza (with engineering lead JD Pruitt) argues the real bottleneck in enterprise AI is no longer execution but how deeply you can understand and re-engineer a business without scaling headcount — the job of forward deployed engineers who map human workflows, redesign them around AI, and deploy agents on top of existing systems of record like NetSuite or SAP. The talk details their internal FD agent: an engagement assistant, a workflow-building copilot, and a future autonomous stage, all built on a dependency-graph model of company processes with post-trained open-source models and a custom RL environment for reliable context extraction.
+
+
+
+## Architecting Modern AI Systems: Platforms, Agents, and Integration
+@ Frédéric (MIA), Shao (Bell Canada), and Allan (BUZZ HPC) — panel discussion
+A panel from BUZZ HPC, Bell Canada, and an applied-AI research group unpack how to architect modern agent systems: what a GPU-cloud platform should own versus what a team must own, why open-source hosting and constrained generation buy back control that closed APIs quietly take away, the real 80%-to-95% work of shipping agents past a hackathon demo, and the governance, observability, and sandboxing practices enterprises need once agents touch real production systems.
+
+
+
+
+
+
+
 ## Beyond the AI Pilot: A Framework for Building Systems That Actually Deliver
 @ InterSystems
 Argues that 95% of AI pilots get stuck at the POC stage, mainly due to two gaps: the infrastructure gap (AI can't access accurate, fresh business context, and has no safe, controlled way to execute) and the execution gap (the vision was never broken down into an executable plan). Proposes three tools — the Read Contract, the Write Contract, and the Execution Ladder — backed up with cases such as Air Canada, Zillow, Knight Capital, and JP Morgan COIN.
+
+
+
+
+
+
+
+
 
 
 
@@ -45,11 +105,38 @@ Presents three steps for getting AI/data prototypes out of "prototype hell": Emb
 
 
 
+
+
+
+
+
+
+
+
 ## Building Durable, Long-Running Autonomous Agents
 @ RedScope AI
 Argues that agents will inevitably make mistakes, so what matters is being able to safely continue afterward. Breaks durable agents into three pillars: durable execution (state persistence and fault tolerance, comparing Temporal vs. LangGraph), durable autonomy (learning "when to call a human" using uncertainty / novelty / value of intervention), and durable statefulness (distinguishing state / memory / context and externalizing progress).
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+## First Steps Toward Automated AI Research
+@ Richard Socher, Recursive AI
+Richard Socher argues automating scientific research via recursive self-improving AI agents is the next major growth curve, framing it through evolution and showing early proof points (NanoChat, NanoGPT speedrun, CUDA kernels) where an automated research system already beat human/AI teams.
+
+## How Forward Deployed Engineering is Done at Factory
+@ Eno Reyes, Factory
+Rejects Palantir-style professional services in favor of deployed engineers as "the tip of the spear of the product" — an information stream from the largest customers that reshapes the product until it self-assembles into environments with tens of thousands of codebases. Centers on the "software factory" (signal → plan → change → validation → deploy with no human interruption), agent readiness measured as the density of deterministic validation loops, and long-running "missions" that migrate 30–50M-line codebases autonomously wherever completion is verifiable.
 
 
 
@@ -60,9 +147,45 @@ A JP Morgan payments engineer describes modeling each request's path through a d
 
 
 
+
+
+
+
+
+
+
+
 ## Lessons From RL Systems That Looked Fine Until They Didn't
 @ Aethon
 Drawing on quant-fund experience, explains that RL systems often "look fine until they flip over in production" — and the root cause isn't a badly designed reward, but poorly designed optimization scope and behavioral boundaries. Solutions include trimming the world model down to only the useful structure, using competition-style selection to weed out brittle models, adding human-set "guardrails" and an evaluation agent, and splitting traces into small, weightable spec files for auditing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Loop Engineering from First Principles
+@ Kyle Mistele, HumanLayer
+Kyle Mistele of HumanLayer applies control theory to "Ralph"-style coding-agent loops, showing how sensors, controllers, and actuators — plus feedback files and flow control — turn blind agent loops into safe, incremental, human-reviewable production workflows, illustrated via an internal RPC-to-Effect migration loop.
+
+
+
+
+
+
+## Perception Agents
+@ Antje Barth, Amazon AGI Lab
+Amazon AGI Lab's Antje Barth argues today's agents are capable but not reliable because most knowledge work, unlike code, isn't verifiable, and proposes "perception agents" — built on a perceive-plan-act loop and open-sourced annotation and verification tools — that see the same rendered screen as a user and check their own output, closing the human-agent context gap.
+
+
 
 
 
@@ -78,9 +201,25 @@ Argues that the reliability of enterprise agents is an engineering problem, not 
 
 
 
+
+
+
+
+
+
+
+
 ## Running Millions of (Millisecond) AI Sandboxes without Breaking the Piggy Bank
 @ Felipe, Unikraft
 Explains that multi-tenant, untrusted AI agents need VM-level isolation rather than containers; Unikraft uses an extremely small unikernel so VMs get both millisecond startup and strong isolation, extending millisecond wake-up across the entire chain. Through snapshot/fork/checkpoint and scale-to-zero, they measured fitting over a million wakeable VMs onto a single 48-core server.
+
+
+
+
+
+
+
+
 
 
 
@@ -96,9 +235,25 @@ Points out that an agent's execution time, compute, and external calls are highl
 
 
 
+
+
+
+
+
+
+
+
 ## The Future Is Domain-Specific Agents
 @ Justin Schroeder, StandardAgents
 Argues that the future belongs to "compositions of small, domain-specialized agents" rather than a single all-purpose giant agent, criticizing the practice of continually stuffing context into one agent as being like OOP inheritance — composition should be used instead: one small, specialized agent per domain, coordinated on top by a coordinator using natural language. The benefits are token efficiency (potentially over 80%) and cost savings, easier permission security and horizontal scaling; the talk predicts 2027 will be the year of multi-agent orchestration.
+
+
+
+
+
+
+
+
 
 
 
@@ -109,9 +264,25 @@ Argues that the future belongs to "compositions of small, domain-specialized age
 @ Maxime Rivest & Isaac Miller, DSPy
 DSPy's creators argue for treating AI tasks as functions — fixed input/output contracts specified via instructions, code constraints, and evals — so the model, prompt, or harness behind them can be freely swapped, optimized, or upgraded without touching the calling code.
 
+
+
+
+
+
+
+
+
 ## What It Takes to Build Reliable AI Systems for Production Operations
 @ Steven, Resolve AI
 Points out that once coding gets cheap, the bottleneck shifts to "operations and debugging after launch," using a multi-agent swarm for incident triage and root-cause analysis. Emphasizes that AI for production is a systems-design problem, adopting "design the eval before designing the system": positive evals, negative evals (whether the agent dares to say "I don't know"), evidence-chain evals (every step needs telemetry evidence to prevent reward hacking), and confidence calibration — building trust gradually through progressive permissions.
+
+
+
+
+
+
+
+
 
 
 
@@ -126,6 +297,14 @@ Introduces a long-horizon coding agent capable of running continuously for tens 
 
 
 
+
+
+
+
+
+
+
+
 ## Why Agentic Systems Need Ontologies
 @ Frank Coyle, UC Berkeley
 Frank Coyle argues that agent loops built on probabilistic LLMs need ontologies — formal graphs of entities, relationships, and RDFS/OWL-based inference rules — as a symbolic guardrail layer, validating tool outputs (and Pydantic-typed inputs) before an agent acts, to catch errors like duplicate refunds or hallucinated status values.
@@ -133,6 +312,19 @@ Frank Coyle argues that agent loops built on probabilistic LLMs need ontologies 
 
 
 
+
+
+
+
+
+
+
+
 ## Why We Killed Our Multi-Agent Pipeline
 @ Subbiah Sethuraman and Abhilash Asokan, ZS Associates
 ZS Associates describes replacing a multi-agent pharma-analytics pipeline — which lost context at each handoff and let an LLM do deterministic signal detection — with a single reasoning agent that delegates bounded sub-investigations and navigates a domain knowledge graph as a control plane, cutting weeks of analyst work to minutes.
+
+
+## Your Agent Didn't Fail. Your Harness Did.
+@ Vinoth Govindarajan, OpenAI
+Argues that most production agent failures are harness failures, not model failures, using public OpenClaw issues to illustrate five recurring failure shapes — state holes, overlapping writers, dangling tool calls, approval drift, and missing edge proof — and proposes a five-question audit (trigger, inherited state, authority, execution, surviving evidence) plus the rule: own the state, order the mutation, prove the action.
