@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * triage.mjs — pre-screen the pending queue with GitHub Models (gpt-4o-mini) and
+ * triage.mjs — pre-screen the pending queue with the OpenAI API (gpt-4o-mini) and
  * render the GitHub review Issue body as an interactive control panel: one block
  * per pending video with a hidden `<!-- vid:ID -->` anchor and ✅/❌ task-list
  * checkboxes. That anchor + checkbox pair is the CONTRACT the Phase-3
@@ -13,8 +13,9 @@
  * error, bad JSON) it DEGRADES to a plain pending list that still carries the
  * anchors + checkboxes, so the control panel keeps working. Never hard-fails.
  *
- * Auth: GitHub Models via `GITHUB_TOKEN` (Bearer). In Actions grant `models: read`.
- * Dependency-free. Run from the repo root.
+ * Auth: OpenAI API via `OPENAI_API_KEY` (Bearer) — set it as a repo secret for the
+ * poll workflow. (Formerly GitHub Models, retired.) Override the endpoint/model with
+ * OPENAI_ENDPOINT / OPENAI_MODEL. Dependency-free. Run from the repo root.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -24,9 +25,9 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const readText = (rel) => fs.readFileSync(path.join(ROOT, rel), "utf8");
 
-const ENDPOINT = process.env.GH_MODELS_ENDPOINT || "https://models.github.ai/inference/chat/completions";
-const MODEL = process.env.GH_MODELS_MODEL || "openai/gpt-4o-mini";
-const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+const ENDPOINT = process.env.OPENAI_ENDPOINT || "https://api.openai.com/v1/chat/completions";
+const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
+const TOKEN = process.env.OPENAI_API_KEY || "";
 
 // ---- load queue + categories --------------------------------------------------
 
@@ -103,7 +104,7 @@ const callBatch = async (batch) => {
         }),
         signal: AbortSignal.timeout(60000),
     });
-    if (!res.ok) throw new Error(`GitHub Models HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    if (!res.ok) throw new Error(`OpenAI HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const content = (await res.json())?.choices?.[0]?.message?.content || "";
     const items = JSON.parse(content).items;
     if (!Array.isArray(items)) throw new Error("model JSON missing items[]");
@@ -123,7 +124,7 @@ const callBatch = async (batch) => {
 // Score all pending in batches. Returns the merged Map; throws only if EVERY batch
 // fails (→ full degradation). A partial failure just leaves those items un-triaged.
 const callModel = async () => {
-    if (!TOKEN) throw new Error("no GITHUB_TOKEN");
+    if (!TOKEN) throw new Error("no OPENAI_API_KEY");
     if (!pending.length) return new Map();
     const batches = [];
     for (let i = 0; i < pending.length; i += BATCH) batches.push(pending.slice(i, i + BATCH));
@@ -195,7 +196,7 @@ if (pending.length === 0) {
     bodyLines = [...header, "", "目前沒有待挑選的影片。"];
 } else if (triage) {
     header.push(
-        "Triage 由 GitHub Models（`gpt-4o-mini`）產生，僅供參考——真正把關在 gen-note 逐字稿與 PR 複審。",
+        "Triage 由 OpenAI（`gpt-4o-mini`）產生，僅供參考——真正把關在 gen-note 逐字稿與 PR 複審。",
     );
     const sections = [];
     for (const { key, emoji, label } of TIERS) {

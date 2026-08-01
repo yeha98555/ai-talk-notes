@@ -35,6 +35,9 @@ the quality gate.
 - `gh` CLI installed and authenticated (`gh auth login`) — `gen-note --pr` uses it.
 - An Anthropic API key, passed via the `ANTHROPIC_API_KEY` environment variable.
   **Never commit it** — it only ever lives in your shell env or GitHub Secrets.
+- An OpenAI API key set as the **`OPENAI_API_KEY` repo secret** (Settings → Secrets and
+  variables → Actions) — the poll workflow's `triage.mjs` uses it. Without it, triage
+  degrades gracefully to a plain checklist (no auto ranking).
 - Vercel already connected to the repo with Production Branch = `main` (done).
 
 ## Managing subscriptions (occasional, upstream of Step ①)
@@ -71,7 +74,7 @@ videos it:
 
 - appends them to `queue.json` as `status: pending` and pushes to `develop` (`[skip ci]`)
 - rebuilds the single **"📥 Video review queue"** Issue as a **control panel**:
-  `triage.mjs` scores each pending video with GitHub Models (`gpt-4o-mini`) into
+  `triage.mjs` scores each pending video with the OpenAI API (`gpt-4o-mini`) into
   **⭐ / 🤔 / ⏭️** with a suggested category and a one-line reason, and renders
   **✅ approve / ❌ reject** checkboxes per video plus a bottom **🚀 submit** box.
 
@@ -79,8 +82,8 @@ videos it:
 Action stays silent and the Issue is untouched — nothing to do.
 
 > To trigger a poll on demand: GitHub → **Actions → `poll` → Run workflow**. Triage
-> runs on GitHub Models via the Action's `GITHUB_TOKEN` (no extra key); if it's ever
-> unavailable the Issue still lists every video with working checkboxes.
+> runs on the OpenAI API via the `OPENAI_API_KEY` repo secret; if the key is missing or
+> the API is unavailable the Issue still lists every video with working checkboxes.
 
 ### Step 2 — Pick videos (on the Issue, or locally)
 
@@ -104,7 +107,7 @@ Click **Approve / Reject** on each pending video (optional note); this rewrites 
 `status` in `queue.json` live. Commit it when done.
 
 > **When to reach for the `triage-queue` skill.** The Issue already shows triage
-> automatically (CI, via GitHub Models) — that's the default, and usually enough. Run
+> automatically (CI, via the OpenAI API) — that's the default, and usually enough. Run
 > the local **`triage-queue`** skill ("triage the queue" / "幫我看 pending") only when you
 > want to: **(1) re-triage the current pending list on demand** — the CI only triages
 > when poll finds *new* videos, so it won't refresh a list you're mid-way through;
@@ -190,7 +193,7 @@ Or open/merge the `develop → main` PR by hand.
 
 **On a day with no new videos, only ① matters — a glance at the Issue, nothing else.**
 
-> The Issue shows triage automatically (CI, via GitHub Models). The local
+> The Issue shows triage automatically (CI, via the OpenAI API). The local
 > **`triage-queue`** skill is the offline equivalent for the `review.mjs` path.
 >
 > Occasional, not daily: add/remove a tracked channel with the **`manage-channels`**
