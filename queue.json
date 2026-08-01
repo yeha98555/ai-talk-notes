@@ -1681,5 +1681,148 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "ZFxh7sqbUZo",
+    "title": "Teaching AI to Find Real Vulnerabilities — David Brumley, Bugcrowd",
+    "channel": "AI Engineer",
+    "published": "2026-08-01T00:30:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/ZFxh7sqbUZo/hqdefault.jpg",
+    "url": "https://youtu.be/ZFxh7sqbUZo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "2aS7aKoXn64",
+    "title": "Rethinking Environments for Long-Horizon Work — Rayan Garg, Theta Software",
+    "channel": "AI Engineer",
+    "published": "2026-08-01T00:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/2aS7aKoXn64/hqdefault.jpg",
+    "url": "https://youtu.be/2aS7aKoXn64",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "cJ0EOzey--o",
+    "title": "What's Next After RLHF? — Diogo Almeida, TypeSafe AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T23:30:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/cJ0EOzey--o/hqdefault.jpg",
+    "url": "https://youtu.be/cJ0EOzey--o",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "_PdK6x7PQNM",
+    "title": "Data Quality Is the Compute Multiplier — Ari Morcos, DatologyAI",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T23:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/_PdK6x7PQNM/hqdefault.jpg",
+    "url": "https://youtu.be/_PdK6x7PQNM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "k35LeKZEhiE",
+    "title": "Learning on the Job: The Future of Post-Training — Raymond Feng, Applied Compute",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T22:30:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/k35LeKZEhiE/hqdefault.jpg",
+    "url": "https://youtu.be/k35LeKZEhiE",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ewtOo0scUh0",
+    "title": "Data and Environment Curation for Post-Training LLMs — Mahesh Sathiamoorthy, Bespoke Labs",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T22:00:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/ewtOo0scUh0/hqdefault.jpg",
+    "url": "https://youtu.be/ewtOo0scUh0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "2bvtay8wGYI",
+    "title": "Scaling to Long Horizons — Ross Taylor & Chengxi Taylor, General Reasoning",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T21:30:06+00:00",
+    "thumb": "https://i.ytimg.com/vi/2bvtay8wGYI/hqdefault.jpg",
+    "url": "https://youtu.be/2bvtay8wGYI",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "zkX03APVj0M",
+    "title": "Emulated: The Data for Fully Autonomous Software Engineers and Companies — Joseph Wang",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T21:00:03+00:00",
+    "thumb": "https://i.ytimg.com/vi/zkX03APVj0M/hqdefault.jpg",
+    "url": "https://youtu.be/zkX03APVj0M",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "xbPriQWXtWM",
+    "title": "The Base Model Is Dead — Varun Singh, Arcee AI",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T20:30:21+00:00",
+    "thumb": "https://i.ytimg.com/vi/xbPriQWXtWM/hqdefault.jpg",
+    "url": "https://youtu.be/xbPriQWXtWM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "3ZMUiFaQ3qg",
+    "title": "Verifiable Environments for AI in Biology — Kenny Workman, LatchBio",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T20:00:35+00:00",
+    "thumb": "https://i.ytimg.com/vi/3ZMUiFaQ3qg/hqdefault.jpg",
+    "url": "https://youtu.be/3ZMUiFaQ3qg",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "lCBf9slCanI",
+    "title": "Ending AI Slop — Thais Castello Branco, Taste Labs",
+    "channel": "AI Engineer",
+    "published": "2026-07-31T19:26:20+00:00",
+    "thumb": "https://i.ytimg.com/vi/lCBf9slCanI/hqdefault.jpg",
+    "url": "https://youtu.be/lCBf9slCanI",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "qo1QNxWcm28",
+    "title": "Tau Crash Course: The Python Port of Pi",
+    "channel": "Hugging Face",
+    "published": "2026-07-31T12:30:44+00:00",
+    "thumb": "https://i.ytimg.com/vi/qo1QNxWcm28/hqdefault.jpg",
+    "url": "https://youtu.be/qo1QNxWcm28",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "eP74Vkbn4nA",
+    "title": "The Engineer as Mechanic",
+    "channel": "AI Native Dev",
+    "published": "2026-07-31T16:30:04+00:00",
+    "thumb": "https://i.ytimg.com/vi/eP74Vkbn4nA/hqdefault.jpg",
+    "url": "https://youtu.be/eP74Vkbn4nA",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
