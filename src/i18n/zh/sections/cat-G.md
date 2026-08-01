@@ -12,6 +12,7 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## AsyncOPD：on-policy distillation 能有多「過時」？
 @ Hugging Face Journal Club, Hugging Face
 一場 Hugging Face Journal Club 的論文討論，主題是非同步的 on-policy distillation（AsyncOPD）：把 on-policy distillation 的迴圈改為非同步，能將樣本生成與最佳化器解耦以提升吞吐量，但訓練所用的樣本會來自略微過時（stale）的策略——這篇論文探討的正是該方法能容忍多少 staleness，才不會讓這種落差抵銷掉加速帶來的效益。
@@ -20,9 +21,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 超越 API：為現代工作負載打造的現代推論
 @ 座談：NVIDIA、Together AI、Modal
 核心訊息是微調並沒有死——它正以 RL／「模型塑形（model shaping）」的形式回歸，而把智慧壓縮進更小、更專精的模型，能同時改善體驗與延遲，模型路由則是應用開發者的護城河。同時指出 token 用量每年大約成長 10 倍，供給在未來數年內都追不上需求，因此節省 token 是應用開發者與供應商共同的責任；長期而言，推論最終會從純雲端擴散到本地與邊緣。
+
 
 
 
@@ -40,9 +43,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 開源前沿實驗室究竟如何訓練模型
 @ Sami, Prime Intellect
 說明由於開源前沿實驗室有 70% 以上的成本花在推論上，因此架構設計是圍繞「推論成本與延遲」而非基準分數展開。兩大主題：高效注意力機制（GQA／MLA、滑動視窗、稀疏注意力）以降低長序列的 KV cache；以及 MoE 稀疏化，在不增加每個 token 運算量（FLOPs）的前提下擴大總參數量。
+
 
 
 
@@ -60,9 +65,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 正式環境中非同步 Agent 的推論
 @ Meryem, Doubleword
 把長時間運行的非同步 Agent 面臨的挑戰抽象為一道「token 問題」＝ token 數量 × 每個 token 的成本，並提出三個槓桿：上下文管理（壓縮、修剪無用的工具結果、外部記憶、快取——可節省約 80%）以降低 token 數量；改用夠好、便宜的開源模型；以及為「高吞吐量、對延遲不敏感」的工作負載重新設計推論堆疊。
+
 
 
 
@@ -79,9 +86,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 讓神經網路變小：量化與剪枝
 @ PrismML
 介紹量化與剪枝如何讓大型模型變得更小、更快、更省電：說明離群值，以及長序列下 KV cache 超過權重大小，是兩大瓶頸，並以分組量化、Hadamard 旋轉、混合精度與 SVD-Quant 等技術因應。顯示完全 1-bit／三元（ternary）模型能保留約 90-95% 的效能，同時把記憶體用量削減約一個數量級。
+
 
 
 
@@ -99,9 +108,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 端到端最佳化模型訓練：一個小型 MoE 案例研究
 @ Zach Mueller, Lambda
 以一個約 5 億參數的小型 MoE 為例，示範如何在家用多 GPU 主機上，把預訓練時間從約 61 小時縮短到約 13.2 小時。這項最佳化來自一連串細節：2 的冪次批次大小、Flex Attention、預先 tokenize、融合式 AdamW，以及用梯度累積把通訊頻率降到十分之一。
+
 
 
 
@@ -114,13 +125,16 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 一段關於量化的說明——透過降低位元寬度（FP32→Q8→Q4→一位元）來縮小模型體積、加快推論速度，並以 Transformers.js 的 Bonsai 模型與 Google 的 Gemma 4 QAT 版本為例，說明量化感知訓練如何在壓縮的同時盡量保留品質，強調量化整體上是大小與品質的權衡，而非免費的性能提升。
 
 
+
 ## RAG 還是微調？用 LoRA 客製化 LLM
 @ Keshka, Sonder
 從 token、embedding 到自迴歸生成的 LLM 基礎原理出發，帶出 RAG 與微調的實務選擇框架，並介紹 LoRA 作為以低成本讓 LLM 適應新領域與風格的方法。
 
+
 ## 實戰中的 RLVR：從合成資料到 GRPO
 @ Chris, NVIDIA
 拆解訓練 Nemotron 的 hero-run 流程：先用少量高品質合成資料做 SFT 鋪路，再以多環境 RLVR 運用可由程式驗證的獎勵，最後加入 RLHF／GenRM。重點包括資料配比如何反映模型的定位、GRPO 讓一組樣本互相比較排名，以及 Pivot RL 只在「變難的那一步」之後才執行 rollout 以節省運算資源。訓練框架大部分已開源。
+
 
 
 
@@ -138,9 +152,11 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## 世界還不夠：RL 的環境問題
 @ 座談：Fleet、Prime Intellect、Taste
 主張 RL／Agent 進展的瓶頸已從運算力轉移到「高品質環境」，而其中最困難的部分是「驗證／評分」——尤其是如何在設計與美感這類主觀領域避免 reward hacking。強調評測與環境緊密耦合，需要頂尖的人類專家來設定標準，並提出「產品資料飛輪」：每間公司都應重新設計產品以擷取偏好與行為訊號，形成專屬的 RL 資料與模型改進循環。
+
 
 
 
@@ -158,6 +174,7 @@ desc: 訓練、RL／RLVR、MoE、量化、推論基礎設施——多屬底層�
 
 
 
+
 ## Training Agents 2：客製化代理人的模型蒸餾實作直播教學
 @ Ben 與 Sergio，Hugging Face
 Hugging Face 的 Ben 與 Sergio 講解代理人訓練中的模型蒸餾——off-policy、on-policy 與自我蒸餾的差異、on-policy 蒸餾背後的反向 KL 機制，並以 TRL 的 GKDTrainer 實作將 4B 程式碼代理人教師模型蒸餾成 0.6B 學生模型的直播實驗。
@@ -165,15 +182,22 @@ Hugging Face 的 Ben 與 Sergio 講解代理人訓練中的模型蒸餾——off
 
 
 
+
+## 訓練 Agent 系列 3:強化學習
+@ Ben 與 Sergio Paniego, Hugging Face
+Hugging Face 的 Ben 與 Sergio Paniego 介紹 GRPO(group relative policy optimization)作為 agent 訓練管線中 SFT、蒸餾之後的強化學習階段,說明組內相對 advantage、KL/裁剪護欄、把 reward function 設計為「契約」,以及如何透過 TRL 與 Trackio 曲線分辨 reward hacking 與健康訓練,並以三組遞進的 HF Jobs 實驗(無意義 reward、可驗證的程式測試 reward、刻意可被鑽漏洞的 reward)具體示範。
+
 ## 訓練 Agent 系列直播教學：如何微調程式碼 Agent 以實現持續學習
 @ Ben Burtenshaw, Hugging Face
 Hugging Face 的 Ben Burtenshaw 與 Sergio Paniego 讓一個 coding agent（Codex）透過 TRL、HF Jobs 與 Trackio，在真實 agent trace 上對一個小型 Gemma 模型進行 SFT 微調，並講解 prompt/completion 遮罩機制、超參數掃描與評測時的注意事項，作為訓練 Agent 系列邁向 RL 的第一集。
 
 
 
+
 ## Trinity：如何在不崩潰的情況下從零訓練 400B MoE
 @ Lucas（技術長）, Arcee AI
 分享在約 5,000 萬美元資金、30 天租用期限內，從零開始預訓練一個 400B MoE 模型（每個 token 僅啟用 13B）的過程。在約 1,000 億 token 時遇到嚴重的路由失衡，最終靠一次同時上線六項變更才穩定訓練。內容涵蓋除錯哲學（縮小搜尋空間）、MoE 稀疏性帶來的低推論成本，以及高壓下的領導與團隊心理安全感。
+
 
 
 
