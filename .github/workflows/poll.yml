@@ -6,7 +6,7 @@ name: Poll channels
 
 on:
   schedule:
-    - cron: "0 8 * * *" # daily, 08:00 UTC
+    - cron: "0 0 * * 6" # weekly, Saturdays 00:00 UTC (08:00 Taiwan time, UTC+8)
   workflow_dispatch:
 
 permissions:
