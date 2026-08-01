@@ -2,11 +2,12 @@
 heading: Agent Evaluation & Observability
 desc: Evals, LLM-as-judge, trace/trajectory observability, benchmarks: turning agent quality from "gut feeling" into data-driven engineering.
 color: #7c3aed
-docs: 1, 3, 8, 10, 154, 20, 120, 141, 36, 37, 140, 143, 42, 142, 53, 137, 58, 156, 70, 71, 151, 74, 76, 133, 98
+docs: 1, 3, 8, 10, 154, 20, 120, 141, 36, 37, 140, 143, 42, 142, 53, 137, 58, 156, 70, 71, 151, 74, 76, 159, 133, 98
 ---
 ## 5 Lessons from the Classroom for Evaluating Agents
 @ Andrew Zigler, Dev Interrupted
 Applies classroom teaching experience (backward design, a daily agenda, rubrics that demand "show your work") to agent design and evaluation, arguing for structured task graphs in place of scattered notes so humans and multiple agents can share context. The core argument: a good eval isn't a radar chart of abstract scores, but a set of discrete binary pass/fail checkpoints that let you inspect the intermediate decision chain and feed failure signals back into the prompt, tools, and architecture.
+
 
 
 
@@ -32,9 +33,11 @@ Presents a framework for measuring AI contribution: an "evidence ladder" (usage 
 
 
 
+
 ## Agent Optimization with Pydantic AI: GEPA, Evals, Feedback Loops
 @ Samuel Colvin, Pydantic
 Using data extraction as the example, walks through a full pipeline — from a Pydantic AI agent, a golden dataset, and a deterministic evaluator, to using GEPA (a genetic algorithm plus Pareto frontier) to automatically iterate the system prompt — pushing accuracy from a hand-written 0.92 to 0.967. Also demonstrates using Logfire managed variables to hot-update prompts/models without redeploying and to run A/B tests (e.g., Shopify using a small model plus GEPA to cut annual cost from 5 million down to 60-70K).
+
 
 
 
@@ -60,14 +63,17 @@ Proposes rebuilding agent evaluation infrastructure at the "community level" to 
 
 
 
+
 ## Benchmarks: The Good, the Bad, and the Ugly
 @ Ali Khial, G2i
 A critical look at why current agent/model benchmarks (unrealistic prompts, weak verifiers, reward hacking) erode trust, and five principles — human-authored instructions, holistic grading, production-grade tasks, contamination-free design, explanatory leaderboards — for building better ones.
 
 
+
 ## Build Trustworthy LLM Apps Powered by Agentic Evals
 @ Meta
 Argues for treating agentic eval as an "observability and control layer" that simultaneously measures capability, reliability, safety, and cost, and proposes engineering mitigations for non-determinism, hallucination, tool misuse, accumulated error over long chains, and stale memory (fixed seeds/structured outputs, requiring citations, idempotency and sagas, plan-act-observe-replan, memory tiering and TTL). Splits graders into three types — code-based, model-based, and human — and introduces the open-source GAIA 2 / ARE benchmarks.
+
 
 
 
@@ -92,6 +98,7 @@ Pairs each LLM claim with its supporting raw data, then verifies that pairing in
 
 
 
+
 ## Evaling Video Slop
 @ Maor Bril, Character.ai
 Character.ai's Maor Bril explains why frame-level metrics and generic LLM judges miss whether AI video actually tells a coherent story, and how a small distilled VLM judge, trained on pairwise comparisons and real-vs-AI footage, catches errors early and cheaply inside an agentic generation loop.
@@ -101,9 +108,11 @@ Character.ai's Maor Bril explains why frame-level metrics and generic LLM judges
 
 
 
+
 ## Evals 101: Intro to Evals for Engineers
 @ Braintrust
 Teaches engineers to treat eval as a fixed loop of "observe real traces → find failure modes → design scorers → iterate," emphasizing that eval is not unit testing and shouldn't chase a perfect score. Introduces LLM-as-judge (designed to verify rather than re-solve), code-based scorers, and combinations of the two, arguing that eval is a team activity requiring domain-expert labeling, and that since most cases lack a single ground truth, scoring should be compressed to binary.
+
 
 
 
@@ -129,9 +138,11 @@ Shares how to hill-climb a coding agent from 43% upward on a realistic benchmark
 
 
 
+
 ## From Agent Traces to Agent Simulations
 @ Rustem Feyzkhanov, Snorkel AI
 Snorkel AI's Rustem Feyzkhanov argues every company needs its own production-mimicking benchmark, built from Harbor-style environment/Oracle/verifier components and continuously repopulated from traces, to replace one-off trace review with repeatable offline simulations for release-gating and agent improvement.
+
 
 
 
@@ -146,9 +157,11 @@ Arize's Jason Lopatecki describes Signal, a system that turns production traces,
 
 
 
+
 ## From Spans to Trajectories: Observability for Long-Running Agents
 @ HoneyHive
 Argues that long-running agents capable of thousands of steps break traditional spans/traces, requiring a "trajectory" view instead, and catalogs failure modes such as context rot, amnesia, YOLO, delegation, and stochasticity. Proposes replacing static evals with "observability-driven development": instrument thoroughly first, run 100-1,000 real traffic samples, use clustering to discover task types, then write a rubric evaluator and guardrails/alerting for each type.
+
 
 
 
@@ -168,9 +181,11 @@ YouTube Ads' eval team shares a practical playbook: optimize tools before evals,
 
 
 
+
 ## Judge the Judge: Building LLM Evaluators That Actually Work with GEPA
 @ Mahmoud Mabrouk, Agenta AI
 Demonstrates using the evolutionary prompt-optimization framework GEPA to calibrate an LLM-as-a-judge so it aligns with human annotations, avoiding evaluations that are "confidently wrong." Using an airline customer-service agent as the example, emphasizes doing error analysis first, designing binary metrics, and collecting expert annotations with reasons attached, then iterating with a reflection template carrying a strong prior — raising judge accuracy from about 60% to about 74%.
+
 
 
 
@@ -193,9 +208,11 @@ Sazabi's founder makes the case for logs-only, chat-first observability where AI
 
 
 
+
 ## Malleable Evals: Why Are We Evaluating Adaptive Systems with Static Tests?
 @ Vincent Koc, OpenClaw
 Argues that evaluating agentic systems that "keep adapting and differ from person to person, organization to organization" with "static" benchmarks is no longer sufficient — calling this "eval calcification." Proposes that eval should shift from "matching the correct answer" to aligning with "the outcome that was intended" (fuzzy criteria can be described with rubrics), and should itself become a living agent: self-curating test sets from real traces, running as a standing online evaluation, and feeding telemetry back into the loop for self-repair.
+
 
 
 
@@ -211,9 +228,11 @@ Argues that evaluating agentic systems that "keep adapting and differ from perso
 @ Rayan Garg, Theta Software
 Theta Software's Rayan Garg unpacks what "long horizon" really means for agents — arguing it's a scalar spanning human-time and model-native (token/step) metrics — then details how environment complexity (tool coordination, state change, ambiguity) and judge-based verifiers with queryable trajectories and rubric QA are needed to train and evaluate agents honestly, closing with a critique of existing finance benchmarks as too short, saturated, and narrow.
 
+
 ## Ship Real Agents: Hands-On Evals for Agentic Applications
 @ Laurie Voss, Arize
 Runs a hands-on workshop using Arize Phoenix plus the Claude Agent SDK to turn agent testing from a vibe check into data-driven engineering: first read traces to classify failures, then apply three complementary approaches — code eval, LLM-as-judge, and human eval — while distinguishing capability evals from regression evals. Key lesson: "test the outcome, not the path"; use a golden dataset for meta-eval to compute the judge's precision/recall; evals become a data flywheel and a moat.
+
 
 
 
@@ -239,15 +258,18 @@ Gives PMs an evaluation framework for AI products: breaking down eval into the f
 
 
 
+
 ## SimulationMaxxing: How Nubank Ships Agents 20× Faster
 @ Aman Gupta, Nubank & Shreya Rajpal, Snowglobe
 Nubank and Snowglobe show how simulation-generated eval data — rather than slow manual authoring or risky production A/B tests — cuts agent release cycles from weeks to hours, driving measurable TNPS and self-service-rate gains in production.
 
 
 
+
 ## Systematic LLM Prompt Optimization with DSPy and Databricks
 @ Databricks
 Uses DSPy plus Databricks to turn prompt tuning into a trainable pipeline, treating the prompt as an optimizable parameter via signatures/modules/optimizers. The method has two layers: first use 30-100 SME gold-standard examples with MIPROv2 to align the LLM judge, then use GEPA with the judge as the metric to optimize the main prompt. Using maintenance-message urgency classification as the example, accuracy rises from about 70% to nearly 100%.
+
 
 
 
@@ -273,9 +295,15 @@ Turns the human engineer's job of iterating on an agent (spec → build → eval
 
 
 
+
+## The Future of Evals: From LLM as a Judge to Agent as a Judge
+@ Aparna Dhinakaran, Arize AI
+Aparna Dhinakaran of Arize AI argues that as agents grow more complex and produce dynamic, non-deterministic trajectories, classical LLM-as-judge evals with fixed rubrics can no longer catch many real failure modes, and introduces Signal, an agent-as-judge system that analyzes production traces to detect subtle issues like tool-call loops and even propose fixes via pull requests.
+
 ## Vending-Bench: Long-Horizon Agent Evals
 @ Lukas Petersson, Andon Labs
 Andon Labs traces Vending-Bench from a simulated vending-machine long-horizon eval to real-world AI-run stores, cafes, and radio stations, surfacing emergent collusion, lying, and misbehavior, and proposes forking live deployments into simulated clones to get reproducible, simulation-awareness-free behavioral evals.
+
 
 
 
