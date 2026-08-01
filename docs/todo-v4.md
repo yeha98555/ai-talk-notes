@@ -5,7 +5,9 @@
 > 起因：2026-08-01 doc-134–158 批次 25 篇壞 5 篇（20%），全批卡在 build、手工修補收場（PR #16）。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-08-01）**：尚未開始。Phase 1 ☐、Phase 2 ☐、Phase 3 ☐。
+> **進度（2026-08-01）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅ —— 三階段實作 + 離線驗收完成並併回 develop
+> （merge `c14af71`、`c644e59`）。**僅剩兩項 live 驗收待使用者跑**（需 `ANTHROPIC_API_KEY`，見 Phase 2/3 驗收）：
+> 暫時把一支影片重設 approved → `node --env-file=.env.local tools/gen-note.mjs <videoId>` → 看 zh 風格 + token 用量 → 還原。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -51,22 +53,24 @@
 翻譯輸入改為**定稿英文 note**（不重送逐字稿）。
 
 ### `tools/gen-note.mjs`（改 — 與 Phase 3 同分支）
-- [ ] `DRAFT_SCHEMA` 拆成 `EN_SCHEMA`（title/speaker/category/body/card_summary）與
+- [x] `DRAFT_SCHEMA` 拆成 `EN_SCHEMA`（title/speaker/category/body/card_summary）與
   `ZH_SCHEMA`（zh_title/zh_speaker/zh_body/zh_card_summary），皆 `additionalProperties: false`
-- [ ] `buildEnPrompt(item, transcript)`：沿用現有 system（doc-100 house-style 範例 + 規則），僅要求英文欄位 + 分類
-- [ ] `buildZhPrompt(enDraft)`：輸入定稿英文 note（frontmatter + body + card_summary）＋
+- [x] `buildEnPrompt(item, transcript)`：沿用現有 system（doc-100 house-style 範例 + 規則），僅要求英文欄位 + 分類
+- [x] `buildZhPrompt(enDraft)`：輸入定稿英文 note（frontmatter + body + card_summary）＋
   zh 風格範例 `src/i18n/zh/notes/doc-100.md` ＋ 翻譯規則（台灣繁中、專有名詞保留原文）；**不含逐字稿**
-- [ ] category 只存在於 `EN_SCHEMA`（zh 呼叫結構上不可能推翻分類）
-- [ ] `stubDraft` 對應拆成兩段（en stub / zh stub），`--dry-run` 全流程行為不變
-- [ ] 兩段結果合併回現有寫檔流程（寫檔、插卡、order、queue 標 published 的程式碼不動）
+- [x] category 只存在於 `EN_SCHEMA`（zh 呼叫結構上不可能推翻分類）
+- [x] `stubDraft` 對應拆成 `stubEnDraft`/`stubZhDraft`，`--dry-run` 全流程行為不變（stub 文案一字未動）
+- [x] 兩段結果 `{...en, ...zh}` 合併回現有寫檔流程（寫檔、插卡、order、queue 標 published 的程式碼不動）
 
 ### 驗收
-- [ ] `--dry-run`：檔案結構、console 輸出與現行一致
-- [ ] 挑一支影片 live 重跑（`gen-note <videoId>`，暫時清該片 docId 測試後還原）：
-  產出檔案結構與現行完全一致、zh 風格與既有 note 無明顯落差
-- [ ] 觀察兩段呼叫的 input 大小：call 2 不含逐字稿（應遠小於 call 1）
+- [x] `--dry-run`：以 HEAD 版為 baseline 對照實測（同一支 ewtOo0scUh0 各跑一次）——console 輸出 `diff` 全同；
+  六個產物（en/zh doc-159、en/zh cat-C、order.json、queue.json）逐字元一致
+- [ ] **（待 live，需 `ANTHROPIC_API_KEY`）**挑一支影片 live 重跑：產出結構一致、zh 風格無明顯落差。
+  指令：暫時把某片重設 approved 後 `node --env-file=.env.local tools/gen-note.mjs <videoId>`，驗完還原
+- [x] call 2 結構上不含逐字稿（`buildZhPrompt` 輸入只有英文 note + zh 範例；code 層面確認，
+  input 實際大小併入 Phase 3 的 live usage 驗證）
 
-> **狀態**：未開始。
+> **狀態（2026-08-01）**：✅ 離線驗收全過（commit `dbc6b4f`）；僅剩一項 live 重跑需要 API key，由使用者擇一影片驗。
 
 ## Phase 3 — 呼叫後驗證 + 最多一次 retry + usage 觀測
 
@@ -74,43 +78,44 @@
 仍失敗 → 該篇原子放棄（item 保持 `approved`、不寫任何檔）、**批次續行**；token 用量可觀測。
 
 ### `tools/gen-note.mjs`（改 — 承 Phase 2 分支）
-- [ ] `callClaude` 回傳附帶 `usage`；每次呼叫 console 印 `tokens: in=… out=…（out/max=…%）`，
+- [x] `callClaude` 印 `usage`：每次呼叫 console 印 `tokens: in=… out=… (out/max=…%)`，
   逾 80% 加 `⚠ near max_tokens`
-- [ ] 包裝 `callWithRetry(prompt, schema, label)`：
-  - [ ] 呼叫 → `checkDraftFields` 合格即回傳
-  - [ ] 不合格 → 印 problems → **重試一次**，user message 尾端附失敗欄位提示
+- [x] 包裝 `callWithRetry(prompt, schema, label)`：
+  - [x] 呼叫 → `checkDraftFields` 合格即回傳
+  - [x] 不合格 → 印 problems → **重試一次**，user message 尾端附失敗欄位提示
     （"Previous attempt failed checks: <problems>. Ensure every field is complete prose ending with terminal punctuation; never output the word \"placeholder\"."）
-  - [ ] 仍不合格 → throw（**上限就是 1 次 retry，單篇最壞 4 次呼叫**，call 1 失敗則 call 2 不發生）
-- [ ] 外層 catch 沿用現有「✗ draft failed — left approved for retry」路徑：該篇不寫檔、批次續行
-- [ ] `--dry-run` 的 stub 必須恆過 `checkDraftFields`（stub 文案以句號收尾——改 stub 文案時注意）
+  - [x] 仍不合格 → throw（**上限就是 1 次 retry，單篇最壞 4 次呼叫**，call 1 失敗則 call 2 不發生）
+- [x] 外層 catch 沿用現有「✗ draft failed — left approved for retry」路徑：該篇不寫檔、批次續行
+- [x] `--dry-run` 的 stub 過 `checkDraftFields`（主迴圈對 stub 也跑同一 gate，dry-run 兼作檢查器煙霧測試）
 
 ### 驗收
-- [ ] **故障注入**（暫時 mock 一次壞回應或調嚴檢查）驗兩條路徑：
-  - [ ] 第一次失敗 → 重試 → 成功寫檔（console 可見 problems + retry）
-  - [ ] 兩次失敗 → 該篇跳過、item 仍 `approved`、後續影片照常處理、PR 只含成功篇
-- [ ] 注入痕跡清除後，正常批次跑完 `npm run build` → content-check **0 FAIL**
-- [ ] console 可見每次呼叫 token 用量；用一支長逐字稿影片（如 jXtnhyro-QE，60k 字元）實測
-  out/max 百分比，判斷 16k 是否仍貼近上限（貼近 → 回 PRD 開放問題討論調 `max_tokens`）
+- [x] **故障注入**（暫時把 `callClaude` 換成 `FAULT="bad,good,…"` 腳本化 fake，測完 `git checkout` 還原）驗兩條路徑：
+  - [x] Test A `bad,good,good`：第一次失敗 → console 印 problems → 重試（fake 收到 retryNote）→ 成功寫檔、item → published
+  - [x] Test B 兩支影片 `bad,bad,good,good`：v1 兩次失敗 → 跳過、仍 `approved`/無 docId、無檔案殘留；
+    v2 照常產出 doc-159（id 無跳號）——單篇隔離 + 批次續行成立
+- [x] 注入痕跡清除後（`git status` 乾淨），`npm run build` → content-check 0 FAIL、158 篇正常
+- [ ] **（待 live，需 `ANTHROPIC_API_KEY`）**console token 用量已實作；用長逐字稿影片（如 jXtnhyro-QE，60k 字元）
+  實測 out/max 百分比，判斷 16k 是否仍貼近上限（貼近 → 回 PRD 開放問題討論調 `max_tokens`）
 
-> **狀態**：未開始。
+> **狀態（2026-08-01）**：✅ 離線驗收全過（commit `bdced22`，與 Phase 2 同分支 `--no-ff` 併回 develop）；
+> 僅剩 live usage 實測需要 API key，可與 Phase 2 的 live 重跑同一次完成。
 
 ## 橫向注意事項（每階段隨手檢查）
 
-- [ ] **規則只改一處**：任何檢查判準調整只動 `prose-check.mjs`，禁止在 gen-note / content-check 各自加料
-- [ ] **本機工具、develop 即生效**：本版不動 workflow YAML，無 main-gated 驗收；
-  `main` 由下次一鍵 release 自然追上
-- [ ] **`ANTHROPIC_API_KEY` 僅本機**（沿用 v2/v3：不上雲、不進 repo）
-- [ ] **失敗語意不變**：重試耗盡 = 「item 保持 `approved`、無 docId」，與現況 draft-failed 語意一致，
-  重跑 `gen-note` 自然重試；`queue.json` schema 不動
-- [ ] **成本上限**：單篇最壞 4 次呼叫（call1 ×2 + call2 ×2）；整批成本估 +20–40%（PRD §7）
+- [x] **規則只改一處**：判準全在 `prose-check.mjs`，gen-note / content-check 皆 import、無各自加料
+  （content-check header 已加註）
+- [x] **本機工具、develop 即生效**：本版未動任何 workflow YAML；`main` 由下次一鍵 release 自然追上
+- [x] **`ANTHROPIC_API_KEY` 僅本機**（實作與測試全程未碰 key；故障注入用 fake call，零 API 呼叫）
+- [x] **失敗語意不變**：Test B 實證重試耗盡 = item 保持 `approved`、無 docId；`queue.json` schema 未動
+- [x] **成本上限**：`callWithRetry` 寫死單呼叫最多 1 次 retry → 單篇最壞 4 次呼叫（Test A/B 序列與此一致）
 
 ## 開放問題（PRD-v4 §8，做之前確認；已給預設）
 
-- [ ] retry 提示內容：預設附「失敗欄位 + 一句糾正指示」（可改純重打）
-- [ ] call 1 成功、call 2 兩次失敗：預設**丟棄 en 草稿**（不暫存、重跑全部重做，保持原子性）
-- [ ] Schema `minLength` 兜底:預設不加（程式端檢查已涵蓋）
-- [ ] usage 警告閾值：預設 80%
-- [ ] 失敗是否記進 `queue.json` 的 `note`：預設不記（console 已可見；常態化再議）
+- [x] retry 提示內容：**採預設**——附「失敗欄位 + 一句糾正指示」
+- [x] call 1 成功、call 2 兩次失敗：**採預設**——丟棄 en 草稿（不暫存、重跑全部重做，保持原子性）
+- [x] Schema `minLength` 兜底：**採預設**——不加（程式端檢查已涵蓋）
+- [x] usage 警告閾值：**採預設**——80%
+- [x] 失敗是否記進 `queue.json` 的 `note`：**採預設**——不記（console 已可見；常態化再議）
 
 ## 未來優化（非 MVP，PRD-v4 明列 out of scope，想到再收）
 
