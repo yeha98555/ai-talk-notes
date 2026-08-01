@@ -10,28 +10,19 @@
  * missing frontmatter (literal "undefined") + structural drift — neither notices
  * incomplete CONTENT. Dependency-free dev tool; never inlined. Exit 1 on any
  * problem. Run before `node build.mjs` (wired as `prebuild`) and in CI.
+ *
+ * The completeness rules themselves live in prose-check.mjs (shared with
+ * gen-note's draft-time gate) — change them there, not here.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { isStub, stripCites, endsMidSentence } from "./prose-check.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SRC = path.join(ROOT, "src");
 const rel = (p) => path.relative(ROOT, p);
 const problems = [];
-
-// The gen step leaves this exact string where content wasn't produced. Match a
-// whole trimmed field/body only (case-insensitive), so a talk that legitimately
-// *discusses* placeholders in its prose is never flagged.
-const isStub = (s) => s.trim().toLowerCase() === "placeholder";
-
-// Trailing citation/timestamp brackets like [7:29][5:20–5:32] are legitimate
-// sentence enders — strip them before the truncation test.
-const stripCites = (s) => s.replace(/(\s*\[[^\]]*\])+$/, "").trim();
-
-// Punctuation a finished sentence may end on (ASCII + closing quotes + CJK).
-// A body/summary ending on anything else was cut off mid-word.
-const TERMINAL = /[.!?…。！？”"’')）」』》】]$/;
 
 function parseFrontmatter(text) {
     const m = text.match(/^---\n([\s\S]*?)\n---\n?/);
@@ -45,9 +36,8 @@ function parseFrontmatter(text) {
 }
 
 const checkProse = (where, s) => {
-    const tail = stripCites(s);
-    if (tail && !TERMINAL.test(tail))
-        problems.push(`${where}: ends mid-sentence (truncated?) — "…${tail.slice(-40)}"`);
+    if (endsMidSentence(s))
+        problems.push(`${where}: ends mid-sentence (truncated?) — "…${stripCites(s).slice(-40)}"`);
 };
 
 function checkNote(file) {
