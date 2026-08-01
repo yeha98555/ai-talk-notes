@@ -2,7 +2,7 @@
 heading: AI Coding & AI-Native Engineering
 desc: Coding agents, AI-native development workflows, and organizational transformation: the methodology is worth borrowing, though most cases involve general-purpose coding agents.
 color: #b45309
-docs: 23, 130, 27, 102, 46, 50, 121, 56, 66, 77, 82, 84
+docs: 23, 130, 27, 102, 146, 46, 50, 121, 56, 66, 77, 82, 84
 ---
 ## Building a Data Native Agent: Cortex Code
 @ Snowflake
@@ -11,13 +11,16 @@ Introduces Snowflake Cortex Code, a "data-native" coding agent whose core purpos
 
 
 
+
 ## Building Code-Editing Agents: The Emperor Has No Clothes
 @ Jeff Huntley, Sourcegraph (AMP)
 A live-coded walkthrough showing a code-editing agent is just ~300 lines of code looping over LLM inference and tool calls, built up primitive by primitive (list_files, read_file, bash, edit) — with practical rules on matching model type to task and guarding the context window from MCP bloat and mixed concerns.
 
+
 ## Calvin French-Owen on the Future of Agentic Coding
 @ Calvin French-Owen (ex-OpenAI Codex)
 Unpacks how coding agents are shaped by pretraining and RL, and how the inference/harness layer manages context and long-running tasks, then suggests engineers shift their time toward design decisions that are "hard to verify and context-dependent," leaving verifiable, automatable implementation to the agent. Also compares different model personalities and applies management thinking to acting as the bottleneck manager of a "software factory."
+
 
 
 
@@ -28,9 +31,15 @@ Dex Horthy argues that AI coding's growing incident and code-quality problems ar
 
 
 
+
+## Harness Engineering: Building an AI Software Factory
+@ Dru, Tessl
+Tessl's head of product frames "harness engineering" — building inner/outer/meta loops of tests, agentic review, and maintenance agents — as the practical path from interactive coding-agent sessions to a full "software factory," plus the organizational friction that makes it hard.
+
 ## How Action Bias Breaks Autonomous Software Maintenance
 @ LogicStar.ai
 Points out that autonomous-maintenance coding agents have an "action bias": even when the code is already fixed (about 50% of bug reports are duplicate/stale), there's still a 35–65% chance the agent will make unnecessary changes and pile up technical debt. Uses FixedBench to show that increasing the reasoning budget doesn't help — what actually works is explicitly including "doing nothing is also success" in the outcome space of prompt/task design; the root cause is that RL almost exclusively rewards "taking action."
+
 
 
 
@@ -42,14 +51,17 @@ How a security consultancy actually became AI-native: using an AI maturity matri
 
 
 
+
 ## Lessons from Spec-driven Development
 @ Simon Martinelli
 Simon Martinelli describes an AI Unified Process that replaces the plan/task pipeline of tools like Kiro or Spec Kit with system use cases and entity models fed straight to a coding agent, and shows how self-contained-systems architecture, tight skills/guardrails, and reverse-engineered specs make this reliable for real enterprise modernization work.
 
 
+
 ## Make Vibe Coding Safe: How to Test with Playwright
 @ Amazon AGI Lab
 Explains how to use Playwright (paired with Playwright Test MCP) to build reliable end-to-end tests for vibe-coded web features: letting the agent actually open a browser and read the rendered accessibility tree to pick the most stable locator. Recommends keeping tests small and focused, running them on every commit, and treating failures as bugs to investigate.
+
 
 
 
@@ -61,6 +73,7 @@ Applies a "signal→fix" automatic loop to its own codebase: a daily-batch onlin
 
 
 
+
 ## The Best Engineer in the Room Doesn't Write Code
 @ Emilie, Kilo Code
 Argues that the strongest engineer's value isn't in writing the most code, but in owning the problem and the outcome, and that the key going forward is turning AI from a session-based tool into an "always-on, outcome-accountable" AI colleague. Using always-on agents as an example, explains the need to give agents a persistent identity, finely scoped permissions, event-driven triggers, and a separation between the control plane and the runtime plane.
@@ -68,9 +81,11 @@ Argues that the strongest engineer's value isn't in writing the most code, but i
 
 
 
+
 ## The Mythical Agent-Month
 @ Posit
 Now that agents can write large amounts of code on our behalf, argues that an engineer's real value lies in scoping the problem, designing the architecture, and exercising "taste" — borrowing from The Mythical Man-Month's distinction between essential and accidental complexity, since agents are good at accidental complexity but struggle with essential design. Describes their own agentic engineering stack (automated code review, a session database, a self-built issue tracker).
+
 
 
 

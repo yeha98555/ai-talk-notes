@@ -18,8 +18,7 @@ index.zh.html
 # Vercel
 .vercel/
 
-# Local planning docs & agent scratch (not part of the published site)
-docs/
+# Agent scratch (not part of the published site)
 .superpowers/
 memory/
 
