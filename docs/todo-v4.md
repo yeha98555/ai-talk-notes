@@ -28,21 +28,22 @@
 **目標**：檢查邏輯單一事實來源——gen-note 產生時擋的與 content-check build 時擋的永遠同一套規則。
 
 ### `tools/prose-check.mjs`（新）
-- [ ] 從 `content-check.mjs` 搬出核心純函式：`isStub()`、`stripCites()`、`TERMINAL` 正則（+ 包成 `endsMidSentence()`）
-- [ ] 新增 `checkDraftFields(fields) → problems[]`：對草稿物件做欄位級檢查
-  （title/speaker：不得 stub 或空；body/card_summary 類：不得 stub、空、斷句結尾——判準與 content-check 對 note/卡片的檢查一一對應）
-- [ ] 零依賴、純函式（不讀檔、不 exit），gen-note 與 content-check 皆可 import
+- [x] 從 `content-check.mjs` 搬出核心純函式：`isStub()`、`stripCites()`、`TERMINAL` 正則（+ 包成 `endsMidSentence()`）
+- [x] 新增 `checkDraftFields(fields) → problems[]`：對草稿物件做欄位級檢查
+  （title/speaker：不得 stub 或空；body/card_summary 類（key 以 `body`/`summary` 結尾）：不得 stub、空、斷句結尾——判準與 content-check 對 note/卡片的檢查一一對應）
+- [x] 零依賴、純函式（不讀檔、不 exit），gen-note 與 content-check 皆可 import
 
 ### `tools/content-check.mjs`（改）
-- [ ] 改 import `prose-check.mjs`，刪除內聯副本
-- [ ] 掃描邏輯、輸出格式、exit code **完全不變**（純重構）
+- [x] 改 import `prose-check.mjs`，刪除內聯副本（header 加註「規則住在 prose-check.mjs」）
+- [x] 掃描邏輯、輸出格式、exit code **完全不變**（純重構）
 
 ### 驗收
-- [ ] 對當前 repo 跑 `node tools/content-check.mjs`，輸出與改動前**逐字元一致**（掃描數、OK 行）
-- [ ] 手動構造三類壞草稿（斷句結尾／`placeholder` stub／空欄位），`checkDraftFields` 逐一命中
-- [ ] 對照組：一篇現有合格 note 的欄位餵進去 → `problems` 為空
+- [x] 對當前 repo 跑 `node tools/content-check.mjs`，輸出與改動前**逐字元一致**（`diff` 前後輸出 = 空、exit 0）
+- [x] 手動構造三類壞草稿（斷句結尾／`placeholder` stub／空欄位），`checkDraftFields` 逐一命中（scratch 測試 10/10 pass，含 CJK 句號、citation 結尾、大小寫 stub、title 豁免斷句檢查等邊界）
+- [x] 對照組：doc-100 的欄位餵進去 → `problems` 為空
 
-> **狀態**：未開始。
+> **狀態（2026-08-01）**：✅ 全綠。commit `0985103`，`--no-ff` 併回 develop。
+> 語意備註：「`…citation [7:29]` 無標點收尾」會被flag（剝 cite 後仍須標點）——與 content-check 原行為一致，非 v4 新增判準。
 
 ## Phase 2 — gen-note 拆成兩段呼叫（en 草稿 / zh 翻譯）
 
