@@ -31,6 +31,9 @@ YouTube RSS ──① poll(cron)──▶ queue.json + 📥 Issue 控制面板(t
 - 安裝並登入 `gh` CLI(`gh auth login`)——`gen-note --pr` 會用到。
 - 一把 Anthropic API key,透過環境變數 `ANTHROPIC_API_KEY` 傳入。
   **絕不進 repo**——只存在你的 shell 環境或 GitHub Secrets。
+- 一把 OpenAI API key,設成 **`OPENAI_API_KEY` repo secret**(Settings → Secrets and
+  variables → Actions)——poll workflow 的 `triage.mjs` 會用它。沒設的話 triage 會優雅降級成
+  純 checklist(沒有自動排名)。
 - Vercel 已接上 repo,Production Branch = `main`(已完成)。
 
 ## 管理訂閱頻道(偶爾做,在 Step ① 之前)
@@ -71,7 +74,7 @@ skill 會解析 `channel_id`、驗 RSS feed、安全地改 `channels.json`(去�
 ——什麼都不用做。
 
 > 想手動催一次:GitHub → **Actions → `poll` → Run workflow**。triage 走 Action 的
-> `GITHUB_TOKEN` 打 GitHub Models(不用額外 key);萬一它暫時不可用,Issue 仍會列出每支
+> `OPENAI_API_KEY` secret 打 OpenAI API;萬一沒設 key 或 API 暫時不可用,Issue 仍會列出每支
 > 影片、checkbox 照常可用。
 
 ### Step 2 — 挑片(在 Issue 上,或本機)
@@ -166,7 +169,7 @@ Actions → **「Release (develop → main)」→ Run workflow** —— 它會�
 
 **沒新片的日子只有 ① 要做——瞄一眼 Issue,其餘免動。**
 
-> Issue 會自動顯示 triage(CI,走 GitHub Models)。本機 **`triage-queue`** skill 是
+> Issue 會自動顯示 triage(CI,走 OpenAI API)。本機 **`triage-queue`** skill 是
 > `review.mjs` 路徑的離線等價。
 >
 > 偶爾、非每日:用 **`manage-channels`** skill 新增/移除追蹤頻道(貼網址即可)——它餵給

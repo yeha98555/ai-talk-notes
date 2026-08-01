@@ -12,7 +12,6 @@ on:
 permissions:
   contents: write # commit + push queue.json
   issues: write # open / update the review Issue
-  models: read # tools/triage.mjs calls GitHub Models (gpt-4o-mini) via GITHUB_TOKEN
 
 concurrency:
   group: poll-channels
@@ -42,7 +41,7 @@ jobs:
       - name: Inspect queue and build report
         id: q
         env:
-          GITHUB_TOKEN: ${{ github.token }} # for triage.mjs → GitHub Models
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # for triage.mjs → OpenAI API
         run: |
           if git diff --quiet -- queue.json; then changed=false; else changed=true; fi
           new=$(node tools/queue-report.mjs --check)
@@ -51,8 +50,8 @@ jobs:
           echo "queue changed=$changed, new pending=$new"
           if [ "$new" -gt 0 ]; then
             # triage.mjs renders the interactive control-panel body (tier + reason +
-            # checkboxes). It degrades to a plain list if the model call fails, so a
-            # Models outage never blocks the poll.
+            # checkboxes). It degrades to a plain list if the model call fails (missing
+            # key or an API outage), so triage problems never block the poll.
             node tools/triage.mjs > body.md
           fi
 
