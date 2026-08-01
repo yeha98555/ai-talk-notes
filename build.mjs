@@ -258,6 +258,30 @@ function assembleSection(locale, key) {
     ].join("\n");
 }
 
+const CATEGORIES = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+
+/** Per-category doc counts from the English `cat-<key>.md` `docs:` lists —
+ *  the same source `assembleSection` renders from, so the overview
+ *  distribution chart can never drift from the sections below it. */
+function categoryCounts() {
+    const counts = {};
+    for (const k of CATEGORIES) {
+        const { data } = parseFrontmatter(
+            fs.readFileSync(path.join(SRC, "sections", `cat-${k}.md`), "utf8"),
+        );
+        counts[k] = (data.docs || "").split(",").map((s) => s.trim()).filter(Boolean).length;
+    }
+    return counts;
+}
+
+/** Fill the overview chart's `__CNT_K__` / `__PCT_K__` placeholders. */
+function fillDistribution(html, counts) {
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return html.replace(/__(CNT|PCT)_([A-I])__/g, (m, kind, k) =>
+        kind === "CNT" ? String(counts[k]) : String(Math.round((counts[k] / total) * 100)),
+    );
+}
+
 /** Head detection/redirect script; `locale` is baked in as PAGE_LANG. */
 function detectScript(locale) {
     return [
@@ -307,13 +331,11 @@ function buildPage(locale) {
         langToggle,
     );
     const nav = read("partials/nav.html", locale);
-    const overview = read("sections/overview.html", locale);
+    const overview = fillDistribution(read("sections/overview.html", locale), categoryCounts());
     const themes = read("sections/themes.html", locale);
     const footer = read("partials/footer.html", locale);
 
-    const categories = ["A", "B", "C", "D", "E", "F", "G", "H", "I"].map((k) =>
-        assembleSection(locale, k),
-    );
+    const categories = CATEGORIES.map((k) => assembleSection(locale, k));
 
     const order = JSON.parse(read("notes/order.json", locale));
     const notes = order.map((id) => assembleNote(locale, id));
