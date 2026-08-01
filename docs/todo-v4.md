@@ -5,9 +5,9 @@
 > 起因：2026-08-01 doc-134–158 批次 25 篇壞 5 篇（20%），全批卡在 build、手工修補收場（PR #16）。
 > 依 Phase 順序執行，每個 Phase **跑通驗收 + 回來打勾**再進下一個。
 >
-> **進度（2026-08-01）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅ —— 三階段實作 + 離線驗收完成並併回 develop
-> （merge `c14af71`、`c644e59`）。**僅剩兩項 live 驗收待使用者跑**（需 `ANTHROPIC_API_KEY`，見 Phase 2/3 驗收）：
-> 暫時把一支影片重設 approved → `node --env-file=.env.local tools/gen-note.mjs <videoId>` → 看 zh 風格 + token 用量 → 還原。
+> **進度（2026-08-01）**：Phase 1 ✅、Phase 2 ✅、Phase 3 ✅ —— **三階段全數完成並驗證通過**（含 live）。
+> 離線驗收：merge `c14af71`、`c644e59`；live 驗收：真實批次 `--pr` 跑 q2JrUKBMf0w → doc-159 → PR #17，
+> usage 7%/9%、無 retry、content-check 0 FAIL。**v4 收工。** 剩餘：PR #17 內容複審（照常 Phase-4 流程）。
 
 ## Git 工作流（每個 Phase 都遵守）
 
@@ -65,8 +65,9 @@
 ### 驗收
 - [x] `--dry-run`：以 HEAD 版為 baseline 對照實測（同一支 ewtOo0scUh0 各跑一次）——console 輸出 `diff` 全同；
   六個產物（en/zh doc-159、en/zh cat-C、order.json、queue.json）逐字元一致
-- [ ] **（待 live，需 `ANTHROPIC_API_KEY`）**挑一支影片 live 重跑：產出結構一致、zh 風格無明顯落差。
-  指令：暫時把某片重設 approved 後 `node --env-file=.env.local tools/gen-note.mjs <videoId>`，驗完還原
+- [x] **live 實跑**（2026-08-01，使用者跑真實批次 `--pr`）：q2JrUKBMf0w → doc-159（cat B），
+  兩段呼叫各自完成、產出結構正確、content-check 0 FAIL、build 159 篇、PR #17 開出、issue #1 記錄——
+  端到端全通；zh 風格由 PR #17 人工複審（本就是 Phase-4 守門點）
 - [x] call 2 結構上不含逐字稿（`buildZhPrompt` 輸入只有英文 note + zh 範例；code 層面確認，
   input 實際大小併入 Phase 3 的 live usage 驗證）
 
@@ -94,8 +95,10 @@
   - [x] Test B 兩支影片 `bad,bad,good,good`：v1 兩次失敗 → 跳過、仍 `approved`/無 docId、無檔案殘留；
     v2 照常產出 doc-159（id 無跳號）——單篇隔離 + 批次續行成立
 - [x] 注入痕跡清除後（`git status` 乾淨），`npm run build` → content-check 0 FAIL、158 篇正常
-- [ ] **（待 live，需 `ANTHROPIC_API_KEY`）**console token 用量已實作；用長逐字稿影片（如 jXtnhyro-QE，60k 字元）
-  實測 out/max 百分比，判斷 16k 是否仍貼近上限（貼近 → 回 PRD 開放問題討論調 `max_tokens`）
+- [x] **live usage 實測**（2026-08-01，PR #17 那批）：call 1 `in=4892 out=1046 (out/max=7%)`、
+  call 2 `in=4057 out=1442 (9%)`——遠低於 80% 警戒線；拆分後單次輸出受 note 長度約束、
+  不隨逐字稿長度膨脹，16k 判定充裕。該批逐字稿較短（5.3k 字元），長逐字稿批次若貼近上限，
+  `⚠ near max_tokens` 會自動示警，屆時再回 PRD 開放問題議調 `max_tokens`
 
 > **狀態（2026-08-01）**：✅ 離線驗收全過（commit `bdced22`，與 Phase 2 同分支 `--no-ff` 併回 develop）；
 > 僅剩 live usage 實測需要 API key，可與 Phase 2 的 live 重跑同一次完成。
