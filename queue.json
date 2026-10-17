@@ -4970,5 +4970,159 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "BOWYujhIQuo",
+    "title": "AI Agents Cut 3-Day Portfolio Builds to Minutes — Jack McDonald, Apollo & Michael Manapat, Rowspace",
+    "channel": "AI Engineer",
+    "published": "2026-10-16T23:00:36+00:00",
+    "thumb": "https://i.ytimg.com/vi/BOWYujhIQuo/hqdefault.jpg",
+    "url": "https://youtu.be/BOWYujhIQuo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "kiClTcJUnhc",
+    "title": "Why One AI Agent Isn’t Enough (And How to Run 1,000) - CJ Avilla & Harrison Stall, Anthropic",
+    "channel": "AI Engineer",
+    "published": "2026-10-16T19:00:10+00:00",
+    "thumb": "https://i.ytimg.com/vi/kiClTcJUnhc/hqdefault.jpg",
+    "url": "https://youtu.be/kiClTcJUnhc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Fva8hFosqyQ",
+    "title": "The Highest Loop — swyx",
+    "channel": "AI Engineer",
+    "published": "2026-10-16T02:03:26+00:00",
+    "thumb": "https://i.ytimg.com/vi/Fva8hFosqyQ/hqdefault.jpg",
+    "url": "https://youtu.be/Fva8hFosqyQ",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "jiUC6IUMdvc",
+    "title": "AI Engineer NYC: OpenAI, Blackstone, Ramp, Coinbase, Apollo, Citadel, Basis, Runway, Compute Trading",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T21:54:49+00:00",
+    "thumb": "https://i.ytimg.com/vi/jiUC6IUMdvc/hqdefault.jpg",
+    "url": "https://youtu.be/jiUC6IUMdvc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "0JZy5AuuQzc",
+    "title": "I Spent Two Years Building the Median — Hariprasad Sudharshan",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T18:00:11+00:00",
+    "thumb": "https://i.ytimg.com/vi/0JZy5AuuQzc/hqdefault.jpg",
+    "url": "https://youtu.be/0JZy5AuuQzc",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "tZycGA_Fbfo",
+    "title": "Paving the Road to Production: Governed Enterprise AI Agents — Harish Gaggar, Credit Karma",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T17:00:04+00:00",
+    "thumb": "https://i.ytimg.com/vi/tZycGA_Fbfo/hqdefault.jpg",
+    "url": "https://youtu.be/tZycGA_Fbfo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "Wb2v9Phhnns",
+    "title": "Your AI Isn’t the Problem. Your Infrastructure Is. — Jiachen Jiang, Coder",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T16:00:25+00:00",
+    "thumb": "https://i.ytimg.com/vi/Wb2v9Phhnns/hqdefault.jpg",
+    "url": "https://youtu.be/Wb2v9Phhnns",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "N58CCnPqNoo",
+    "title": "65 seconds inside AI Engineer New York",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T15:15:34+00:00",
+    "thumb": "https://i.ytimg.com/vi/N58CCnPqNoo/hqdefault.jpg",
+    "url": "https://youtu.be/N58CCnPqNoo",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "8g1N_a3h9H0",
+    "title": "How to Actually Tokenmaxx and Save Millions — Alvin Pane, OutRival",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T15:00:14+00:00",
+    "thumb": "https://i.ytimg.com/vi/8g1N_a3h9H0/hqdefault.jpg",
+    "url": "https://youtu.be/8g1N_a3h9H0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "7b9tov5Uc5s",
+    "title": "Rebuilding CI for AI-Scale Commit Volume — Gautam Korlam, Sonar",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T14:00:18+00:00",
+    "thumb": "https://i.ytimg.com/vi/7b9tov5Uc5s/hqdefault.jpg",
+    "url": "https://youtu.be/7b9tov5Uc5s",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ZccJsdOE54M",
+    "title": "The Cost of Accessibility in AI — Jemima Abu, CAIS",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T13:00:33+00:00",
+    "thumb": "https://i.ytimg.com/vi/ZccJsdOE54M/hqdefault.jpg",
+    "url": "https://youtu.be/ZccJsdOE54M",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "gonAewBZxfU",
+    "title": "Your Fridge Is a Valid Payment Device — Eleonora Drykina & Nina Žižakić, In The Pocket",
+    "channel": "AI Engineer",
+    "published": "2026-10-14T12:00:07+00:00",
+    "thumb": "https://i.ytimg.com/vi/gonAewBZxfU/hqdefault.jpg",
+    "url": "https://youtu.be/gonAewBZxfU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "gDRCpTMCqEU",
+    "title": "What Technical Due Diligence Finds When the Deck Says “70% Automated” — Soukaïna Abelhad",
+    "channel": "AI Engineer",
+    "published": "2026-10-13T18:00:17+00:00",
+    "thumb": "https://i.ytimg.com/vi/gDRCpTMCqEU/hqdefault.jpg",
+    "url": "https://youtu.be/gDRCpTMCqEU",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "U7ZYBCcdJPg",
+    "title": "Tokens Are the Cheap Part — Steve Jamison, Jellyfish",
+    "channel": "AI Engineer",
+    "published": "2026-10-13T17:00:19+00:00",
+    "thumb": "https://i.ytimg.com/vi/U7ZYBCcdJPg/hqdefault.jpg",
+    "url": "https://youtu.be/U7ZYBCcdJPg",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
