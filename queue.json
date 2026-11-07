@@ -5630,5 +5630,170 @@
     "status": "pending",
     "docId": null,
     "note": null
+  },
+  {
+    "videoId": "pz74r-4dGfQ",
+    "title": "Your AI Agent Is Hiding Its Mistakes From You - Ben Holmes, Warp",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T22:00:01+00:00",
+    "thumb": "https://i.ytimg.com/vi/pz74r-4dGfQ/hqdefault.jpg",
+    "url": "https://youtu.be/pz74r-4dGfQ",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ys6YQ2yfBpM",
+    "title": "Your Old Prompts Are Making Claude Worse - Lance Martin, Anthropic",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T21:00:18+00:00",
+    "thumb": "https://i.ytimg.com/vi/ys6YQ2yfBpM/hqdefault.jpg",
+    "url": "https://youtu.be/ys6YQ2yfBpM",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "oWqsBuhRRZ4",
+    "title": "How We Mapped a 35-Million-Line Mainframe in 4 Days - Stephen Chin, Neo4j & Neeraj Deshmukh, Blitzy",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T20:00:10+00:00",
+    "thumb": "https://i.ytimg.com/vi/oWqsBuhRRZ4/hqdefault.jpg",
+    "url": "https://youtu.be/oWqsBuhRRZ4",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "y9JtCCZP2MQ",
+    "title": "AI Engineer Code Summit 2026 — Day 2 | November 12",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T15:45:58+00:00",
+    "thumb": "https://i.ytimg.com/vi/y9JtCCZP2MQ/hqdefault.jpg",
+    "url": "https://youtu.be/y9JtCCZP2MQ",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ZZ19zhYnDKY",
+    "title": "AI Engineer Code Summit 2026 — Day 1 | November 11",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T15:43:54+00:00",
+    "thumb": "https://i.ytimg.com/vi/ZZ19zhYnDKY/hqdefault.jpg",
+    "url": "https://youtu.be/ZZ19zhYnDKY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "y9Sg--RDtks",
+    "title": "当我们什么都能做，还知道自己想做什么吗？When We Can Do Anything, Do We Still Know What We Want? — Ryo Lu, ex-Cursor",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T14:44:57+00:00",
+    "thumb": "https://i.ytimg.com/vi/y9Sg--RDtks/hqdefault.jpg",
+    "url": "https://youtu.be/y9Sg--RDtks",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "EtZwTYahfek",
+    "title": "7 Things Your AI Coworker Needs - Philipp Schmid, Google DeepMind",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T10:00:00+00:00",
+    "thumb": "https://i.ytimg.com/vi/EtZwTYahfek/hqdefault.jpg",
+    "url": "https://youtu.be/EtZwTYahfek",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "C2-v6wkHXhY",
+    "title": "Your AI Isn't the Advantage. Your Judgment Is - Sid Pednekar",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T09:00:15+00:00",
+    "thumb": "https://i.ytimg.com/vi/C2-v6wkHXhY/hqdefault.jpg",
+    "url": "https://youtu.be/C2-v6wkHXhY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "SUqQlvyI3N8",
+    "title": "Your AI Agent Keeps Making the Same Mistakes - Sparsh Jain, CentralAgent AI",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T08:00:37+00:00",
+    "thumb": "https://i.ytimg.com/vi/SUqQlvyI3N8/hqdefault.jpg",
+    "url": "https://youtu.be/SUqQlvyI3N8",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "AYFcmnQrZCg",
+    "title": "AI Agents Will Upend Investing Even More Than Coding - Frank Long, Coatue",
+    "channel": "AI Engineer",
+    "published": "2026-11-06T00:00:09+00:00",
+    "thumb": "https://i.ytimg.com/vi/AYFcmnQrZCg/hqdefault.jpg",
+    "url": "https://youtu.be/AYFcmnQrZCg",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "YqJ4asgj1R8",
+    "title": "Stop Giving Your AI Agents API Keys - Kim Maida, Keycard & Mason Egger, Temporal",
+    "channel": "AI Engineer",
+    "published": "2026-11-05T21:00:16+00:00",
+    "thumb": "https://i.ytimg.com/vi/YqJ4asgj1R8/hqdefault.jpg",
+    "url": "https://youtu.be/YqJ4asgj1R8",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "zLc8zeGeNaY",
+    "title": "How Netflix Evaluates AI When There's No Right Answer - Cameron Wolfe, Netflix",
+    "channel": "AI Engineer",
+    "published": "2026-11-05T20:00:25+00:00",
+    "thumb": "https://i.ytimg.com/vi/zLc8zeGeNaY/hqdefault.jpg",
+    "url": "https://youtu.be/zLc8zeGeNaY",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "ra8X7_bnujw",
+    "title": "Why Waiting for the Next AI Model Can Pay Off - John Stecher, Blackstone & Scott Worland, Norm AI",
+    "channel": "AI Engineer",
+    "published": "2026-11-05T10:00:37+00:00",
+    "thumb": "https://i.ytimg.com/vi/ra8X7_bnujw/hqdefault.jpg",
+    "url": "https://youtu.be/ra8X7_bnujw",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "4VmugsE-iP0",
+    "title": "How We Took an AI Agent From 41% to 97% Accurate - Milind Sunil Shah, Brainbase Labs",
+    "channel": "AI Engineer",
+    "published": "2026-11-05T09:00:12+00:00",
+    "thumb": "https://i.ytimg.com/vi/4VmugsE-iP0/hqdefault.jpg",
+    "url": "https://youtu.be/4VmugsE-iP0",
+    "status": "pending",
+    "docId": null,
+    "note": null
+  },
+  {
+    "videoId": "V2UqEUA8NjM",
+    "title": "Stop Making Your Customers Click Approve - Emil Chetty, Wise",
+    "channel": "AI Engineer",
+    "published": "2026-11-05T08:00:07+00:00",
+    "thumb": "https://i.ytimg.com/vi/V2UqEUA8NjM/hqdefault.jpg",
+    "url": "https://youtu.be/V2UqEUA8NjM",
+    "status": "pending",
+    "docId": null,
+    "note": null
   }
 ]
